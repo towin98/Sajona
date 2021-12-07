@@ -233,13 +233,6 @@ export default {
                 break;
             case 'Auxiliar':
                 this.propagacion       = true;
-                this.plantaMadre       = true;
-                this.transplanteBolsa  = true;
-                this.transplanteCampo  = true;
-                this.cosecha           = true;
-                this.postCosecha       = true;
-                this.bajas             = true;
-                this.reportes          = true;
                 break;
         }
 
