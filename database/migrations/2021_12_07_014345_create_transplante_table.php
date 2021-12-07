@@ -14,8 +14,17 @@ class CreateTransplanteTable extends Migration
     public function up()
     {
         Schema::create('transplante', function (Blueprint $table) {
-            $table->id();
+            $table->id("tp_id");
+            $table->unsignedBigInteger("tp_pm_id");
+            $table->string("tp_tipo", 20);
+            $table->string("tp_tipo_lote", 20);
+            $table->dateTime("tp_fecha");
+            $table->string("tp_ubicacion", 20);
+            $table->integer("tp_cantidad_area");
+            $table->string("pm_estado",20);
             $table->timestamps();
+
+            $table->foreign('tp_pm_id')->references('pm_id')->on('planta_madre');
         });
     }
 

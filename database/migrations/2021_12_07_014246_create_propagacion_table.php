@@ -14,7 +14,14 @@ class CreatePropagacionTable extends Migration
     public function up()
     {
         Schema::create('propagacion', function (Blueprint $table) {
-            $table->id();
+            $table->id('pro_id_lote');
+            $table->dateTime("pro_fecha");
+            $table->string("pro_tipo_propagacion", 30);
+            $table->integer("pro_variedad");
+            $table->string("pro_tipo_incorporacion", 10);
+            $table->integer("pro_cantidad_material");
+            $table->integer("pro_cantidad_plantas_madres");
+            $table->boolean("pro_estado");
             $table->timestamps();
         });
     }
