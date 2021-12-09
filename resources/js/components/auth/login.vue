@@ -4,11 +4,10 @@
 
             <v-app-bar app class="elevation-0 grey darken-4" dense>
                 <v-spacer></v-spacer>
-                <v-btn color="red" class="white--text">
+                <v-btn color="red" class="white--text" rounded>
                     <v-icon> date_range </v-icon>{{ date }}
                 </v-btn>
             </v-app-bar>
-
 
             <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md4>
@@ -23,7 +22,7 @@
                                 </div>
                             </v-toolbar-title>
                         </v-toolbar>
-                        <v-card-text>
+                        <v-card-text class="mt-8">
                             <v-form>
                                 <v-text-field
                                     prepend-icon="person"
@@ -49,11 +48,10 @@
                             </v-form>
                         </v-card-text>
                         <v-layout justify-center>
-                            <v-card-actions>
+                            <v-card-actions class="mt-4">
                                 <v-spacer></v-spacer>
-                                <v-btn color="success" v-on:click="login"
-                                    >Login
-                                    <v-icon dark> done </v-icon></v-btn>
+                                <v-btn color="success" v-on:click="login">Ingresar
+                                    <v-icon size="20" dark> done </v-icon></v-btn>
                             </v-card-actions>
                         </v-layout>
                     </v-card>
