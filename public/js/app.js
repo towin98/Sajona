@@ -2139,8 +2139,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2403,7 +2401,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       postCosecha: false,
       bajas: false,
       reportes: false,
-      cRol: ''
+      cRol: '',
+      intervalId: 0
     };
   },
   mixins: [_rolPermission_misRol_js__WEBPACK_IMPORTED_MODULE_1__.misRol],
@@ -2412,26 +2411,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       axios.post("/api/logout").then(function (response) {
+        clearInterval(_this.intervalId);
         localStorage.removeItem("token");
 
         _this.$router.push("/");
       })["catch"](function (errors) {
+        clearInterval(_this.intervalId);
         localStorage.removeItem("token");
 
         _this.$router.push("/");
-
-        console.log(errors);
       });
     }
   },
   created: function created() {
     var _this2 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
       var fecha, month;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
               fecha = new Date();
               month = fecha.toLocaleString("es-CO", {
@@ -2441,13 +2440,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(_this2.token);
               /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
 
-              _context.next = 6;
+              _context2.next = 6;
               return _this2.buscaNombreRolUser();
 
             case 6:
-              _this2.cRol = _context.sent;
-              _context.t0 = _this2.cRol;
-              _context.next = _context.t0 === 'Agronomo' ? 10 : _context.t0 === 'Gerente' ? 19 : _context.t0 === 'Auxiliar' ? 28 : 37;
+              _this2.intervalId = setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+                return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        _context.next = 2;
+                        return _this2.buscaNombreRolUser();
+
+                      case 2:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee);
+              })), 20000);
+              _context2.t0 = _this2.cRol;
+              _context2.next = _context2.t0 === 'Agronomo' ? 10 : _context2.t0 === 'Gerente' ? 19 : _context2.t0 === 'Auxiliar' ? 28 : 31;
               break;
 
             case 10:
@@ -2459,7 +2472,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this2.postCosecha = true;
               _this2.bajas = true;
               _this2.reportes = true;
-              return _context.abrupt("break", 37);
+              return _context2.abrupt("break", 31);
 
             case 19:
               _this2.propagacion = true;
@@ -2470,33 +2483,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this2.postCosecha = true;
               _this2.bajas = true;
               _this2.reportes = true;
-              return _context.abrupt("break", 37);
+              return _context2.abrupt("break", 31);
 
             case 28:
               _this2.propagacion = true;
-              _this2.plantaMadre = true;
-              _this2.transplanteBolsa = true;
-              _this2.transplanteCampo = true;
-              _this2.cosecha = true;
-              _this2.postCosecha = true;
               _this2.bajas = true;
-              _this2.reportes = true;
-              return _context.abrupt("break", 37);
+              return _context2.abrupt("break", 31);
 
-            case 37:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
-  },
-  beforeMount: function beforeMount() {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
+            case 31:
             case "end":
               return _context2.stop();
           }
@@ -2504,24 +2498,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }, _callee2);
     }))();
   },
-  mounted: function mounted() {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              window.onunload = function () {
-                localStorage.clear();
-              };
-
-            case 1:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }))();
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2726,7 +2703,7 @@ window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js
 
 
 function loggedIn() {
-  return localStorage.getItem('token');
+  return localStorage.getItem("token");
 }
 
 _routes__WEBPACK_IMPORTED_MODULE_1__["default"].beforeEach(function (to, from, next) {
@@ -2734,10 +2711,7 @@ _routes__WEBPACK_IMPORTED_MODULE_1__["default"].beforeEach(function (to, from, n
   if (to.matched.some(function (record) {
     return record.meta.requiresAuth;
   })) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
     if (!loggedIn()) {
-      // console.log("ok");
       next({
         path: '/',
         query: {
@@ -2745,16 +2719,14 @@ _routes__WEBPACK_IMPORTED_MODULE_1__["default"].beforeEach(function (to, from, n
         }
       });
     } else {
-      // console.log("ok2");
       next();
     }
   } else if (to.matched.some(function (record) {
     return record.meta.guest;
   })) {
-    // console.log("holita");
     if (loggedIn()) {
       next({
-        path: '/sajona/',
+        path: '/inicio/',
         query: {
           redirect: to.fullPath
         }
@@ -2763,12 +2735,11 @@ _routes__WEBPACK_IMPORTED_MODULE_1__["default"].beforeEach(function (to, from, n
       next();
     }
   } else {
-    // console.log("hola2");
-    next(); // make sure to always call next()!
+    next();
   }
 });
 var app = new Vue({
-  el: '#app',
+  el: "#app",
   router: _routes__WEBPACK_IMPORTED_MODULE_1__["default"],
   vuetify: _vuetify__WEBPACK_IMPORTED_MODULE_0__["default"],
   render: function render(h) {
@@ -2830,30 +2801,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var misRol = {
   methods: {
-    // async canRol(rol) {
-    //     let response = await axios.post("/api/can-rol", rol);
-    //     return response.data.data
-    // },
     buscaNombreRolUser: function buscaNombreRolUser() {
+      var _this = this;
+
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                _context.prev = 0;
+                _context.next = 3;
                 return axios.get("/api/busca-nombre-rol-user");
 
-              case 2:
+              case 3:
                 response = _context.sent;
-                return _context.abrupt("return", response.data.data);
+                _this.cRol = response.data.data;
+                _context.next = 10;
+                break;
 
-              case 4:
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
+
+                if (_context.t0.response.status == 401) {
+                  clearInterval(_this.intervalId);
+                  alert("La session ha caducado");
+
+                  _this.logout();
+                }
+
+              case 10:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, null, [[0, 7]]);
       }))();
     }
   }
@@ -22748,7 +22731,10 @@ var render = function () {
               _vm._v(" "),
               _c(
                 "v-btn",
-                { staticClass: "white--text", attrs: { color: "red" } },
+                {
+                  staticClass: "white--text",
+                  attrs: { color: "red", rounded: "" },
+                },
                 [
                   _c("v-icon", [_vm._v(" date_range ")]),
                   _vm._v(_vm._s(_vm.date) + "\n            "),
@@ -22808,6 +22794,7 @@ var render = function () {
                       _vm._v(" "),
                       _c(
                         "v-card-text",
+                        { staticClass: "mt-8" },
                         [
                           _c(
                             "v-form",
@@ -22878,6 +22865,7 @@ var render = function () {
                         [
                           _c(
                             "v-card-actions",
+                            { staticClass: "mt-4" },
                             [
                               _c("v-spacer"),
                               _vm._v(" "),
@@ -22889,11 +22877,13 @@ var render = function () {
                                 },
                                 [
                                   _vm._v(
-                                    "Login\n                                "
+                                    "Ingresar\n                                "
                                   ),
-                                  _c("v-icon", { attrs: { dark: "" } }, [
-                                    _vm._v(" done "),
-                                  ]),
+                                  _c(
+                                    "v-icon",
+                                    { attrs: { size: "20", dark: "" } },
+                                    [_vm._v(" done ")]
+                                  ),
                                 ],
                                 1
                               ),
