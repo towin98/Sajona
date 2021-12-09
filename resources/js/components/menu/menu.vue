@@ -181,7 +181,8 @@ export default {
             bajas               : false,
             reportes            : false,
 
-            cRol                : ''
+            cRol                : '',
+            intervalId          : 0,
         };
     },
     mixins: [misRol],
@@ -190,13 +191,14 @@ export default {
             axios
                 .post("/api/logout")
                 .then((response) => {
+                    clearInterval(this.intervalId);
                     localStorage.removeItem("token");
                     this.$router.push("/");
                 })
                 .catch((errors) => {
+                    clearInterval(this.intervalId);
                     localStorage.removeItem("token");
                     this.$router.push("/");
-                    console.log(errors);
                 });
         },
     },
@@ -208,7 +210,10 @@ export default {
         window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
 
         /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
-        this.cRol = await this.buscaNombreRolUser();
+        await this.buscaNombreRolUser();
+        this.intervalId = setInterval( async() => {
+            await this.buscaNombreRolUser();
+        }, 20000);
 
         switch (this.cRol) {
             case 'Agronomo':
@@ -233,25 +238,13 @@ export default {
                 break;
             case 'Auxiliar':
                 this.propagacion       = true;
+                this.bajas             = true;
                 break;
         }
-
-        // this.propagacion       = await  this.canRol({ roles:'Agronomo,Gerente,Auxiliar'});
-        // this.plantaMadre       = await  this.canRol({ roles:'Agronomo,Gerente,Auxiliar'});
-        // this.transplanteBolsa  = await  this.canRol({ roles:'Agronomo,Gerente,Auxiliar'});
-        // this.transplanteCampo  = await  this.canRol({ roles:'Agronomo,Gerente,Auxiliar'});
-        // this.cosecha           = await  this.canRol({ roles:'Agronomo,Gerente,Auxiliar'});
-        // this.postCosecha       = await  this.canRol({ roles:'Agronomo,Gerente,Auxiliar'});
-        // this.bajas             = await  this.canRol({ roles:'Agronomo,Gerente,Auxiliar'});
-        // this.reportes          = await  this.canRol({ roles:'Agronomo,Gerente,Auxiliar'});
     },
 
-    async beforeMount(){
-    },
-    async mounted() {
-        window.onunload = function (){
-            localStorage.clear();
-        };
+    mounted() {
+
     },
 };
 </script>

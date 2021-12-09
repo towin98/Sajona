@@ -16,23 +16,23 @@ class PermissionController extends Controller
      */
     public function canRol(Request $request) {
 
-        $users = User::findOrFail(Auth::user()->id);
+        // $users = User::findOrFail(Auth::user()->id);
 
-        $vRoles = explode(',',$request->roles);
+        // $vRoles = explode(',',$request->roles);
 
-        for ($nR=0; $nR < count($vRoles); $nR++) {
-            // Pregunta si tiene el rol
-            if ($users->hasRole($vRoles[$nR])) {
-                return response()->json([
-                    'data' => true
-                ], 200);
-            }
-        }
+        // for ($nR=0; $nR < count($vRoles); $nR++) {
+        //     // Pregunta si tiene el rol
+        //     if ($users->hasRole($vRoles[$nR])) {
+        //         return response()->json([
+        //             'data' => true
+        //         ], 200);
+        //     }
+        // }
 
-        // Retorno false no tiene rol.
-        return response()->json([
-            'data' => false
-        ], 200);
+        // // Retorno false no tiene rol.
+        // return response()->json([
+        //     'data' => false
+        // ], 200);
     }
 
     /**
@@ -62,4 +62,11 @@ class PermissionController extends Controller
         //             'data' => true
         //         ], 200);
         //     }
+        // }
+
+        // if ($users->user()->currentAccessToken()) {
+        //     return response()->json([
+        //         'message' => 'Credenciales no validas',
+        //         'data' => false
+        //     ], 200);
         // }
