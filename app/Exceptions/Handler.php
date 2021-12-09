@@ -28,7 +28,7 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Register the exception handling callbacks for the application.
+     * Registre las devoluciones de llamada de manejo de excepciones para la aplicación.
      *
      * @return void
      */
@@ -36,6 +36,13 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
+            return response()->json([
+                'responseMessage' => 'No tienes la autorización requerida.',
+                'responseStatus'  => 403,
+            ],403);
         });
     }
 }
