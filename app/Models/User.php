@@ -45,7 +45,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-        /**
+    /**
      * Reglas de validación para el recurso crear.
      *
      * @var array

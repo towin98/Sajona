@@ -1,0 +1,17 @@
+[33mcommit c7d8e576cf8a1e1a610b79d69e4fb628c6fb171c[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m)[m
+Author: towin <cristian3211998@gmail.com>
+Date:   Mon Dec 6 20:47:35 2021 -0500
+
+    feat(DEV): Se crea tablas sajona sin campos
+
+[33mcommit 3354b0b1bf18db88c3871f6b6f56f178dbbaf679[m[33m ([m[1;31mOriginsajona/develop[m[33m)[m
+Author: towin <cristian3211998@gmail.com>
+Date:   Mon Dec 6 20:10:51 2021 -0500
+
+    feat(DEV): Base de datos
+
+[33mcommit 12a809d99b2b705be7d68ab61982b35c9868d5b0[m[33m ([m[1;32mmain[m[33m)[m
+Author: towin <cristian3211998@gmail.com>
+Date:   Mon Dec 6 19:50:46 2021 -0500
+
+    Initial commit
