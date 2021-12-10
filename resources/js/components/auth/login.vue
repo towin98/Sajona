@@ -1,8 +1,8 @@
 <template>
     <v-app id="inspire">
-        <v-container fluid fill-height grey darken-4>
+        <v-container fluid fill-height style="background:#424242">
 
-            <v-app-bar app class="elevation-0 grey darken-4" dense>
+            <v-app-bar app class="elevation-0" dense style="background:#424242">
                 <v-spacer></v-spacer>
                 <v-btn color="red" class="white--text" rounded>
                     <v-icon> date_range </v-icon>{{ date }}
@@ -11,18 +11,20 @@
 
             <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md4>
-                    <v-card class="elevation-0 grey darken-4">
-                        <v-toolbar class="d-flex justify-center grey darken-4 rounded-0 elevation-0">
+                    <v-card class="elevation-0" style="background:#424242">
+                        <v-toolbar class="d-flex justify-center rounded-0 elevation-0" style="background:#424242">
                             <v-toolbar-title class="white--text">
                                 <div class="d-flex justify-center">
                                     <v-icon size="80" dark> account_circle </v-icon>
                                 </div>
-                                <div class=" justify-center">
-                                    INICIO DE SESIÓN
+                                <div class="justify-center">
+                                    <h3>
+                                        INICIO DE SESIÓN
+                                    </h3>
                                 </div>
                             </v-toolbar-title>
                         </v-toolbar>
-                        <v-card-text class="mt-8">
+                        <v-card-text class="mt-11">
                             <v-form>
                                 <v-text-field
                                     prepend-icon="person"
@@ -50,7 +52,7 @@
                         <v-layout justify-center>
                             <v-card-actions class="mt-4">
                                 <v-spacer></v-spacer>
-                                <v-btn color="success" v-on:click="login">Ingresar
+                                <v-btn color="success" class="text-none" v-on:click="login">Ingresar
                                     <v-icon size="20" dark> done </v-icon></v-btn>
                             </v-card-actions>
                         </v-layout>
@@ -101,3 +103,8 @@ export default {
     }
 };
 </script>
+<style>
+input{
+    padding-left: 10px !important;
+}
+</style>
