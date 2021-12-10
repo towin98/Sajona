@@ -23,7 +23,7 @@ class AuthController extends Controller
     {
         $reglas =  [
             'email'     => 'required|email|max:50',
-            'password'  => 'required|min:8', // cambiar a 8
+            'password'  => 'required|min:8',
         ];
 
         $objValidator = Validator::make($request->all(),  $reglas, User::$messagesValidators);
@@ -47,7 +47,7 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
-            'access_token' => $token,
+            'bearer' => $token,
             'token_type' => 'Bearer'
         ], 200);
     }

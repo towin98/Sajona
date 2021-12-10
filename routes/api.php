@@ -15,4 +15,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::get('/busca-nombre-rol-user/', [PermissionController::class, 'buscaNombreRolUser'])->middleware('auth:sanctum');
 
 /*Rutas Sojana (MENU)*/
+Route::get('propagacion/listar', [PropagacionController::class, 'listar']);
 Route::resource('propagacion', PropagacionController::class);
