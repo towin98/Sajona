@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Propagacion;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PropationRequest;
 use App\Models\Propagacion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class PropagacionController extends Controller
 {
@@ -52,26 +52,8 @@ class PropagacionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PropationRequest $request)
     {
-
-        $reglas =  [
-            'pro_fecha'                     => 'required|date',
-            'pro_tipo_propagacion'          => 'required|string',
-            'pro_variedad'                  => 'required|numeric',
-            'pro_tipo_incorporacion'        => 'required|string',
-            'pro_cantidad_material'         => 'required|numeric',
-            'pro_cantidad_plantas_madres'   => 'required|numeric',
-        ];
-
-        $objValidator = Validator::make($request->all(),  $reglas, Propagacion::$messagesValidators);
-        if($objValidator->fails()){
-            return response()->json([
-                'message' => 'Error de Validación de Datos',
-                'errors'  => $objValidator->errors()
-            ], 422);
-        }
-
         $pro_id_lote = Propagacion::select("pro_id_lote")
                         ->orderByDesc("pro_id_lote")
                         ->first();

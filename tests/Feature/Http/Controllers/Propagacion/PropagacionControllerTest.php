@@ -62,7 +62,7 @@ class PropagacionControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_lista_data_propagation_correct()
+    public function test_muestra_los_datos_de_propagacion_correctamente()
     {
         $this->withoutExceptionHandling();
 
