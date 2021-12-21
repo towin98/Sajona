@@ -28,4 +28,22 @@ class Propagacion extends Model
         "pro_estado",
     ];
 
+    /**
+     * Scope para realizar una búsqueda mixta.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @param string $buscar Valor a buscar
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBuscar($query, $buscar) {
+        if($buscar) {
+            return $query
+                ->where('pro_id_lote', 'LIKE', "%$buscar%")
+                ->orWhere('pro_fecha', 'LIKE', "%$buscar%")
+                ->orWhere('pro_tipo_propagacion', 'LIKE', "%$buscar%")
+                ->orWhere('pro_tipo_incorporacion', 'LIKE', "%$buscar%")
+                ->orWhere('pro_cantidad_material', 'LIKE', "%$buscar%");
+        }
+    }
+
 }

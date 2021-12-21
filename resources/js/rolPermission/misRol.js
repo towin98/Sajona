@@ -5,10 +5,10 @@ export const misRol = {
                 let response = await axios.get("/api/busca-nombre-rol-user");
                 this.cRol = response.data.data;
             } catch (errors) {
-                if (errors.response.status == 401) {
+                if (errors.response.status == 401 || errors.response.status == 500) {
+                    this.logout();
                     clearInterval(this.intervalId);
                     alert("La session ha caducado");
-                    this.logout();
                 }
             }
         },
