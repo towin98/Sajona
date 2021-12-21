@@ -33,8 +33,8 @@
                 class="grey darken-4"
                 clipped
             >
-                <v-list dense rounded dark temporary>
-                    <v-list-item :to="{ name: 'inicio' }">
+                <v-list dense dark temporary>
+                    <v-list-item :to="{ name: 'inicio' }" v-on:click="titleProceso = 'inicio'">
                         <v-list-item-icon>
                             <v-icon>home</v-icon>
                         </v-list-item-icon>
@@ -46,6 +46,7 @@
                     <v-list-item
                         v-if="this.propagacion"
                         :to="{ name: 'propagacion' }"
+                        v-on:click="titleProceso = 'Propagación'"
                     >
                         <v-list-item-icon>
                             <v-icon>navigate_next</v-icon>
@@ -58,6 +59,7 @@
                     <v-list-item
                         v-if="this.plantaMadre"
                         :to="{ name: 'planta-madre' }"
+                        v-on:click="titleProceso = 'Planta Madre'"
                     >
                         <v-list-item-icon>
                             <v-icon>navigate_next</v-icon>
@@ -71,6 +73,7 @@
                     <v-list-item
                         v-if="this.transplanteBolsa"
                         :to="{ name: 'transplante-bolsa' }"
+                        v-on:click="titleProceso = 'Transplante Bolsa'"
                     >
                         <v-list-item-icon>
                             <v-icon>navigate_next</v-icon>
@@ -86,6 +89,7 @@
                     <v-list-item
                         v-if="this.transplanteCampo"
                         :to="{ name: 'transplante-campo' }"
+                        v-on:click="titleProceso = 'Transplante Campo'"
                     >
                         <v-list-item-icon>
                             <v-icon>navigate_next</v-icon>
@@ -101,6 +105,7 @@
                     <v-list-item
                         v-if="this.cosecha"
                         :to="{ name: 'cosecha' }"
+                        v-on:click="titleProceso = 'Cosecha'"
                     >
                         <v-list-item-icon>
                             <v-icon>navigate_next</v-icon>
@@ -116,6 +121,7 @@
                     <v-list-item
                         v-if="this.postCosecha"
                         :to="{ name: 'post-cosecha' }"
+                        v-on:click="titleProceso = 'Post Cosecha'"
                     >
                         <v-list-item-icon>
                             <v-icon>navigate_next</v-icon>
@@ -129,6 +135,7 @@
                     <v-list-item
                         v-if="this.bajas"
                         :to="{ name: 'bajas' }"
+                        v-on:click="titleProceso = 'Bajas'"
                     >
                         <v-list-item-icon>
                             <v-icon>navigate_next</v-icon>
@@ -142,6 +149,7 @@
                     <v-list-item
                         v-if="this.reportes"
                         :to="{ name: 'reportes' }"
+                        v-on:click="titleProceso = 'Reporte'"
                     >
                         <v-list-item-icon>
                             <v-icon>navigate_next</v-icon>
@@ -155,6 +163,7 @@
             </v-navigation-drawer>
             <v-main>
                 <v-container>
+                    <mainHeader v-bind:proceso="titleProceso"></mainHeader>
                     <router-view></router-view>
                 </v-container>
             </v-main>
@@ -164,8 +173,12 @@
 
 <script>
 import { misRol } from "../../rolPermission/misRol.js";
+import mainHeader from "./mainHeader";
 export default {
     name: "menuSajona",
+    components:{
+        mainHeader
+    },
     data() {
         return {
             drawer: null,
@@ -183,6 +196,8 @@ export default {
 
             cRol                : '',
             intervalId          : 0,
+
+            titleProceso  :      ''
         };
     },
     mixins: [misRol],
@@ -203,6 +218,9 @@ export default {
         },
     },
     async created(){
+        // Obteniendo nombre de la ruta.
+        this.titleProceso = this.$route.name.replace('-',' ');
+
         const fecha = new Date();
         const month = fecha.toLocaleString("es-CO", { month: "long" });
 
@@ -248,3 +266,8 @@ export default {
     },
 };
 </script>
+<style>
+    .v-list-item--active{
+        background: red;
+    }
+</style>

@@ -15,7 +15,6 @@ class PropagacionController extends Controller
         // $this->middleware(['role:Auxiliar','permission:publish articles|edit articles']);
     }
 
-
     /**
      * Muestra una lista del recurso.
      *
@@ -23,36 +22,31 @@ class PropagacionController extends Controller
      */
     public function listar(Request $request)
     {
-        $totalRegistros = Propagacion::count();
-
-        // Se válida si envian los parámetros length y start.
-        if($request->has(['length', 'start'])){
-            $length = ($request->length != -1) ? $request->length : $totalRegistros;
-            $start  = ($request->length != -1) ? $request->start : 0;
-        }else{
+        // Se válida si envian los parámetros length
+        if(!$request->filled('length')){
             $length = 10;
-            $start  = 0;
+        }else{
+            $length = $request->length;
         }
 
-        $registros = Propagacion::select("*")
-            ->skip($start)
-            ->take($length)
-            ->get();
+        if ($request->filled('orderColumn') && $request->filled('order')) {
+            $totalRegistros = Propagacion::Buscar($request->buscar)
+                ->orderBy($request->orderColumn, $request->order)
+                ->paginate($length);
+        }else{
+            $totalRegistros = Propagacion::Buscar($request->buscar)
+                ->paginate($length);
+        }
 
-        return response()->json([
-            'data'      => $registros,
-            'filtrados' => $registros->count(),
-            'total'     => $totalRegistros,
-        ], 200);
+        return response()->json($totalRegistros, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Busca ultimo id de lote en DB.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PropationRequest $request)
+    public function buscarUltimoIdLote($controller = false)
     {
         $pro_id_lote = Propagacion::select("pro_id_lote")
                         ->orderByDesc("pro_id_lote")
@@ -65,9 +59,29 @@ class PropagacionController extends Controller
             $id = 1;
         }
 
+        // Si este método ha sido ejecutado desde el mismo controllador retornará valor.
+        if ($controller == true) {
+            return $id;
+        }
+
+        return response()->json([
+            'idLote' => $id,
+        ], 200);
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(PropationRequest $request)
+    {
+        $id = $this->buscarUltimoIdLote(true);
         Propagacion::create([
             "pro_id_lote"                   => $id,
-            "pro_fecha"                     => $request->pro_fecha,
+            "pro_fecha"                     => $request->pro_fecha." ".date("H:i:s"),
             "pro_tipo_propagacion"          => $request->pro_tipo_propagacion,
             "pro_variedad"                  => $request->pro_variedad,
             "pro_tipo_incorporacion"        => $request->pro_tipo_incorporacion,
@@ -78,7 +92,7 @@ class PropagacionController extends Controller
 
         return response()->json([
             'message' => 'Datos Guardados',
-        ], 200);
+        ], 201);
 
     }
 
