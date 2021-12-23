@@ -1,5 +1,6 @@
 <template>
     <div>
+        <loadingGeneral v-bind:overlayLoading="overlayLoading"/>
         <h4>Propagación</h4>
         <v-container fluid>
             <v-card elevation="2">
@@ -167,6 +168,7 @@
                             }"
                             sort-by="pro_id_lote"
                             :sort-desc="true"
+                            no-data-text="Sin registros"
                         >
                         </v-data-table>
                     </v-col>
@@ -176,10 +178,15 @@
     </div>
 </template>
 <script>
+import loadingGeneral   from '../loadingGeneral/loadingGeneral.vue';
 export default {
+    components:{
+        loadingGeneral
+    },
     data() {
         return {
-            token: localStorage.getItem("token"),
+            token               : localStorage.getItem("token"),
+            overlayLoading      : false,
             // Validaciones
             rulesFecha: [
                 (value) =>
@@ -241,32 +248,13 @@ export default {
             loading             : true,
             options             : {},
             headers             : [
-                {
-                    text: "Id Lote",
-                    align: "start",
-                    value: "pro_id_lote"
-                },
+                { text: "Id Lote", align: "start", value: "pro_id_lote" },
                 { text: "Fecha Siembra", value: "pro_fecha" },
                 { text: "Tipo de Propagación", value: "pro_tipo_propagacion" },
                 { text: "Tipo Incorporación", value: "pro_tipo_incorporacion" },
                 { text: "Cantidad Siembra", value: "pro_cantidad_material" },
             ],
-            dataSet: [
-                {
-                    pro_id_lote : 'hola',
-                    pro_fecha : 'hola' ,
-                    pro_tipo_propagacion : 'hola' ,
-                    pro_tipo_incorporacion : 'hola' ,
-                    pro_cantidad_material : 'hola' ,
-                },
-                {
-                    pro_id_lote : 'hola2',
-                    pro_fecha : 'hola2' ,
-                    pro_tipo_propagacion : 'hola2' ,
-                    pro_tipo_incorporacion : 'hola2' ,
-                    pro_cantidad_material : 'hola2' ,
-                },
-            ],
+            dataSet: [],
         };
     },
 
@@ -330,7 +318,11 @@ export default {
             axios
                 .post(`/api/propagacion`, this.form)
                 .then((response) => {
-                    alert(response.data.message);
+                    this.$swal(
+                        response.data.message,
+                        '',
+                        'success'
+                    );
                     this.listar();
                     this.limpiarCampo();
                     this.buscarIdLoteUltimo();
@@ -358,13 +350,3 @@ export default {
     },
 };
 </script>
-<style>
-/* .v-text-field{
-        padding-top: 0px !important;
-        margin-top: 0px !important;
-    }
-    .v-subheader{
-        font-size: 12px !important;
-        font-weight: 600 !important;
-    } */
-</style>

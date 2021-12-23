@@ -1,8 +1,12 @@
 <template>
     <v-app id="inspire">
-        <v-container fluid fill-height style="background:#424242">
-
-            <v-app-bar app class="elevation-0" dense style="background:#424242">
+        <v-container fluid fill-height style="background: #424242">
+            <v-app-bar
+                app
+                class="elevation-0"
+                dense
+                style="background: #424242"
+            >
                 <v-spacer></v-spacer>
                 <v-btn color="red" class="white--text" rounded>
                     <v-icon> date_range </v-icon>{{ date }}
@@ -11,16 +15,19 @@
 
             <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md4>
-                    <v-card class="elevation-0" style="background:#424242">
-                        <v-toolbar class="d-flex justify-center rounded-0 elevation-0" style="background:#424242">
+                    <v-card class="elevation-0" style="background: #424242">
+                        <v-toolbar
+                            class="d-flex justify-center rounded-0 elevation-0"
+                            style="background: #424242"
+                        >
                             <v-toolbar-title class="white--text">
                                 <div class="d-flex justify-center">
-                                    <v-icon size="80" dark> account_circle </v-icon>
+                                    <v-icon size="80" dark>
+                                        account_circle
+                                    </v-icon>
                                 </div>
                                 <div class="justify-center">
-                                    <h3>
-                                        INICIO DE SESIÓN
-                                    </h3>
+                                    <h3>INICIO DE SESIÓN</h3>
                                 </div>
                             </v-toolbar-title>
                         </v-toolbar>
@@ -52,19 +59,28 @@
                         <v-layout justify-center>
                             <v-card-actions class="mt-4">
                                 <v-spacer></v-spacer>
-                                <v-btn color="success" class="text-none" v-on:click="login">Ingresar
-                                    <v-icon size="20" dark> done </v-icon></v-btn>
+                                <v-btn
+                                    color="success"
+                                    class="text-none"
+                                    v-on:click="login"
+                                    >Ingresar
+                                    <v-icon size="20" dark>
+                                        done
+                                    </v-icon></v-btn
+                                >
                             </v-card-actions>
                         </v-layout>
                     </v-card>
                 </v-flex>
+                <loadingGeneral v-bind:overlayLoading="overlayLoading" />
             </v-layout>
-
         </v-container>
     </v-app>
 </template>
 <script>
+import loadingGeneral from "../loadingGeneral/loadingGeneral.vue";
 export default {
+    components: { loadingGeneral },
     data() {
         return {
             formData: {
@@ -77,34 +93,45 @@ export default {
                 password: "",
             },
 
-            date: ""
+            date: "",
+            overlayLoading: false,
         };
     },
     methods: {
         login() {
+            this.overlayLoading = true;
             axios
                 .post("api/login", this.formData)
                 .then((response) => {
-                    // console.log(response.data.access_token);
                     localStorage.setItem("token", response.data.access_token);
                     this.$router.push("/inicio/dashboard");
+                    this.overlayLoading = false;
+                    this.$swal("Bienvenido");
                 })
                 .catch((errors) => {
-                    // console.log(errors.response.data);
-                    this.errors = errors.response.data.errors;
+                    if (errors.response.status == 500) {
+                        this.overlayLoading = false;
+                        this.$swal({
+                            icon: "error",
+                            title: "Intentalo más tarde.",
+                        });
+                    } else {
+                        this.overlayLoading = false;
+                        this.errors = errors.response.data.errors;
+                    }
                 });
         },
     },
-    mounted(){
+    mounted() {
         const fecha = new Date();
-        const month = fecha.toLocaleString('es-CO', { month: 'long' });
+        const month = fecha.toLocaleString("es-CO", { month: "long" });
 
-        this.date = `${ month.substring(0,3)}/${fecha.getFullYear()}`
-    }
+        this.date = `${month.substring(0, 3)}/${fecha.getFullYear()}`;
+    },
 };
 </script>
 <style>
-input{
+input {
     padding-left: 10px !important;
 }
 </style>

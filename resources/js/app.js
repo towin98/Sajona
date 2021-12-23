@@ -3,14 +3,17 @@ require("./bootstrap");
 // Import libraries
 window.Vue = require("vue").default;
 import vuetify from "./vuetify";
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import router from "./routes";
 import App from "./components/App";
+
+Vue.use(VueSweetalert2);
 
 function loggedIn() {
     return localStorage.getItem("token");
 }
 router.beforeEach((to, from, next) => {
-    // console.log(to);
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!loggedIn()) {
             next({
