@@ -32,7 +32,7 @@ class PropagacionControllerTest extends TestCase
         $response->assertValid();
 
         // $response->assertUnprocessable();
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 
     /**
@@ -45,12 +45,12 @@ class PropagacionControllerTest extends TestCase
         $this->withoutExceptionHandling();
 
         $response = $this->post('/api/propagacion',[
-            "pro_fecha"                     => "fecha",// date("Y-m-d H:i:s"),
-            "pro_tipo_propagacion"          => "", // requerido
+            "pro_fecha"                     => date("Y-m-d H:i:s"),
+            "pro_tipo_propagacion"          => "Esqueje",
             "pro_variedad"                  => 2,
-            "pro_tipo_incorporacion"        => "a212",
-            "pro_cantidad_material"         => "aqui son numeros",
-            "pro_cantidad_plantas_madres"   => "110s",
+            "pro_tipo_incorporacion"        => "Propia",
+            "pro_cantidad_material"         => "13e22",
+            "pro_cantidad_plantas_madres"   => 837,
         ]);
 
         $response->assertUnprocessable(); // si devuelve 422 pasa la prueba

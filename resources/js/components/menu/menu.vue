@@ -1,6 +1,7 @@
 <template>
     <div>
         <v-app id="inspire">
+            <loadingGeneral v-bind:overlayLoading="overlayLoading"/>
             <v-app-bar app dark class="grey darken-4" dense clipped-left>
                 <v-app-bar-nav-icon
                     dark
@@ -172,11 +173,13 @@
 </template>
 
 <script>
-import { misRol } from "../../rolPermission/misRol.js";
-import mainHeader from "./mainHeader";
+import { misRol }       from "../../rolPermission/misRol.js";
+import mainHeader       from "./mainHeader.vue";
+import loadingGeneral   from '../loadingGeneral/loadingGeneral.vue';
 export default {
     name: "menuSajona",
     components:{
+        loadingGeneral,
         mainHeader
     },
     data() {
@@ -197,23 +200,27 @@ export default {
             cRol                : '',
             intervalId          : 0,
 
-            titleProceso  :      ''
+            titleProceso        : '',
+            overlayLoading      : false
         };
     },
     mixins: [misRol],
     methods: {
         logout() {
+            this.overlayLoading = true;
             axios
                 .post("/api/logout")
                 .then((response) => {
                     clearInterval(this.intervalId);
                     localStorage.removeItem("token");
                     this.$router.push("/");
+                    this.overlayLoading = false;
                 })
                 .catch((errors) => {
                     clearInterval(this.intervalId);
                     localStorage.removeItem("token");
                     this.$router.push("/");
+                    this.overlayLoading = false;
                 });
         },
     },
@@ -228,7 +235,10 @@ export default {
         window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
 
         /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
+        this.overlayLoading = true;
         await this.buscaNombreRolUser();
+        this.overlayLoading = false;
+
         this.intervalId = setInterval( async() => {
             await this.buscaNombreRolUser();
         }, 20000);

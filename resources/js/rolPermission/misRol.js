@@ -8,7 +8,11 @@ export const misRol = {
                 if (errors.response.status == 401 || errors.response.status == 500) {
                     this.logout();
                     clearInterval(this.intervalId);
-                    alert("La session ha caducado");
+                    this.$swal(
+                        'La Sesión ha caducado.',
+                        '',
+                        'info'
+                    );
                 }
             }
         },
