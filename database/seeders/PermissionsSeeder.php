@@ -33,8 +33,20 @@ class PermissionsSeeder extends Seeder
             'email' => 'cristian@gmail.com',
             'password' => Hash::make('admin123'),
         ]);
-
-        //asignando rol
         $userSuperAdmin->assignRole('Agronomo');
+
+        $userSuperAdmin = User::create([
+            'name' => 'Eduardo Martinez',
+            'email' => 'eduardo@gmail.com',
+            'password' => Hash::make('admin123'),
+        ]);
+        $userSuperAdmin->assignRole('Gerente');
+
+        $userSuperAdmin = User::create([
+            'name' => 'Richard Ramirez',
+            'email' => 'richard@gmail.com',
+            'password' => Hash::make('admin123'),
+        ]);
+        $userSuperAdmin->assignRole('Auxiliar');
     }
 }

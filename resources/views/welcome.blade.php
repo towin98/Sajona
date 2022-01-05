@@ -7,7 +7,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 
-        <title>Sajona</title>
+        <title>SAJONA</title>
 
         <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
         <!-- Fonts -->
