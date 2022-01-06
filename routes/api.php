@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PlantaMadre\PlantaMadreController;
 use App\Http\Controllers\Propagacion\PropagacionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,4 +18,9 @@ Route::get('/busca-nombre-rol-user/', [PermissionController::class, 'buscaNombre
 /*Rutas Sojana (MENU)*/
 Route::get('/propagacion/listar', [PropagacionController::class, 'listar']);
 Route::get('/propagacion/id-lote', [PropagacionController::class, 'buscarUltimoIdLote']);
-Route::resource('/propagacion', PropagacionController::class);
+Route::resource('/propagacion', PropagacionController::class)->only(['store']);
+
+/*Planta Madre (MENU)*/
+Route::resource('/planta-madre', PlantaMadreController::class)->only(['store']);
+Route::get('/planta-madre/{Propagacion}', [PlantaMadreController::class, 'show']);
+Route::get('/planta-madre/buscar-lotes', [PlantaMadreController::class, 'buscarLotes']);

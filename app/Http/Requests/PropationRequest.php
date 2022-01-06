@@ -27,7 +27,7 @@ class PropationRequest extends FormRequest
     public function rules()
     {
         return [
-            'pro_fecha'                     => 'required|date',
+            'pro_fecha'                     => 'required|date_format:Y-m-d',
             'pro_tipo_propagacion'          => 'required|string',
             'pro_variedad'                  => 'required|integer',
             'pro_tipo_incorporacion'        => 'required|string',
@@ -45,7 +45,7 @@ class PropationRequest extends FormRequest
     {
         return [
             'pro_fecha.required'                            => 'El campo fecha de propagación es requerido.',
-            'pro_fecha.date'                                => 'El tipo de formato del campo fecha de propagación debe ser ej: Y-m-d.',
+            'pro_fecha.date_format'                         => 'El tipo de formato del campo fecha de propagación debe ser ej: Y-m-d.',
             'pro_tipo_propagacion.required'                 => 'El campo tipo de propagacion es requerido.',
             'pro_tipo_propagacion.string'                   => 'El campo tipo de propagacion debe ser un string.',
             'pro_variedad.required'                         => 'El campo variedad es requerido.',

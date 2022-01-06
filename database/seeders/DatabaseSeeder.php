@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(PermissionsSeeder::class);
+        \App\Models\Propagacion::factory(10)->create();
         // \App\Models\User::factory(10)->create();
     }
 }
