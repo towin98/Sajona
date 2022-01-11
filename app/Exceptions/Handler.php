@@ -9,6 +9,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -66,6 +67,10 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof MethodNotAllowedHttpException) {
             return response()->json(['error' => 'El metodo especificado en la peticion no es valido', 'code' => 405], 405);
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return response()->json(['error' => 'No se encontro la url ingresada', 'code' => 404],404);
         }
 
         if ($exception instanceof HttpException) {

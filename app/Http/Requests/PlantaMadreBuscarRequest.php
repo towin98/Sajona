@@ -40,8 +40,8 @@ class PlantaMadreBuscarRequest extends FormRequest
     public function messages()
     {
         return [
-            'fecha_inicio.required'                  => 'la fecha de inicio es requerida.',
-            'fecha_fin.required'                     => 'la fecha de fin es requerida.',
+            'fecha_inicio.required'                  => 'La fecha de inicio es requerida.',
+            'fecha_fin.required'                     => 'La fecha de fin es requerida.',
             'fecha_inicio.date_format'               => 'El tipo de formato del campo fecha de inicio debe ser ej: Y-m-d.',
             'fecha_fin.date_format'                  => 'El tipo de formato del campo fecha de fin debe ser ej: Y-m-d.',
             'fecha_fin.after_or_equal'               => 'La fecha fin debe de ser mayor que la fecha inicio.',

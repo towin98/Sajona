@@ -25,27 +25,38 @@ class PlantaMadreController extends Controller
             $length = $request->length;
         }
 
+        $registros = Propagacion::select('*')
+            ->with('getPlantaMadre')
+            ->BuscarPLantaMadre($request->buscar);
+
         // Consultas
         if ($request->filled('orderColumn') && $request->filled('order')) {
-
             // Consulta Valor a buscar y ordenar registros ACS o DESC por una columna.
-            $registros = Propagacion::select('*')
-                ->Buscar($request->buscar)
-                ->orderBy($request->orderColumn, $request->order)
-                ->whereBetween('pro_fecha',[ $request->fecha_inicio, $request->fecha_fin])
-                ->paginate($length);
-        }else{
-
-            // Consulta Valor a buscar.
-            $registros = Propagacion::select('*')
-                ->Buscar($request->buscar)
-                ->whereBetween('pro_fecha',[$request->fecha_inicio.' 00:00:00', $request->fecha_fin.' 23:59:59'])
-                ->paginate($length);
+            switch ($request->orderColumn) {
+                case 'pm_fecha_esquejacion':
+                    $registros = $registros->leftJoin('planta_madre', 'planta_madre.pm_pro_id_lote', '=', 'propagacion.pro_id_lote')
+                        ->orderBy('planta_madre.pm_fecha_esquejacion', $request->order);
+                break;
+                default:
+                    $registros = $registros->orderBy($request->orderColumn, $request->order);
+                break;
+            }
         }
 
-        return response()->json([
-            'data' => $registros,
-        ], 200);
+        // Consulta Valor a buscar.
+        $registros = $registros->whereBetween('pro_fecha',[$request->fecha_inicio.' 00:00:00', $request->fecha_fin.' 23:59:59'])
+            ->paginate($length);
+
+        $registros->getCollection()->transform(function($data, $key) {
+            return [
+                'pro_id_lote'                   => $data->pro_id_lote,              // ( Id lote )
+                'pro_fecha'                     => $data->pro_fecha,                // ( Fecha propagación )
+                'pm_fecha_esquejacion'          => optional($data->getPlantaMadre)->pm_fecha_esquejacion, // plantas madres ( Fecha Transplante )
+                'pro_cantidad_plantas_madres'   => $data->pro_cantidad_plantas_madres, // ( Cantidad Buenas )
+            ];
+        });
+
+        return response()->json($registros, 200);
     }
 
     /**
@@ -60,8 +71,8 @@ class PlantaMadreController extends Controller
         PlantaMadre::where('pm_pro_id_lote', $request->pm_pro_id_lote)->delete();
 
         PlantaMadre::create([
-            'pm_pro_id_lote'        => 100,
-            'pm_fecha_esquejacion'  => $request->pm_fecha_esquejacion,
+            'pm_pro_id_lote'        => $request->pm_pro_id_lote,
+            'pm_fecha_esquejacion'  => $request->pm_fecha_esquejacion." ".date('H:i:s'),
             'pm_cantidad_semillas'  => $request->pm_cantidad_semillas,
             'pm_cantidad_esquejes'  => $request->pm_cantidad_esquejes,
             'pm_estado'             => true,
@@ -85,7 +96,9 @@ class PlantaMadreController extends Controller
 
         // Armando collection con data de propagacion y de plantas madres.
         $esquejeSemilla = collect([
+            'pro_id_lote'                 => $Propagacion->pro_id_lote,
             'pro_cantidad_plantas_madres' => $Propagacion->pro_cantidad_plantas_madres,
+            'pm_fecha_esquejacion'        => $plantaMadre->isEmpty() ? '' : substr($plantaMadre[0]->pm_fecha_esquejacion,0,10) ,
             'pm_cantidad_esquejes'        => $plantaMadre->isEmpty() ? 0 : $plantaMadre[0]->pm_cantidad_esquejes,
             'pm_cantidad_semillas'        => $plantaMadre->isEmpty() ? 0 : $plantaMadre[0]->pm_cantidad_semillas
         ]);

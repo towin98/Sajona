@@ -272,9 +272,10 @@ export default {
             clearTimeout(this.debounce);
             this.debounce = setTimeout(() => {
                 this.listar(this.buscar);
-            }, 600);
+            }, 800);
         },
         listar(buscar = this.buscar) {
+            this.overlayLoading = true;
             let { page, itemsPerPage, sortBy, sortDesc } = this.options;
 
             if (sortDesc[0] == true) {
@@ -298,9 +299,11 @@ export default {
                     this.dataSet = response.data.data;
                     this.totalRegistros = response.data.total;
                     this.numberOfPages = response.data.totalPages;
+                    this.overlayLoading = false;
                 })
                 .catch((errors) => {
                     this.loading = false;
+                    this.overlayLoading = false;
                     console.log(errors.response.data);
                 });
         },

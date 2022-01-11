@@ -2727,12 +2727,416 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
 //
 //
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      token: localStorage.getItem("token"),
+      overlayLoading: false,
+      menuDateInicio: false,
+      menuDateFin: false,
+      menuFechaEsqueje: false,
+      form: {
+        fecha_inicio: "",
+        fecha_fin: ""
+      },
+      errors: {
+        fecha_inicio: "",
+        fecha_fin: ""
+      },
+
+      /* Variables Table. */
+      contador: 0,
+      // Tabla filtro.
+      debounce: null,
+      buscar: "",
+      // Table listar
+      page: 1,
+      totalRegistros: 0,
+      numberOfPages: 0,
+      loading: false,
+      options: {},
+      headers: [{
+        text: "Id Lote",
+        align: "start",
+        value: "pro_id_lote"
+      }, {
+        text: "Fecha Propagación",
+        value: "pro_fecha"
+      }, {
+        text: "Fecha Transplante",
+        value: "pm_fecha_esquejacion"
+      }, {
+        text: "Cantidad Buenas",
+        value: "pro_cantidad_plantas_madres"
+      }, {
+        text: "Esquejes-Semilla",
+        value: "esquejes_semilla",
+        sortable: false
+      }],
+      dataSet: [],
+
+      /* end variables Table. */
+
+      /* Variables para modal */
+      modal: false,
+      modalInfo: {
+        pm_pro_id_lote: "",
+        pm_fecha_esquejacion: "",
+        pro_cantidad_plantas_madres: "",
+        pm_cantidad_semillas: "",
+        pm_cantidad_esquejes: ""
+      },
+      modalErrors: ''
+    };
+  },
+  watch: {
+    options: {
+      handler: function handler() {
+        this.filterSearch();
+      }
+    },
+    deep: true
+  },
+  methods: {
+    buscarLotes: function buscarLotes() {
+      var _this = this;
+
+      this.overlayLoading = true;
+      this.loading = true;
+      var _this$options = this.options,
+          page = _this$options.page,
+          itemsPerPage = _this$options.itemsPerPage,
+          sortBy = _this$options.sortBy,
+          sortDesc = _this$options.sortDesc;
+
+      if (sortDesc[0] == true) {
+        sortBy = sortBy[0];
+        sortDesc = "DESC";
+      } else if (sortDesc[0] == false) {
+        sortBy = sortBy[0];
+        sortDesc = "ASC";
+      } else {
+        sortBy = "";
+        sortDesc = "";
+      }
+
+      axios.get("/api/planta-madre/buscar-lotes?fecha_inicio=".concat(this.form.fecha_inicio, "&fecha_fin=").concat(this.form.fecha_fin, "&page=").concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
+        _this.loading = false;
+        _this.dataSet = response.data.data;
+        _this.totalRegistros = response.data.total;
+        _this.numberOfPages = response.data.totalPages; // Limpiando mensajes de error del formulario.
+
+        var errors = {
+          fecha_inicio: "",
+          fecha_fin: ""
+        };
+        _this.errors = errors;
+        _this.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this.overlayLoading = false;
+        _this.loading = false;
+        _this.dataSet = [];
+        _this.errors = errors.response.data.errors;
+      });
+    },
+    filterSearch: function filterSearch() {
+      var _this2 = this;
+
+      if (this.contador > 0) {
+        clearTimeout(this.debounce);
+        this.debounce = setTimeout(function () {
+          _this2.buscarLotes(_this2.buscar);
+        }, 800);
+      }
+
+      this.contador++;
+    },
+    esquejesSemilla: function esquejesSemilla(item) {
+      var _this3 = this;
+
+      this.modalErrors = '';
+      this.overlayLoading = true;
+      axios.get("/api/planta-madre/".concat(item.pro_id_lote)).then(function (response) {
+        _this3.modal = true;
+        _this3.modalInfo.pm_pro_id_lote = response.data.data.pro_id_lote;
+
+        if (response.data.data.pm_fecha_esquejacion != '') {
+          _this3.modalInfo.pm_fecha_esquejacion = response.data.data.pm_fecha_esquejacion;
+        } else {
+          _this3.modalInfo.pm_fecha_esquejacion = '';
+        }
+
+        _this3.modalInfo.pro_cantidad_plantas_madres = response.data.data.pro_cantidad_plantas_madres;
+        _this3.modalInfo.pm_cantidad_semillas = response.data.data.pm_cantidad_semillas;
+        _this3.modalInfo.pm_cantidad_esquejes = response.data.data.pm_cantidad_esquejes;
+        _this3.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this3.overlayLoading = false;
+      });
+    },
+    guardarPlantaMadre: function guardarPlantaMadre() {
+      var _this4 = this;
+
+      this.overlayLoading = true;
+      axios.post("/api/planta-madre", this.modalInfo).then(function (response) {
+        _this4.$swal(response.data.message, '', 'success');
+
+        _this4.overlayLoading = false;
+        _this4.modal = false;
+        _this4.modalErrors = '';
+
+        _this4.buscarLotes();
+      })["catch"](function (errors) {
+        _this4.modalErrors = errors.response.data.errors;
+        _this4.overlayLoading = false;
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -3044,12 +3448,13 @@ __webpack_require__.r(__webpack_exports__);
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
         _this.listar(_this.buscar);
-      }, 600);
+      }, 800);
     },
     listar: function listar() {
       var _this2 = this;
 
       var buscar = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.buscar;
+      this.overlayLoading = true;
       var _this$options = this.options,
           page = _this$options.page,
           itemsPerPage = _this$options.itemsPerPage,
@@ -3073,8 +3478,10 @@ __webpack_require__.r(__webpack_exports__);
         _this2.dataSet = response.data.data;
         _this2.totalRegistros = response.data.total;
         _this2.numberOfPages = response.data.totalPages;
+        _this2.overlayLoading = false;
       })["catch"](function (errors) {
         _this2.loading = false;
+        _this2.overlayLoading = false;
         console.log(errors.response.data);
       });
     },
@@ -3596,7 +4003,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -24504,16 +24911,662 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
+      _vm._v(" "),
+      _c("h4", [_vm._v("Lote / PLanta madre")]),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-card",
+            { attrs: { elevation: "2" } },
+            [
+              _c("v-card-title", { staticClass: "rounded-sm py-2" }, [
+                _c("span", { staticClass: "text-h6 font-weight-bold" }, [
+                  _vm._v("Nuevo"),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-form",
+                {
+                  ref: "form",
+                  attrs: { "lazy-validation": "" },
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      return _vm.buscarLotes.apply(null, arguments)
+                    },
+                  },
+                },
+                [
+                  _c(
+                    "v-row",
+                    { staticClass: "mt-3 pl-4 pr-4" },
+                    [
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "2" } },
+                        [_c("v-subheader", [_vm._v("Fecha de inicio")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "4" } },
+                        [
+                          _c(
+                            "v-menu",
+                            {
+                              attrs: {
+                                "close-on-content-click": false,
+                                "nudge-right": 40,
+                                transition: "scale-transition",
+                                "offset-y": "",
+                                "min-width": "auto",
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function (ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-text-field",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              ref: "fecha_inicio",
+                                              attrs: {
+                                                "append-icon": "mdi-calendar",
+                                                readonly: "",
+                                                "error-messages":
+                                                  _vm.errors.fecha_inicio,
+                                                dense: "",
+                                              },
+                                              model: {
+                                                value: _vm.form.fecha_inicio,
+                                                callback: function ($$v) {
+                                                  _vm.$set(
+                                                    _vm.form,
+                                                    "fecha_inicio",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "form.fecha_inicio",
+                                              },
+                                            },
+                                            "v-text-field",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        )
+                                      ),
+                                    ]
+                                  },
+                                },
+                              ]),
+                              model: {
+                                value: _vm.menuDateInicio,
+                                callback: function ($$v) {
+                                  _vm.menuDateInicio = $$v
+                                },
+                                expression: "menuDateInicio",
+                              },
+                            },
+                            [
+                              _vm._v(" "),
+                              _c("v-date-picker", {
+                                attrs: { locale: "es-CO" },
+                                on: {
+                                  input: function ($event) {
+                                    _vm.menuDateInicio = false
+                                  },
+                                },
+                                model: {
+                                  value: _vm.form.fecha_inicio,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "fecha_inicio", $$v)
+                                  },
+                                  expression: "form.fecha_inicio",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "2" } },
+                        [_c("v-subheader", [_vm._v("Fecha de fin")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "4" } },
+                        [
+                          _c(
+                            "v-menu",
+                            {
+                              attrs: {
+                                "close-on-content-click": false,
+                                "nudge-right": 40,
+                                transition: "scale-transition",
+                                "offset-y": "",
+                                "min-width": "auto",
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function (ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-text-field",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              ref: "fecha_fin",
+                                              attrs: {
+                                                "append-icon": "mdi-calendar",
+                                                readonly: "",
+                                                "error-messages":
+                                                  _vm.errors.fecha_fin,
+                                                dense: "",
+                                              },
+                                              model: {
+                                                value: _vm.form.fecha_fin,
+                                                callback: function ($$v) {
+                                                  _vm.$set(
+                                                    _vm.form,
+                                                    "fecha_fin",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "form.fecha_fin",
+                                              },
+                                            },
+                                            "v-text-field",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        )
+                                      ),
+                                    ]
+                                  },
+                                },
+                              ]),
+                              model: {
+                                value: _vm.menuDateFin,
+                                callback: function ($$v) {
+                                  _vm.menuDateFin = $$v
+                                },
+                                expression: "menuDateFin",
+                              },
+                            },
+                            [
+                              _vm._v(" "),
+                              _c("v-date-picker", {
+                                attrs: { locale: "es-CO" },
+                                on: {
+                                  input: function ($event) {
+                                    _vm.menuDateFin = false
+                                  },
+                                },
+                                model: {
+                                  value: _vm.form.fecha_fin,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "fecha_fin", $$v)
+                                  },
+                                  expression: "form.fecha_fin",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "d-flex justify-center",
+                          attrs: { cols: "12" },
+                        },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "white--text text-none",
+                              attrs: {
+                                type: "submit",
+                                small: "",
+                                color: "#00bcd4",
+                                tile: "",
+                              },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" search ")]),
+                              _vm._v("Buscar\n                        "),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                [
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12" } },
+                    [
+                      _c(
+                        "v-card-title",
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              type: "text",
+                              "append-icon": "mdi-magnify",
+                              label: "Buscar",
+                              "single-line": "",
+                              "hide-details": "",
+                            },
+                            on: { input: _vm.filterSearch },
+                            model: {
+                              value: _vm.buscar,
+                              callback: function ($$v) {
+                                _vm.buscar = $$v
+                              },
+                              expression: "buscar",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-data-table", {
+                        staticClass: "elevation-1",
+                        attrs: {
+                          page: _vm.page,
+                          pageCount: _vm.numberOfPages,
+                          headers: _vm.headers,
+                          items: _vm.dataSet,
+                          options: _vm.options,
+                          "server-items-length": _vm.totalRegistros,
+                          loading: _vm.loading,
+                          "items-per-page": 3,
+                          "item-key": "pro_id_lote",
+                          "footer-props": {
+                            "items-per-page-options": [3, 5, 10, 15],
+                          },
+                          "sort-by": "pro_id_lote",
+                          "sort-desc": true,
+                          "no-data-text": "Sin registros",
+                        },
+                        on: {
+                          "update:options": function ($event) {
+                            _vm.options = $event
+                          },
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "item.esquejes_semilla",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "a",
+                                  {
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.esquejesSemilla(item)
+                                      },
+                                    },
+                                  },
+                                  [_vm._v("Clic")]
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", width: "600px" },
+          model: {
+            value: _vm.modal,
+            callback: function ($$v) {
+              _vm.modal = $$v
+            },
+            expression: "modal",
+          },
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-card-title",
+                { staticClass: "text-h5 py-2" },
+                [
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(this.modalInfo.pm_pro_id_lote) +
+                      "\n                "
+                  ),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "black", icon: "" },
+                      on: {
+                        click: function ($event) {
+                          _vm.modal = false
+                        },
+                      },
+                    },
+                    [
+                      _c("v-icon", { attrs: { dark: "" } }, [
+                        _vm._v(
+                          "\n                        close\n                    "
+                        ),
+                      ]),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-row",
+                    [
+                      _c("v-col", { attrs: { cols: "0", sm: "2" } }),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "pa-0 pt-4",
+                          attrs: { cols: "6", sm: "3" },
+                        },
+                        [_c("v-subheader", [_vm._v("Fecha Esqueje")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pt-4", attrs: { cols: "6", sm: "4" } },
+                        [
+                          _c(
+                            "v-menu",
+                            {
+                              attrs: {
+                                "close-on-content-click": false,
+                                "nudge-right": 40,
+                                transition: "scale-transition",
+                                "offset-y": "",
+                                "min-width": "auto",
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function (ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-text-field",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              ref: "pm_fecha_esquejacion",
+                                              attrs: {
+                                                "append-icon": "mdi-calendar",
+                                                readonly: "",
+                                                "error-messages":
+                                                  _vm.modalErrors
+                                                    .pm_fecha_esquejacion,
+                                                dense: "",
+                                              },
+                                              model: {
+                                                value:
+                                                  _vm.modalInfo
+                                                    .pm_fecha_esquejacion,
+                                                callback: function ($$v) {
+                                                  _vm.$set(
+                                                    _vm.modalInfo,
+                                                    "pm_fecha_esquejacion",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression:
+                                                  "modalInfo.pm_fecha_esquejacion",
+                                              },
+                                            },
+                                            "v-text-field",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        )
+                                      ),
+                                    ]
+                                  },
+                                },
+                              ]),
+                              model: {
+                                value: _vm.menuFechaEsqueje,
+                                callback: function ($$v) {
+                                  _vm.menuFechaEsqueje = $$v
+                                },
+                                expression: "menuFechaEsqueje",
+                              },
+                            },
+                            [
+                              _vm._v(" "),
+                              _c("v-date-picker", {
+                                attrs: { locale: "es-CO" },
+                                on: {
+                                  input: function ($event) {
+                                    _vm.menuFechaEsqueje = false
+                                  },
+                                },
+                                model: {
+                                  value: _vm.modalInfo.pm_fecha_esquejacion,
+                                  callback: function ($$v) {
+                                    _vm.$set(
+                                      _vm.modalInfo,
+                                      "pm_fecha_esquejacion",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "modalInfo.pm_fecha_esquejacion",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-col", { attrs: { cols: "0", sm: "3" } }),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", sm: "4" } },
+                        [
+                          _c("v-subheader", [_vm._v("Cantidad Planta Madre")]),
+                          _vm._v(" "),
+                          _c("v-text-field", {
+                            ref: "pro_cantidad_plantas_madres",
+                            attrs: { type: "number", dense: "", disabled: "" },
+                            model: {
+                              value: _vm.modalInfo.pro_cantidad_plantas_madres,
+                              callback: function ($$v) {
+                                _vm.$set(
+                                  _vm.modalInfo,
+                                  "pro_cantidad_plantas_madres",
+                                  $$v
+                                )
+                              },
+                              expression:
+                                "modalInfo.pro_cantidad_plantas_madres",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", sm: "4" } },
+                        [
+                          _c("v-subheader", [_vm._v("Cantidad Esquejes")]),
+                          _vm._v(" "),
+                          _c("v-text-field", {
+                            ref: "pm_cantidad_esquejes",
+                            attrs: {
+                              type: "number",
+                              dense: "",
+                              "error-messages":
+                                _vm.modalErrors.pm_cantidad_esquejes,
+                            },
+                            model: {
+                              value: _vm.modalInfo.pm_cantidad_esquejes,
+                              callback: function ($$v) {
+                                _vm.$set(
+                                  _vm.modalInfo,
+                                  "pm_cantidad_esquejes",
+                                  $$v
+                                )
+                              },
+                              expression: "modalInfo.pm_cantidad_esquejes",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", sm: "4" } },
+                        [
+                          _c("v-subheader", [_vm._v("Cantidad Semillas")]),
+                          _vm._v(" "),
+                          _c("v-text-field", {
+                            ref: "pm_cantidad_semillas",
+                            attrs: {
+                              type: "number",
+                              dense: "",
+                              "error-messages":
+                                _vm.modalErrors.pm_cantidad_semillas,
+                            },
+                            model: {
+                              value: _vm.modalInfo.pm_cantidad_semillas,
+                              callback: function ($$v) {
+                                _vm.$set(
+                                  _vm.modalInfo,
+                                  "pm_cantidad_semillas",
+                                  $$v
+                                )
+                              },
+                              expression: "modalInfo.pm_cantidad_semillas",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "d-flex justify-center",
+                          attrs: { cols: "12" },
+                        },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "white--text text-none",
+                              attrs: {
+                                type: "submit",
+                                small: "",
+                                color: "success",
+                                tile: "",
+                              },
+                              on: { click: _vm.guardarPlantaMadre },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" save ")]),
+                              _vm._v("Guardar\n                        "),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("planta madre")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
