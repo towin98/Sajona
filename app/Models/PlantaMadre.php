@@ -25,13 +25,4 @@ class PlantaMadre extends Model
         "pm_cantidad_esquejes",
         "pm_estado",
     ];
-
-    /**
-     * Obtiene el registro de propagacion asociado a Planta Madre.
-     *
-     * @return Illuminate\Support\Collection;
-     */
-    public function getPropagacion(){
-        return $this->belongsTo(Propagacion::class,'pro_id_lote');
-    }
 }
