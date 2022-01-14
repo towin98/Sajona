@@ -21,7 +21,7 @@ class CreateTransplanteTable extends Migration
             $table->dateTime("tp_fecha");
             $table->string("tp_ubicacion", 20);
             $table->integer("tp_cantidad_area");
-            $table->string("pm_estado",20);
+            $table->boolean("tp_estado");
             $table->timestamps();
 
             $table->foreign('tp_pm_id')->references('pm_id')->on('planta_madre');

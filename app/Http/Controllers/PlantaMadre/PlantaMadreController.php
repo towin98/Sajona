@@ -81,7 +81,6 @@ class PlantaMadreController extends Controller
         return response()->json([
             'message' => 'Datos Guardados.',
         ], 201);
-
     }
 
     /**

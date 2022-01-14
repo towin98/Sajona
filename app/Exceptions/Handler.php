@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof ModelNotFoundException) {
             $modelo = strtolower(class_basename($exception->getModel()));
-            return response()->json(['error' => 'No existe ninguna instancia del ' . $modelo . ' con el id expecificado', 'code' => 404], 404);
+            return response()->json(['error' => 'No existe ninguna instancia de ' . $modelo . ' con el id expecificado', 'code' => 404], 404);
         }
 
         if ($exception instanceof AuthorizationException) {
@@ -83,6 +83,8 @@ class Handler extends ExceptionHandler
                 return response()->json(['error' => 'No se puede eliminar de forma permanente el recurso porque esta relacionado', 'code' => 409], 409);
             }
         }
+
+        // return response()->json(['error' => 'Falla inesperada, intente luego', 'code' => 500], 500);
 
         return parent::render($request, $exception);
     }
