@@ -25,4 +25,20 @@ class PlantaMadre extends Model
         "pm_cantidad_esquejes",
         "pm_estado",
     ];
+
+    /**
+     * Scope para realizar una búsqueda mixta en el módulo de Transplante.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @param string $buscar Valor a buscar
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBuscarTransplante($query, $buscar) {
+        if($buscar) {
+            return $query
+                ->where('pm_pro_id_lote', 'LIKE', "%$buscar%")
+                ->orWhere('propagacion.pro_fecha', 'LIKE', "%$buscar%")
+                ->orWhere('transplante.tp_fecha', 'LIKE', "%$buscar%");
+        }
+    }
 }

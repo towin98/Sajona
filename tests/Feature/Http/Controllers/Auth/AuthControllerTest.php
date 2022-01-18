@@ -24,7 +24,7 @@ class AuthControllerTest extends TestCase
 
         $user = User::factory(1)->create();
 
-        $response = $this->post('/api/login', [
+        $response = $this->post('/sajona/login', [
             'email'     => 'cristian@gmail.com',
             'password'  => 'admin1235',
         ]);

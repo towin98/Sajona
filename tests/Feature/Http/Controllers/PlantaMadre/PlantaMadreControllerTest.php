@@ -20,7 +20,7 @@ class PlantaMadreControllerTest extends TestCase
     public function test_validacion_de_buscar_lotes_de_plantas_madres_por_rangos_de_fechas()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get('/api/planta-madre/buscar-lotes?fecha_inicio=&fecha_fin=2021-10-04');
+        $response = $this->get('/sajona/planta-madre/buscar-lotes?fecha_inicio=&fecha_fin=2021-10-04');
 
         // $response->assertValid();
         $response->assertUnprocessable(); // si devuelve 422 pasa la prueba
@@ -40,7 +40,7 @@ class PlantaMadreControllerTest extends TestCase
         Propagacion::factory(5)->create();
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('/api/planta-madre/buscar-lotes?fecha_inicio=2021-12-01&fecha_fin=2022-03-01');
+        $response = $this->get('/sajona/planta-madre/buscar-lotes?fecha_inicio=2021-12-01&fecha_fin=2022-03-01');
 
         // $response->assertValid();
         $response->assertStatus(200);
@@ -59,14 +59,14 @@ class PlantaMadreControllerTest extends TestCase
         Propagacion::factory(1)->create();
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('api/planta-madre/100');
+        $response = $this->get('sajona/planta-madre/100');
 
         // $response->assertValid();
         $response->assertStatus(200);
     }
 
-        /**
-     * Test para probar que buscar registros correctamente en un rango de fechas.
+    /**
+     * Test para probar validaciones al guardar esquejes semillas.
      *
      * @return void
      */
@@ -86,7 +86,7 @@ class PlantaMadreControllerTest extends TestCase
             "pro_estado"                    => true,
         ]);
 
-        $response = $this->post('api/planta-madre',[
+        $response = $this->post('sajona/planta-madre',[
             'pm_pro_id_lote'                => 100,
             'pm_fecha_esquejacion'          => '2021-10-10ddd',
             'pm_cantidad_esquejes'          => "2s",
@@ -98,7 +98,7 @@ class PlantaMadreControllerTest extends TestCase
     }
 
     /**
-     * Test para probar que buscar registros correctamente en un rango de fechas.
+     * Test para comprobar que se guardan esquejes semillas en planta madre correctamente.
      *
      * @return void
      */
@@ -118,7 +118,7 @@ class PlantaMadreControllerTest extends TestCase
             "pro_estado"                    => true,
         ]);
 
-        $response = $this->post('api/planta-madre',[
+        $response = $this->post('sajona/planta-madre',[
             'pm_pro_id_lote'                => 100,
             'pm_fecha_esquejacion'          => '2021-10-10',
             'pm_cantidad_esquejes'          => 2,

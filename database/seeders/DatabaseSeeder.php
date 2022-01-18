@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\PlantaMadre;
+use App\Models\Propagacion;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,7 +16,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(PermissionsSeeder::class);
-        \App\Models\Propagacion::factory(10)->create();
+        for ($i=0; $i < 10; $i++) {
+            $propagacion = Propagacion::factory()->create();
+            PlantaMadre::create([
+                'pm_pro_id_lote'        => $propagacion->pro_id_lote,
+                'pm_fecha_esquejacion'  => date('Y-m-d H:i:s'),
+                'pm_cantidad_semillas'  => rand(0,20),
+                'pm_cantidad_esquejes'  => rand(0,20),
+                'pm_estado'             => true,
+            ]);
+        }
         // \App\Models\User::factory(10)->create();
     }
 }

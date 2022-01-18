@@ -20,7 +20,7 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->post('/api/propagacion',[
+        $response = $this->post('/sajona/propagacion',[
             "pro_fecha"                     => date("Y-m-d H:i:s"),
             "pro_tipo_propagacion"          => "Esqueje",
             "pro_variedad"                  => 2,
@@ -44,7 +44,7 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->post('/api/propagacion',[
+        $response = $this->post('/sajona/propagacion',[
             "pro_fecha"                     => date("Y-m-d H:i:s"),
             "pro_tipo_propagacion"          => "Esqueje",
             "pro_variedad"                  => 2,
@@ -68,24 +68,34 @@ class PropagacionControllerTest extends TestCase
 
         Propagacion::factory(20)->create();
 
-        $response = $this->get('api/propagacion/listar?length=3&start=0');
+        $response = $this->get('sajona/propagacion/listar?length=3&start=0');
 
         $response->assertJsonStructure([
+            'current_page',
             'data'=> [
                 '*' => [
-                    'pro_id_lote',
-                    'pro_fecha',
-                    'pro_tipo_propagacion',
-                    'pro_variedad',
-                    'pro_tipo_incorporacion',
-                    'pro_cantidad_material',
-                    'pro_cantidad_plantas_madres',
-                    'pro_estado',
-                    'created_at',
-                    'updated_at',
+                    'id_lote',
+                    'fecha_propagacion',
+                    'fecha_transplante',
+                    'accion',
                 ]
             ],
-            'filtrados',
+            'first_page_url',
+            'from',
+            'last_page',
+            'last_page_url',
+            'links' => [
+                '*' => [
+                    "url",
+                    "label",
+                    "active",
+                ]
+            ],
+            'next_page_url',
+            'path',
+            'per_page',
+            'prev_page_url',
+            'to',
             'total'
         ]);
 
