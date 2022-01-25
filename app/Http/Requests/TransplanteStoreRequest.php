@@ -47,7 +47,7 @@ class TransplanteStoreRequest extends FormRequest
             'tp_pm_id.integer'                       => 'El id del lote debe ser un dato númerico.',
             'tp_tipo.required'                       => 'El tipo de transplante es requerido.',
             'tp_tipo.string'                         => 'El tipo de transplante debe ser un string.',
-            'tp_tipo.max'                            => 'El tipo de transplante no debe superar ls 20 carácteres.',
+            'tp_tipo.max'                            => 'El tipo de transplante no debe superar los 20 carácteres.',
             'tp_tipo_lote.required'                  => 'El tipo de lote es requerido.',
             'tp_tipo_lote.string'                    => 'El tipo de lote debe ser un string.',
             'tp_tipo_lote.max'                       => 'El tipo de lote no debe superar los 20 carácteres.',
