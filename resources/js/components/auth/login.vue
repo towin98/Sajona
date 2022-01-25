@@ -101,7 +101,7 @@ export default {
         login() {
             this.overlayLoading = true;
             axios
-                .post("api/login", this.formData)
+                .post("sajona/login", this.formData)
                 .then((response) => {
                     localStorage.setItem("token", response.data.access_token);
                     this.$router.push("/inicio/dashboard");

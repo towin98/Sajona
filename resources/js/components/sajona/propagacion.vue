@@ -292,7 +292,7 @@ export default {
             this.loading = true;
             axios
                 .get(
-                    `/api/propagacion/listar?page=${page}&length=${itemsPerPage}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${buscar}`
+                    `/sajona/propagacion/listar?page=${page}&length=${itemsPerPage}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${buscar}`
                 )
                 .then((response) => {
                     this.loading = false;
@@ -304,22 +304,22 @@ export default {
                 .catch((errors) => {
                     this.loading = false;
                     this.overlayLoading = false;
-                    console.log(errors.response.data);
+                    // console.log(errors.response.data);
                 });
         },
         buscarIdLoteUltimo() {
             axios
-                .get(`/api/propagacion/id-lote`)
+                .get(`/sajona/propagacion/id-lote`)
                 .then((response) => {
                     this.form.pro_id_lote = response.data.idLote;
                 })
                 .catch((errors) => {
-                    console.log(errors.response.data);
+                    // console.log(errors.response.data);
                 });
         },
         agregarPropagacion() {
             axios
-                .post(`/api/propagacion`, this.form)
+                .post(`/sajona/propagacion`, this.form)
                 .then((response) => {
                     this.$swal(
                         response.data.message,

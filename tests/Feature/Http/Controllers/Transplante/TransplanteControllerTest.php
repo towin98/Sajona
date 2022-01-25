@@ -127,20 +127,19 @@ class TransplanteControllerTest extends TestCase
         ]);
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('sajona/transplante-bolsa/100');
+        $response = $this->get('sajona/transplante-bolsa/10');
 
         // $response->assertValid();
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            'data'=> [
-                '*' => [
-                    'id_lote',
-                    'tp_fecha',
-                    'cantidad_buenas',
-                    'tp_ubicacion',
-                    'tp_cantidad_area',
-                ]
+            '*'=> [
+                'tp_pm_id',
+                'tp_fecha',
+                'cantidad_buenas',
+                'tp_tipo_lote',
+                'tp_ubicacion',
+                'tp_cantidad_area'
             ]
         ]);
     }
@@ -204,7 +203,7 @@ class TransplanteControllerTest extends TestCase
         ]);
 
         $response = $this->post('sajona/transplante-bolsa',[
-            'tp_pm_id'          => 100,
+            'tp_pm_id'          => 10,
             'tp_tipo'           => 'transplante_bolsa',
             'tp_tipo_lote'      => 'Planta Madre',
             'tp_fecha'          => '2022-01-14',

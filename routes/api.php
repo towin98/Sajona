@@ -18,7 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::get('/busca-nombre-rol-user/', [PermissionController::class, 'buscaNombreRolUser'])->middleware('auth:sanctum');
 
 /*Rutas Sojana (MENU)*/
-Route::group(['prefix' => 'propagacion', 'middleware' => 'auth:sanctum'] , function(){
+Route::group(['prefix' => 'propagacion',/*  'middleware' => 'auth:sanctum' */] , function(){
     Route::get('/listar', [PropagacionController::class, 'listar']);
     Route::get('/id-lote', [PropagacionController::class, 'buscarUltimoIdLote']);
     Route::resource('/', PropagacionController::class)->only(['store']);

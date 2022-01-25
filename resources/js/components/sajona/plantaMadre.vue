@@ -328,7 +328,7 @@ export default {
 
             axios
                 .get(
-                    `/api/planta-madre/buscar-lotes?fecha_inicio=${this.form.fecha_inicio}&fecha_fin=${this.form.fecha_fin}&page=${page}&length=${itemsPerPage}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${this.buscar}`
+                    `/sajona/planta-madre/buscar-lotes?fecha_inicio=${this.form.fecha_inicio}&fecha_fin=${this.form.fecha_fin}&page=${page}&length=${itemsPerPage}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${this.buscar}`
                 )
                 .then((response) => {
                     this.loading = false;
@@ -364,7 +364,7 @@ export default {
             this.modalErrors = '';
             this.overlayLoading = true;
             axios
-                .get(`/api/planta-madre/${item.pro_id_lote}`)
+                .get(`/sajona/planta-madre/${item.pro_id_lote}`)
                 .then((response) => {
                     this.modal = true;
                     this.modalInfo.pm_pro_id_lote       = response.data.data.pro_id_lote;
@@ -387,7 +387,7 @@ export default {
         guardarPlantaMadre(){
             this.overlayLoading = true;
             axios
-                .post(`/api/planta-madre`, this.modalInfo)
+                .post(`/sajona/planta-madre`, this.modalInfo)
                 .then((response) => {
                     this.$swal(
                         response.data.message,

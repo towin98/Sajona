@@ -2181,7 +2181,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.overlayLoading = true;
-      axios.post("api/login", this.formData).then(function (response) {
+      axios.post("sajona/login", this.formData).then(function (response) {
         localStorage.setItem("token", response.data.access_token);
 
         _this.$router.push("/inicio/dashboard");
@@ -2555,7 +2555,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       this.overlayLoading = true;
-      axios.post("/api/logout").then(function (response) {
+      axios.post("/sajona/logout").then(function (response) {
         clearInterval(_this.intervalId);
         localStorage.removeItem("token");
 
@@ -2582,7 +2582,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context2.prev = _context2.next) {
             case 0:
               // Obteniendo nombre de la ruta.
-              _this2.titleProceso = _this2.$route.name.replace('-', ' ');
+              if (_this2.$route.name) {
+                _this2.titleProceso = _this2.$route.name.replace('-', ' ');
+              }
+
               fecha = new Date();
               month = fecha.toLocaleString("es-CO", {
                 month: "long"
@@ -3064,7 +3067,7 @@ __webpack_require__.r(__webpack_exports__);
         sortDesc = "";
       }
 
-      axios.get("/api/planta-madre/buscar-lotes?fecha_inicio=".concat(this.form.fecha_inicio, "&fecha_fin=").concat(this.form.fecha_fin, "&page=").concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
+      axios.get("/sajona/planta-madre/buscar-lotes?fecha_inicio=".concat(this.form.fecha_inicio, "&fecha_fin=").concat(this.form.fecha_fin, "&page=").concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
         _this.loading = false;
         _this.dataSet = response.data.data;
         _this.totalRegistros = response.data.total;
@@ -3100,7 +3103,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.modalErrors = '';
       this.overlayLoading = true;
-      axios.get("/api/planta-madre/".concat(item.pro_id_lote)).then(function (response) {
+      axios.get("/sajona/planta-madre/".concat(item.pro_id_lote)).then(function (response) {
         _this3.modal = true;
         _this3.modalInfo.pm_pro_id_lote = response.data.data.pro_id_lote;
 
@@ -3122,7 +3125,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.overlayLoading = true;
-      axios.post("/api/planta-madre", this.modalInfo).then(function (response) {
+      axios.post("/sajona/planta-madre", this.modalInfo).then(function (response) {
         _this4.$swal(response.data.message, '', 'success');
 
         _this4.overlayLoading = false;
@@ -3473,7 +3476,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.loading = true;
-      axios.get("/api/propagacion/listar?page=".concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(buscar)).then(function (response) {
+      axios.get("/sajona/propagacion/listar?page=".concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(buscar)).then(function (response) {
         _this2.loading = false;
         _this2.dataSet = response.data.data;
         _this2.totalRegistros = response.data.total;
@@ -3481,23 +3484,21 @@ __webpack_require__.r(__webpack_exports__);
         _this2.overlayLoading = false;
       })["catch"](function (errors) {
         _this2.loading = false;
-        _this2.overlayLoading = false;
-        console.log(errors.response.data);
+        _this2.overlayLoading = false; // console.log(errors.response.data);
       });
     },
     buscarIdLoteUltimo: function buscarIdLoteUltimo() {
       var _this3 = this;
 
-      axios.get("/api/propagacion/id-lote").then(function (response) {
+      axios.get("/sajona/propagacion/id-lote").then(function (response) {
         _this3.form.pro_id_lote = response.data.idLote;
-      })["catch"](function (errors) {
-        console.log(errors.response.data);
+      })["catch"](function (errors) {// console.log(errors.response.data);
       });
     },
     agregarPropagacion: function agregarPropagacion() {
       var _this4 = this;
 
-      axios.post("/api/propagacion", this.form).then(function (response) {
+      axios.post("/sajona/propagacion", this.form).then(function (response) {
         _this4.$swal(response.data.message, '', 'success');
 
         _this4.listar();
@@ -3559,12 +3560,518 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
 //
 //
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      token: localStorage.getItem("token"),
+      overlayLoading: false,
+      menuDateInicial: false,
+      menuDateFinal: false,
+      menuFechaEsqueje: false,
+      form: {
+        fecha_inicial: "",
+        fecha_final: ""
+      },
+      errors: {
+        fecha_inicial: "",
+        fecha_final: ""
+      },
+
+      /* Variables Table. */
+      contador: 0,
+      // Tabla filtro.
+      debounce: null,
+      buscar: "",
+      // Table listar
+      page: 1,
+      totalRegistros: 0,
+      numberOfPages: 0,
+      loading: false,
+      options: {},
+      headers: [{
+        text: "Id Lote",
+        align: "start",
+        value: "id_lote"
+      }, {
+        text: "Fecha Propagación",
+        value: "fecha_propagacion"
+      }, {
+        text: "Fecha Transplante a Bolsa",
+        value: "fecha_transplante"
+      }, {
+        text: "Acción",
+        value: "accion"
+      }, {
+        text: "Consultar",
+        value: "consultar",
+        sortable: false
+      }],
+      dataSet: [],
+
+      /* end variables Table. */
+
+      /* Variables modal*/
+      calendarioFechaTransplante: false,
+      modal: false,
+      modalInfo: {
+        tp_tipo: 'Transplante Bolsa',
+        tp_pm_id: '',
+        tp_fecha: '',
+        cantidad_buenas: '',
+        tp_tipo_lote: '',
+        tp_ubicacion: '',
+        tp_cantidad_area: ''
+      },
+      modalErrors: '',
+
+      /* fin Variables modal */
+
+      /* Variables modal notificaciones */
+      modalNotificacion: false,
+      // Info del modal notificaciones.
+      infoNoti: {
+        CantidadMalas: '',
+        porcentajeMalas: '',
+        porcentajeBuenas: ''
+      }
+    };
+  },
+  watch: {
+    options: {
+      handler: function handler() {
+        this.filterSearch();
+      }
+    },
+    deep: true
+  },
+  methods: {
+    buscarTransplantes: function buscarTransplantes() {
+      var _this = this;
+
+      this.overlayLoading = true;
+      this.loading = true;
+      var _this$options = this.options,
+          page = _this$options.page,
+          itemsPerPage = _this$options.itemsPerPage,
+          sortBy = _this$options.sortBy,
+          sortDesc = _this$options.sortDesc;
+
+      if (sortDesc[0] == true) {
+        sortBy = sortBy[0];
+        sortDesc = "DESC";
+      } else if (sortDesc[0] == false) {
+        sortBy = sortBy[0];
+        sortDesc = "ASC";
+      } else {
+        sortBy = "";
+        sortDesc = "";
+      }
+
+      axios.get("/sajona/transplante-bolsa/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&page=").concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
+        _this.loading = false;
+        _this.dataSet = response.data.data;
+        _this.totalRegistros = response.data.total;
+        _this.numberOfPages = response.data.totalPages; // Limpiando mensajes de error del formulario.
+
+        var errors = {
+          fecha_inicial: "",
+          fecha_final: ""
+        };
+        _this.errors = errors;
+        _this.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this.overlayLoading = false;
+        _this.loading = false;
+        _this.dataSet = [];
+        _this.errors = errors.response.data.errors;
+      });
+    },
+    filterSearch: function filterSearch() {
+      var _this2 = this;
+
+      if (this.contador > 0) {
+        clearTimeout(this.debounce);
+        this.debounce = setTimeout(function () {
+          _this2.buscarTransplantes(_this2.buscar);
+        }, 600);
+      }
+
+      this.contador++;
+    },
+    consultarTransplante: function consultarTransplante(item) {
+      var _this3 = this;
+
+      this.modalErrors = '';
+      this.overlayLoading = true;
+      axios.get("/sajona/transplante-bolsa/".concat(item.pm_id)).then(function (response) {
+        _this3.modal = true;
+
+        if (response.data.data.tp_fecha != '') {
+          _this3.modalInfo.tp_fecha = response.data.data.tp_fecha;
+        } else {
+          _this3.modalInfo.tp_fecha = '';
+        } // Cargando Data.
+
+
+        _this3.modalInfo.tp_pm_id = response.data.data.tp_pm_id;
+        _this3.modalInfo.cantidad_buenas = response.data.data.cantidad_buenas; // label
+
+        _this3.modalInfo.tp_tipo_lote = response.data.data.tp_tipo_lote;
+        _this3.modalInfo.tp_ubicacion = response.data.data.tp_ubicacion;
+        _this3.modalInfo.tp_cantidad_area = response.data.data.tp_cantidad_area;
+        _this3.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this3.overlayLoading = false;
+      });
+    },
+    guardarTransplante: function guardarTransplante() {
+      var _this4 = this;
+
+      this.overlayLoading = true;
+      axios.post("/sajona/transplante-bolsa", this.modalInfo).then(function (response) {
+        _this4.modalNotificacion = true; // response.data.message
+
+        _this4.overlayLoading = false;
+        _this4.modal = false;
+        _this4.modalErrors = '';
+
+        _this4.buscarTransplantes();
+
+        _this4.infoNoti.CantidadMalas = response.data.notificacion.cantidad_malas;
+        _this4.infoNoti.porcentajeMalas = response.data.notificacion.porcentaje_malas;
+        _this4.infoNoti.porcentajeBuenas = response.data.notificacion.porcentaje_buenas;
+      })["catch"](function (errors) {
+        _this4.modalErrors = errors.response.data.errors;
+        _this4.overlayLoading = false;
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -3722,7 +4229,7 @@ var misRol = {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios.get("/api/busca-nombre-rol-user");
+                return axios.get("/sajona/busca-nombre-rol-user");
 
               case 3:
                 response = _context.sent;
@@ -26086,16 +26593,836 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
+      _vm._v(" "),
+      _c("h4", [_vm._v("Transplante Bolsa")]),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-card",
+            { attrs: { elevation: "2" } },
+            [
+              _c("v-card-title", { staticClass: "rounded-sm py-2" }, [
+                _c("span", { staticClass: "text-h6 font-weight-bold" }, [
+                  _vm._v("Listado"),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-form",
+                {
+                  ref: "form",
+                  attrs: { "lazy-validation": "" },
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      return _vm.buscarTransplantes.apply(null, arguments)
+                    },
+                  },
+                },
+                [
+                  _c(
+                    "v-row",
+                    { staticClass: "mt-3 pl-4 pr-4" },
+                    [
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "2" } },
+                        [_c("v-subheader", [_vm._v("Fecha de inicial")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "4" } },
+                        [
+                          _c(
+                            "v-menu",
+                            {
+                              attrs: {
+                                "close-on-content-click": false,
+                                "nudge-right": 40,
+                                transition: "scale-transition",
+                                "offset-y": "",
+                                "min-width": "auto",
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function (ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-text-field",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              ref: "fecha_inicial",
+                                              attrs: {
+                                                "append-icon": "mdi-calendar",
+                                                readonly: "",
+                                                "error-messages":
+                                                  _vm.errors.fecha_inicial,
+                                                dense: "",
+                                              },
+                                              model: {
+                                                value: _vm.form.fecha_inicial,
+                                                callback: function ($$v) {
+                                                  _vm.$set(
+                                                    _vm.form,
+                                                    "fecha_inicial",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression:
+                                                  "form.fecha_inicial",
+                                              },
+                                            },
+                                            "v-text-field",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        )
+                                      ),
+                                    ]
+                                  },
+                                },
+                              ]),
+                              model: {
+                                value: _vm.menuDateInicial,
+                                callback: function ($$v) {
+                                  _vm.menuDateInicial = $$v
+                                },
+                                expression: "menuDateInicial",
+                              },
+                            },
+                            [
+                              _vm._v(" "),
+                              _c("v-date-picker", {
+                                attrs: { locale: "es-CO" },
+                                on: {
+                                  input: function ($event) {
+                                    _vm.menuDateInicial = false
+                                  },
+                                },
+                                model: {
+                                  value: _vm.form.fecha_inicial,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "fecha_inicial", $$v)
+                                  },
+                                  expression: "form.fecha_inicial",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "2" } },
+                        [_c("v-subheader", [_vm._v("Fecha de final")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "4" } },
+                        [
+                          _c(
+                            "v-menu",
+                            {
+                              attrs: {
+                                "close-on-content-click": false,
+                                "nudge-right": 40,
+                                transition: "scale-transition",
+                                "offset-y": "",
+                                "min-width": "auto",
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function (ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-text-field",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              ref: "fecha_final",
+                                              attrs: {
+                                                "append-icon": "mdi-calendar",
+                                                readonly: "",
+                                                "error-messages":
+                                                  _vm.errors.fecha_final,
+                                                dense: "",
+                                              },
+                                              model: {
+                                                value: _vm.form.fecha_final,
+                                                callback: function ($$v) {
+                                                  _vm.$set(
+                                                    _vm.form,
+                                                    "fecha_final",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression: "form.fecha_final",
+                                              },
+                                            },
+                                            "v-text-field",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        )
+                                      ),
+                                    ]
+                                  },
+                                },
+                              ]),
+                              model: {
+                                value: _vm.menuDateFinal,
+                                callback: function ($$v) {
+                                  _vm.menuDateFinal = $$v
+                                },
+                                expression: "menuDateFinal",
+                              },
+                            },
+                            [
+                              _vm._v(" "),
+                              _c("v-date-picker", {
+                                attrs: { locale: "es-CO" },
+                                on: {
+                                  input: function ($event) {
+                                    _vm.menuDateFinal = false
+                                  },
+                                },
+                                model: {
+                                  value: _vm.form.fecha_final,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "fecha_final", $$v)
+                                  },
+                                  expression: "form.fecha_final",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "d-flex justify-center",
+                          attrs: { cols: "12" },
+                        },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "white--text text-none",
+                              attrs: {
+                                type: "submit",
+                                small: "",
+                                color: "#00bcd4",
+                                tile: "",
+                              },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" search ")]),
+                              _vm._v("Buscar\n                        "),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                [
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12" } },
+                    [
+                      _c(
+                        "v-card-title",
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              type: "text",
+                              "append-icon": "mdi-magnify",
+                              label: "Buscar",
+                              "single-line": "",
+                              "hide-details": "",
+                            },
+                            on: { input: _vm.filterSearch },
+                            model: {
+                              value: _vm.buscar,
+                              callback: function ($$v) {
+                                _vm.buscar = $$v
+                              },
+                              expression: "buscar",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-data-table", {
+                        staticClass: "elevation-1",
+                        attrs: {
+                          page: _vm.page,
+                          pageCount: _vm.numberOfPages,
+                          headers: _vm.headers,
+                          items: _vm.dataSet,
+                          options: _vm.options,
+                          "server-items-length": _vm.totalRegistros,
+                          loading: _vm.loading,
+                          "items-per-page": 3,
+                          "item-key": "pro_id_lote",
+                          "footer-props": {
+                            "items-per-page-options": [3, 5, 10, 15],
+                          },
+                          "sort-by": "pro_id_lote",
+                          "sort-desc": true,
+                          "no-data-text": "Sin registros",
+                        },
+                        on: {
+                          "update:options": function ($event) {
+                            _vm.options = $event
+                          },
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "item.consultar",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "a",
+                                  {
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.consultarTransplante(item)
+                                      },
+                                    },
+                                  },
+                                  [_vm._v("Clic")]
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", width: "800px" },
+          model: {
+            value: _vm.modal,
+            callback: function ($$v) {
+              _vm.modal = $$v
+            },
+            expression: "modal",
+          },
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-card-title",
+                { staticClass: "text-h5 py-2" },
+                [
+                  _vm._v("\n                Nuevo\n                "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "black", icon: "" },
+                      on: {
+                        click: function ($event) {
+                          _vm.modal = false
+                        },
+                      },
+                    },
+                    [
+                      _c("v-icon", { attrs: { dark: "" } }, [
+                        _vm._v(
+                          "\n                        close\n                    "
+                        ),
+                      ]),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-row",
+                    [
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "pa-0 pt-4",
+                          attrs: { cols: "6", sm: "3" },
+                        },
+                        [_c("v-subheader", [_vm._v("Fecha Transplante")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "pa-0 pt-4",
+                          attrs: { cols: "6", sm: "3" },
+                        },
+                        [
+                          _c(
+                            "v-menu",
+                            {
+                              attrs: {
+                                "close-on-content-click": false,
+                                "nudge-right": 40,
+                                transition: "scale-transition",
+                                "offset-y": "",
+                                "min-width": "auto",
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "activator",
+                                  fn: function (ref) {
+                                    var on = ref.on
+                                    var attrs = ref.attrs
+                                    return [
+                                      _c(
+                                        "v-text-field",
+                                        _vm._g(
+                                          _vm._b(
+                                            {
+                                              ref: "tp_fecha",
+                                              attrs: {
+                                                "append-icon": "mdi-calendar",
+                                                readonly: "",
+                                                "error-messages":
+                                                  _vm.modalErrors.tp_fecha,
+                                                dense: "",
+                                              },
+                                              model: {
+                                                value: _vm.modalInfo.tp_fecha,
+                                                callback: function ($$v) {
+                                                  _vm.$set(
+                                                    _vm.modalInfo,
+                                                    "tp_fecha",
+                                                    $$v
+                                                  )
+                                                },
+                                                expression:
+                                                  "modalInfo.tp_fecha",
+                                              },
+                                            },
+                                            "v-text-field",
+                                            attrs,
+                                            false
+                                          ),
+                                          on
+                                        )
+                                      ),
+                                    ]
+                                  },
+                                },
+                              ]),
+                              model: {
+                                value: _vm.calendarioFechaTransplante,
+                                callback: function ($$v) {
+                                  _vm.calendarioFechaTransplante = $$v
+                                },
+                                expression: "calendarioFechaTransplante",
+                              },
+                            },
+                            [
+                              _vm._v(" "),
+                              _c("v-date-picker", {
+                                attrs: { locale: "es-CO" },
+                                on: {
+                                  input: function ($event) {
+                                    _vm.calendarioFechaTransplante = false
+                                  },
+                                },
+                                model: {
+                                  value: _vm.modalInfo.tp_fecha,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.modalInfo, "tp_fecha", $$v)
+                                  },
+                                  expression: "modalInfo.tp_fecha",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "pa-0 pt-4",
+                          attrs: { cols: "6", sm: "3" },
+                        },
+                        [_c("v-subheader", [_vm._v("Cantidad Buenas")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "pa-0 pt-4",
+                          attrs: { cols: "6", sm: "3" },
+                        },
+                        [
+                          _c("v-text-field", {
+                            ref: "cantidad_buenas",
+                            attrs: { type: "number", dense: "", disabled: "" },
+                            model: {
+                              value: _vm.modalInfo.cantidad_buenas,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.modalInfo, "cantidad_buenas", $$v)
+                              },
+                              expression: "modalInfo.cantidad_buenas",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "3" } },
+                        [_c("v-subheader", [_vm._v("Tipo Lote")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "3" } },
+                        [
+                          _c("v-select", {
+                            ref: "tp_tipo_lote",
+                            attrs: {
+                              items: ["Planta Madre", "Planta Comercial"],
+                              "error-messages": _vm.modalErrors.tp_tipo_lote,
+                              dense: "",
+                            },
+                            model: {
+                              value: _vm.modalInfo.tp_tipo_lote,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.modalInfo, "tp_tipo_lote", $$v)
+                              },
+                              expression: "modalInfo.tp_tipo_lote",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "3" } },
+                        [_c("v-subheader", [_vm._v("Cantidad Área")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "3" } },
+                        [
+                          _c("v-text-field", {
+                            ref: "tp_cantidad_area",
+                            attrs: {
+                              type: "number",
+                              dense: "",
+                              "error-messages":
+                                _vm.modalErrors.tp_cantidad_area,
+                            },
+                            model: {
+                              value: _vm.modalInfo.tp_cantidad_area,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.modalInfo, "tp_cantidad_area", $$v)
+                              },
+                              expression: "modalInfo.tp_cantidad_area",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "3" } },
+                        [_c("v-subheader", [_vm._v("Cantidad Área")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "6", sm: "3" } },
+                        [
+                          _c("v-select", {
+                            ref: "tp_ubicacion",
+                            attrs: {
+                              items: ["Casa Malla", "Planta Madre"],
+                              "error-messages": _vm.modalErrors.tp_ubicacion,
+                              dense: "",
+                            },
+                            model: {
+                              value: _vm.modalInfo.tp_ubicacion,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.modalInfo, "tp_ubicacion", $$v)
+                              },
+                              expression: "modalInfo.tp_ubicacion",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        {
+                          staticClass: "d-flex justify-center",
+                          attrs: { cols: "12" },
+                        },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "white--text text-none",
+                              attrs: {
+                                type: "submit",
+                                small: "",
+                                color: "success",
+                                tile: "",
+                              },
+                              on: { click: _vm.guardarTransplante },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" save ")]),
+                              _vm._v("Guardar\n                        "),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { width: "500" },
+          model: {
+            value: _vm.modalNotificacion,
+            callback: function ($$v) {
+              _vm.modalNotificacion = $$v
+            },
+            expression: "modalNotificacion",
+          },
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-card-title",
+                { staticClass: "text-h5 lighten-2 py-0" },
+                [
+                  _vm._v("\n                Notificación "),
+                  _c("v-icon", { attrs: { size: "50" } }, [
+                    _vm._v(" toggle_on "),
+                  ]),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-row",
+                    { staticClass: "pl-4 pr-4 mb-4 pt-5" },
+                    [
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
+                        [_c("v-subheader", [_vm._v("Cantidad Malas")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { outlined: "", dense: "", disabled: "" },
+                            model: {
+                              value: _vm.infoNoti.CantidadMalas,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.infoNoti, "CantidadMalas", $$v)
+                              },
+                              expression: "infoNoti.CantidadMalas",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
+                        [_c("v-subheader", [_vm._v("Porcentaje Malas")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { outlined: "", dense: "", disabled: "" },
+                            model: {
+                              value: _vm.infoNoti.porcentajeMalas,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.infoNoti, "porcentajeMalas", $$v)
+                              },
+                              expression: "infoNoti.porcentajeMalas",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
+                        [_c("v-subheader", [_vm._v("Porcentaje Buenas")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { outlined: "", dense: "", disabled: "" },
+                            model: {
+                              value: _vm.infoNoti.porcentajeBuenas,
+                              callback: function ($$v) {
+                                _vm.$set(_vm.infoNoti, "porcentajeBuenas", $$v)
+                              },
+                              expression: "infoNoti.porcentajeBuenas",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      staticClass: "white--text text-none",
+                      attrs: { color: "success" },
+                      on: {
+                        click: function ($event) {
+                          _vm.modalNotificacion = false
+                        },
+                      },
+                    },
+                    [_vm._v("\n                    OK\n                ")]
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("transplante bolsa")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -26118,16 +27445,9 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div")
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("transplante campo")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

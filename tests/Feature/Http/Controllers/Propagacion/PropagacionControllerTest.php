@@ -74,10 +74,14 @@ class PropagacionControllerTest extends TestCase
             'current_page',
             'data'=> [
                 '*' => [
-                    'id_lote',
-                    'fecha_propagacion',
-                    'fecha_transplante',
-                    'accion',
+                    "pro_id_lote",
+                    "pro_fecha",
+                    "pro_tipo_propagacion",
+                    "pro_variedad",
+                    "pro_tipo_incorporacion",
+                    "pro_cantidad_material",
+                    "pro_cantidad_plantas_madres",
+                    "pro_estado",
                 ]
             ],
             'first_page_url',

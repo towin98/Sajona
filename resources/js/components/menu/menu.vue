@@ -209,7 +209,7 @@ export default {
         logout() {
             this.overlayLoading = true;
             axios
-                .post("/api/logout")
+                .post("/sajona/logout")
                 .then((response) => {
                     clearInterval(this.intervalId);
                     localStorage.removeItem("token");
@@ -226,7 +226,9 @@ export default {
     },
     async created(){
         // Obteniendo nombre de la ruta.
-        this.titleProceso = this.$route.name.replace('-',' ');
+        if (this.$route.name) {
+            this.titleProceso = this.$route.name.replace('-',' ');
+        }
 
         const fecha = new Date();
         const month = fecha.toLocaleString("es-CO", { month: "long" });
