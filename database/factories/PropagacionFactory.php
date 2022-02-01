@@ -26,7 +26,7 @@ class PropagacionFactory extends Factory
             "pro_fecha"                     => date("Y-m-d H:i:s"),
             "pro_tipo_propagacion"          => "Esqueje",
             "pro_variedad"                  => rand(1,10),
-            "pro_tipo_incorporacion"        => $this->faker->title(),
+            "pro_tipo_incorporacion"        => "Comprada",
             "pro_cantidad_material"         => 200,
             "pro_cantidad_plantas_madres"   => rand(1,50),
             "pro_estado"                    => true,

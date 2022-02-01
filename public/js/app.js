@@ -3506,6 +3506,8 @@ __webpack_require__.r(__webpack_exports__);
         _this4.limpiarCampo();
 
         _this4.buscarIdLoteUltimo();
+
+        _this4.errors = '';
       })["catch"](function (errors) {
         _this4.errors = errors.response.data.errors;
       });
