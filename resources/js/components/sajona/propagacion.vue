@@ -329,6 +329,7 @@ export default {
                     this.listar();
                     this.limpiarCampo();
                     this.buscarIdLoteUltimo();
+                    this.errors = '';
                 })
                 .catch((errors) => {
                     this.errors = errors.response.data.errors;
