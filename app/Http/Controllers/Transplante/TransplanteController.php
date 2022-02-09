@@ -72,7 +72,7 @@ class TransplanteController extends Controller
                 'id_lote'                       => $data->id_lote,              // ( Id lote )
                 'fecha_propagacion'             => $data->fecha_propagacion,    // (Fecha de Propagación)
                 'fecha_transplante'             => $data->fecha_transplante,    // (Fecha transplante Bolsa)
-                'accion'                        => 'Pendiente',
+                'accion'                        => $data->fecha_transplante == '' || $data->fecha_transplante == '0000-00-00 00:00:00' ? 'Pendiente' : 'Finalizado',
             ];
         });
 
@@ -115,17 +115,8 @@ class TransplanteController extends Controller
             'tp_estado'         => true,
         ]);
 
-        $cantidadMalas    = $plantaMadre->pro_cantidad_material - $plantaMadre->pro_cantidad_plantas_madres;
-        $porcentajeMalas  = round(($cantidadMalas * 100) / $plantaMadre->pro_cantidad_material,2);
-        $porcentajeBuenas = round( 100 - $porcentajeMalas, 2);
-
         return response()->json([
             'message'       => 'Datos Guardados.',
-            'notificacion'  =>  [
-                'cantidad_malas'    => $cantidadMalas,
-                'porcentaje_malas'  => $porcentajeMalas.' %',
-                'porcentaje_buenas' => $porcentajeBuenas.' %',
-            ]
         ], 201);
     }
 
@@ -150,7 +141,7 @@ class TransplanteController extends Controller
             ->map(function ($data) {
                 return [
                     'tp_pm_id'                => $data->pm_id,
-                    'tp_fecha'                => $data->tp_fecha == '' ?  '' : substr($data->tp_fecha,0,10), // Fecha transplante
+                    'tp_fecha'                => $data->tp_fecha == '' || $data->tp_fecha == '0000-00-00 00:00:00' ?  '' : substr($data->tp_fecha,0,10), // Fecha transplante
                     'cantidad_buenas'         => $data->pro_cantidad_plantas_madres,                         // PLantans buenas
                     'tp_tipo_lote'            => $data->tp_tipo_lote == '' ? '' : $data->tp_tipo_lote,       // Tipo Lote
                     'tp_ubicacion'            => $data->tp_ubicacion == '' ? '' : $data->tp_ubicacion, // Ubicación

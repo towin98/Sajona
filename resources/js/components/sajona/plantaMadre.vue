@@ -127,9 +127,26 @@
                             :sort-desc="true"
                             no-data-text="Sin registros"
                         >
+                            <template v-slot:item.pro_fecha="{ item }">
+                                <v-chip
+                                    :color="fnAlertaTransplante(item.dias_transcurridos)"
+                                    dark
+                                >
+                                    {{ item.pro_fecha }}
+                                </v-chip>
+                            </template>
+                            <template v-slot:item.dias_transcurridos="{ item }">
+                                <v-chip
+                                    :color="fnAlertaTransplante(item.dias_transcurridos)"
+                                    dark
+                                >
+                                    {{ item.dias_transcurridos }}
+                                </v-chip>
+                            </template>
                             <template v-slot:item.esquejes_semilla="{ item }">
                                 <a @click="esquejesSemilla(item)">Clic</a>
                             </template>
+
                         </v-data-table>
                     </v-col>
                 </v-row>
@@ -275,15 +292,9 @@ export default {
                 { text: "Id Lote", align: "start", value: "pro_id_lote" },
                 { text: "Fecha Propagación", value: "pro_fecha" },
                 { text: "Fecha Transplante", value: "pm_fecha_esquejacion" },
-                {
-                    text: "Cantidad Buenas",
-                    value: "pro_cantidad_plantas_madres",
-                },
-                {
-                    text: "Esquejes-Semilla",
-                    value: "esquejes_semilla",
-                    sortable: false,
-                },
+                { text: "Cantidad Buenas", value: "pro_cantidad_plantas_madres" },
+                { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
+                { text: "Esquejes-Semilla", value: "esquejes_semilla", sortable: false },
             ],
             dataSet: [],
             /* end variables Table. */
@@ -353,12 +364,17 @@ export default {
         },
         filterSearch() {
             if (this.contador > 0) {
+                this.overlayLoading = true;
                 clearTimeout(this.debounce);
                 this.debounce = setTimeout(() => {
                     this.buscarLotes(this.buscar);
                 }, 800);
             }
             this.contador++;
+        },
+        fnAlertaTransplante (diasParaTransplante) {
+            if (diasParaTransplante == "REQUIERE TRANSPLANTE") return 'red'
+            else return 'green'
         },
         esquejesSemilla(item) {
             this.modalErrors = '';
