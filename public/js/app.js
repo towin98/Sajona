@@ -2616,7 +2616,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }, _callee);
               })), 20000);
               _context2.t0 = _this2.cRol;
-              _context2.next = _context2.t0 === 'Agronomo' ? 13 : _context2.t0 === 'Gerente' ? 22 : _context2.t0 === 'Auxiliar' ? 31 : 34;
+              _context2.next = _context2.t0 === 'Agronomo' ? 13 : _context2.t0 === 'Gerente' ? 22 : _context2.t0 === 'Auxiliar' ? 24 : 27;
               break;
 
             case 13:
@@ -2628,25 +2628,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this2.postCosecha = true;
               _this2.bajas = true;
               _this2.reportes = true;
-              return _context2.abrupt("break", 34);
+              return _context2.abrupt("break", 27);
 
             case 22:
-              _this2.propagacion = true;
-              _this2.plantaMadre = true;
-              _this2.transplanteBolsa = true;
-              _this2.transplanteCampo = true;
-              _this2.cosecha = true;
-              _this2.postCosecha = true;
-              _this2.bajas = true;
-              _this2.reportes = true;
-              return _context2.abrupt("break", 34);
+              _this2.propagacion = true; // this.plantaMadre       = true;
+              // this.transplanteBolsa  = true;
+              // this.transplanteCampo  = true;
+              // this.cosecha           = true;
+              // this.postCosecha       = true;
+              // this.bajas             = true;
+              // this.reportes          = true;
 
-            case 31:
+              return _context2.abrupt("break", 27);
+
+            case 24:
               _this2.propagacion = true;
               _this2.bajas = true;
-              return _context2.abrupt("break", 34);
+              return _context2.abrupt("break", 27);
 
-            case 34:
+            case 27:
             case "end":
               return _context2.stop();
           }
@@ -2970,6 +2970,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -3015,6 +3032,10 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Cantidad Buenas",
         value: "pro_cantidad_plantas_madres"
+      }, {
+        text: "Días transcurridos",
+        value: "dias_transcurridos",
+        sortable: false
       }, {
         text: "Esquejes-Semilla",
         value: "esquejes_semilla",
@@ -3090,6 +3111,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       if (this.contador > 0) {
+        this.overlayLoading = true;
         clearTimeout(this.debounce);
         this.debounce = setTimeout(function () {
           _this2.buscarLotes(_this2.buscar);
@@ -3097,6 +3119,9 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.contador++;
+    },
+    fnAlertaTransplante: function fnAlertaTransplante(diasParaTransplante) {
+      if (diasParaTransplante == "REQUIERE TRANSPLANTE") return 'red';else return 'green';
     },
     esquejesSemilla: function esquejesSemilla(item) {
       var _this3 = this;
@@ -3401,7 +3426,7 @@ __webpack_require__.r(__webpack_exports__);
         pro_variedad: "",
         pro_tipo_incorporacion: ""
       },
-      tiposPropagacion: ["Semilla", "Esquejes", "Ivvitro"],
+      tiposPropagacion: ["Semilla", "Esquejes", "In vitro"],
       tiposIncorporacion: ["Propia", "Comprada"],
       tiposVariedad: [1, 2],
       // POR DEFINIR
@@ -3824,65 +3849,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -3949,18 +3915,9 @@ __webpack_require__.r(__webpack_exports__);
         tp_ubicacion: '',
         tp_cantidad_area: ''
       },
-      modalErrors: '',
-
+      modalErrors: ''
       /* fin Variables modal */
 
-      /* Variables modal notificaciones */
-      modalNotificacion: false,
-      // Info del modal notificaciones.
-      infoNoti: {
-        CantidadMalas: '',
-        porcentajeMalas: '',
-        porcentajeBuenas: ''
-      }
     };
   },
   watch: {
@@ -4056,17 +4013,13 @@ __webpack_require__.r(__webpack_exports__);
 
       this.overlayLoading = true;
       axios.post("/sajona/transplante-bolsa", this.modalInfo).then(function (response) {
-        _this4.modalNotificacion = true; // response.data.message
+        _this4.$swal(response.data.message, '', 'success');
 
         _this4.overlayLoading = false;
         _this4.modal = false;
         _this4.modalErrors = '';
 
         _this4.buscarTransplantes();
-
-        _this4.infoNoti.CantidadMalas = response.data.notificacion.cantidad_malas;
-        _this4.infoNoti.porcentajeMalas = response.data.notificacion.porcentaje_malas;
-        _this4.infoNoti.porcentajeBuenas = response.data.notificacion.porcentaje_buenas;
       })["catch"](function (errors) {
         _this4.modalErrors = errors.response.data.errors;
         _this4.overlayLoading = false;
@@ -25743,6 +25696,58 @@ var render = function () {
                         },
                         scopedSlots: _vm._u([
                           {
+                            key: "item.pro_fecha",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  {
+                                    attrs: {
+                                      color: _vm.fnAlertaTransplante(
+                                        item.dias_transcurridos
+                                      ),
+                                      dark: "",
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.pro_fecha) +
+                                        "\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                          {
+                            key: "item.dias_transcurridos",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  {
+                                    attrs: {
+                                      color: _vm.fnAlertaTransplante(
+                                        item.dias_transcurridos
+                                      ),
+                                      dark: "",
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.dias_transcurridos) +
+                                        "\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                          {
                             key: "item.esquejes_semilla",
                             fn: function (ref) {
                               var item = ref.item
@@ -26904,11 +26909,11 @@ var render = function () {
                           "server-items-length": _vm.totalRegistros,
                           loading: _vm.loading,
                           "items-per-page": 3,
-                          "item-key": "pro_id_lote",
+                          "item-key": "id_lote",
                           "footer-props": {
                             "items-per-page-options": [3, 5, 10, 15],
                           },
-                          "sort-by": "pro_id_lote",
+                          "sort-by": "id_lote",
                           "sort-desc": true,
                           "no-data-text": "Sin registros",
                         },
@@ -27174,7 +27179,7 @@ var render = function () {
                       _c(
                         "v-col",
                         { staticClass: "pa-0", attrs: { cols: "6", sm: "3" } },
-                        [_c("v-subheader", [_vm._v("Cantidad Área")])],
+                        [_c("v-subheader", [_vm._v("Cantidad Área M²")])],
                         1
                       ),
                       _vm._v(" "),
@@ -27205,7 +27210,7 @@ var render = function () {
                       _c(
                         "v-col",
                         { staticClass: "pa-0", attrs: { cols: "6", sm: "3" } },
-                        [_c("v-subheader", [_vm._v("Cantidad Área")])],
+                        [_c("v-subheader", [_vm._v("Ubicación")])],
                         1
                       ),
                       _vm._v(" "),
@@ -27262,154 +27267,6 @@ var render = function () {
                       ),
                     ],
                     1
-                  ),
-                ],
-                1
-              ),
-            ],
-            1
-          ),
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-dialog",
-        {
-          attrs: { width: "500" },
-          model: {
-            value: _vm.modalNotificacion,
-            callback: function ($$v) {
-              _vm.modalNotificacion = $$v
-            },
-            expression: "modalNotificacion",
-          },
-        },
-        [
-          _c(
-            "v-card",
-            [
-              _c(
-                "v-card-title",
-                { staticClass: "text-h5 lighten-2 py-0" },
-                [
-                  _vm._v("\n                Notificación "),
-                  _c("v-icon", { attrs: { size: "50" } }, [
-                    _vm._v(" toggle_on "),
-                  ]),
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _c(
-                "v-card-text",
-                [
-                  _c(
-                    "v-row",
-                    { staticClass: "pl-4 pr-4 mb-4 pt-5" },
-                    [
-                      _c(
-                        "v-col",
-                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
-                        [_c("v-subheader", [_vm._v("Cantidad Malas")])],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-col",
-                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: { outlined: "", dense: "", disabled: "" },
-                            model: {
-                              value: _vm.infoNoti.CantidadMalas,
-                              callback: function ($$v) {
-                                _vm.$set(_vm.infoNoti, "CantidadMalas", $$v)
-                              },
-                              expression: "infoNoti.CantidadMalas",
-                            },
-                          }),
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-col",
-                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
-                        [_c("v-subheader", [_vm._v("Porcentaje Malas")])],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-col",
-                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: { outlined: "", dense: "", disabled: "" },
-                            model: {
-                              value: _vm.infoNoti.porcentajeMalas,
-                              callback: function ($$v) {
-                                _vm.$set(_vm.infoNoti, "porcentajeMalas", $$v)
-                              },
-                              expression: "infoNoti.porcentajeMalas",
-                            },
-                          }),
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-col",
-                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
-                        [_c("v-subheader", [_vm._v("Porcentaje Buenas")])],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-col",
-                        { staticClass: "pa-0", attrs: { cols: "12", sm: "6" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: { outlined: "", dense: "", disabled: "" },
-                            model: {
-                              value: _vm.infoNoti.porcentajeBuenas,
-                              callback: function ($$v) {
-                                _vm.$set(_vm.infoNoti, "porcentajeBuenas", $$v)
-                              },
-                              expression: "infoNoti.porcentajeBuenas",
-                            },
-                          }),
-                        ],
-                        1
-                      ),
-                    ],
-                    1
-                  ),
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "white--text text-none",
-                      attrs: { color: "success" },
-                      on: {
-                        click: function ($event) {
-                          _vm.modalNotificacion = false
-                        },
-                      },
-                    },
-                    [_vm._v("\n                    OK\n                ")]
                   ),
                 ],
                 1

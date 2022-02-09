@@ -233,7 +233,7 @@ export default {
                 pro_tipo_incorporacion: "",
             },
 
-            tiposPropagacion    : ["Semilla", "Esquejes", "Ivvitro"],
+            tiposPropagacion    : ["Semilla", "Esquejes", "In vitro"],
             tiposIncorporacion  : ["Propia", "Comprada"],
             tiposVariedad       : [1, 2], // POR DEFINIR
             menuDate: false,

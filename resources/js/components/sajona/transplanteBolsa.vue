@@ -120,11 +120,11 @@
                             :loading="loading"
                             class="elevation-1"
                             :items-per-page="3"
-                            item-key="pro_id_lote"
+                            item-key="id_lote"
                             :footer-props="{
                                 'items-per-page-options': [3, 5, 10, 15],
                             }"
-                            sort-by="pro_id_lote"
+                            sort-by="id_lote"
                             :sort-desc="true"
                             no-data-text="Sin registros"
                         >
@@ -214,7 +214,7 @@
                         </v-col>
 
                         <v-col cols="6" sm="3" class="pa-0">
-                            <v-subheader>Cantidad Área</v-subheader>
+                            <v-subheader>Cantidad Área M²</v-subheader>
                         </v-col>
                         <v-col cols="6" sm="3" class="pa-0">
                             <v-text-field
@@ -227,7 +227,7 @@
                         </v-col>
 
                         <v-col cols="6" sm="3" class="pa-0">
-                            <v-subheader>Cantidad Área</v-subheader>
+                            <v-subheader>Ubicación</v-subheader>
                         </v-col>
                         <v-col cols="6" sm="3" class="pa-0">
                             <v-select
@@ -254,65 +254,6 @@
 
                     </v-row>
                 </v-card-text>
-            </v-card>
-        </v-dialog>
-
-        <!-- Modal Notificación -->
-        <v-dialog v-model="modalNotificacion" width="500">
-
-            <v-card>
-                <v-card-title class="text-h5 lighten-2 py-0">
-                    Notificación <v-icon size="50"> toggle_on </v-icon>
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text>
-                    <v-row class="pl-4 pr-4 mb-4 pt-5">
-                        <v-col cols="12" sm="6" class="pa-0">
-                            <v-subheader>Cantidad Malas</v-subheader>
-                        </v-col>
-                        <v-col cols="12" sm="6" class="pa-0">
-                            <v-text-field
-                                v-model="infoNoti.CantidadMalas"
-                                outlined
-                                dense
-                                disabled>
-                            </v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" sm="6" class="pa-0">
-                            <v-subheader>Porcentaje Malas</v-subheader>
-                        </v-col>
-                        <v-col cols="12" sm="6" class="pa-0">
-                            <v-text-field
-                                v-model="infoNoti.porcentajeMalas"
-                                outlined
-                                dense
-                                disabled>
-                            </v-text-field>
-                        </v-col>
-
-                        <v-col cols="12" sm="6" class="pa-0">
-                            <v-subheader>Porcentaje Buenas</v-subheader>
-                        </v-col>
-                        <v-col cols="12" sm="6" class="pa-0">
-                            <v-text-field
-                                v-model="infoNoti.porcentajeBuenas"
-                                outlined
-                                dense
-                                disabled>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="success" class="white--text text-none" @click="modalNotificacion = false">
-                        OK
-                    </v-btn>
-                </v-card-actions>
             </v-card>
         </v-dialog>
 
@@ -376,15 +317,6 @@ export default {
             },
             modalErrors : '',
             /* fin Variables modal */
-
-            /* Variables modal notificaciones */
-            modalNotificacion : false,
-            // Info del modal notificaciones.
-            infoNoti : {
-                CantidadMalas : '',
-                porcentajeMalas : '',
-                porcentajeBuenas : ''
-            }
         };
     },
     watch: {
@@ -478,16 +410,15 @@ export default {
             axios
                 .post(`/sajona/transplante-bolsa`, this.modalInfo)
                 .then((response) => {
-                    this.modalNotificacion = true;
-                    // response.data.message
+                    this.$swal(
+                        response.data.message,
+                        '',
+                        'success'
+                    );
                     this.overlayLoading = false;
                     this.modal = false;
                     this.modalErrors = '';
                     this.buscarTransplantes();
-
-                    this.infoNoti.CantidadMalas = response.data.notificacion.cantidad_malas;
-                    this.infoNoti.porcentajeMalas = response.data.notificacion.porcentaje_malas;
-                    this.infoNoti.porcentajeBuenas = response.data.notificacion.porcentaje_buenas;
                 })
                 .catch((errors) => {
                     this.modalErrors = errors.response.data.errors;
