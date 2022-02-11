@@ -55,12 +55,23 @@ class PlantaMadreControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        // Crando registros para pruebas.
-        Propagacion::factory(1)->create();
-
-        // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('sajona/planta-madre/100');
-
+        // Creamos un registro de propagación
+        $propagacion = Propagacion::factory()->create();
+        // Hacemos la solicitud a la url
+        $response = $this->get('sajona/planta-madre/'.$propagacion->pro_id_lote);
+        
+        // Validamos la respuesta
+        $response->assertJsonStructure([
+            'data'=> [
+                '*' => [
+                    "pro_id_lote",
+                    "pro_cantidad_plantas_madres",
+                    "pm_fecha_esquejacion",
+                    "pm_cantidad_esquejes",
+                    "pm_cantidad_semillas"  
+                ]
+            ],
+        ]);
         // $response->assertValid();
         $response->assertStatus(200);
     }
