@@ -2670,12 +2670,346 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
 //
 //
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      token: localStorage.getItem("token"),
+      overlayLoading: false,
+
+      /* start Variables Modal bajas*/
+      modal: false,
+
+      /* end Variables Modal bajas*/
+
+      /* Variables Table. */
+      // Tabla filtro.
+      debounce: null,
+      buscar: "",
+      // Table listar
+      page: 1,
+      totalRegistros: 0,
+      numberOfPages: 0,
+      loading: false,
+      options: {},
+      headers: [{
+        text: "Id Lote",
+        align: "start",
+        value: "id_lote"
+      }, {
+        text: "Fecha Ultima Baja",
+        value: "bj_fecha"
+      }, {
+        text: "Descartes",
+        value: "descartes"
+      }, {
+        text: "Cantidad",
+        value: "cantidadSemillasEsquejes"
+      }, {
+        text: "Acciones",
+        value: "acciones",
+        sortable: false
+      }],
+      dataSet: [],
+
+      /* end variables Table. */
+      id_lote: "",
+      dataBajasModal: {
+        bajas: [],
+        id_lote: ""
+      },
+      error: {
+        errores: []
+      }
+    };
+  },
+  watch: {
+    options: {
+      handler: function handler() {
+        this.filterSearch();
+      }
+    },
+    deep: true
+  },
+  methods: {
+    buscarBajas: function buscarBajas() {
+      var _this = this;
+
+      this.overlayLoading = true;
+      this.loading = true;
+      var _this$options = this.options,
+          page = _this$options.page,
+          itemsPerPage = _this$options.itemsPerPage,
+          sortBy = _this$options.sortBy,
+          sortDesc = _this$options.sortDesc;
+
+      if (sortDesc[0] == true) {
+        sortBy = sortBy[0];
+        sortDesc = "DESC";
+      } else if (sortDesc[0] == false) {
+        sortBy = sortBy[0];
+        sortDesc = "ASC";
+      } else {
+        sortBy = "";
+        sortDesc = "";
+      }
+
+      axios.get("/sajona/baja/buscar?page=".concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
+        _this.loading = false;
+        _this.dataSet = response.data.data;
+        _this.totalRegistros = response.data.total;
+        _this.numberOfPages = response.data.last_page;
+        _this.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this.overlayLoading = false;
+        _this.loading = false;
+        _this.dataSet = [];
+      });
+    },
+    filterSearch: function filterSearch() {
+      var _this2 = this;
+
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this2.buscarBajas(_this2.buscar);
+      }, 600);
+    },
+    consultarLotesBajas: function consultarLotesBajas(id_lote) {
+      var _this3 = this;
+
+      this.overlayLoading = true;
+      axios.get("/sajona/baja/".concat(id_lote)).then(function (response) {
+        _this3.id_lote = id_lote;
+
+        if (response.data.data.length == 0) {
+          _this3.dataBajasModal.id_lote = id_lote;
+          _this3.error.errores = [];
+          _this3.dataBajasModal.bajas = [];
+
+          _this3.fnNuevaBaja();
+        } else {
+          _this3.error.errores = [];
+          _this3.dataBajasModal.bajas = response.data.data;
+          _this3.dataBajasModal.id_lote = id_lote; // Rellenando json de errores vacios
+
+          for (var i = 0; i < response.data.data.length; i++) {
+            _this3.fnErrorJson();
+          }
+        }
+
+        _this3.modal = true;
+        _this3.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this3.overlayLoading = false;
+      });
+    },
+    guardarBajas: function guardarBajas() {
+      var _this4 = this;
+
+      this.overlayLoading = true;
+      axios.post("/sajona/baja", this.dataBajasModal).then(function (response) {
+        _this4.$swal(response.data.message, '', 'success');
+
+        _this4.overlayLoading = false;
+        _this4.modal = false;
+
+        _this4.buscarBajas();
+      })["catch"](function (errors) {
+        _this4.error.errores = errors.response.data.errores;
+        _this4.overlayLoading = false;
+      });
+    },
+    fnNuevaBaja: function fnNuevaBaja() {
+      this.dataBajasModal.bajas.push({
+        bj_pro_id_lote: "",
+        bj_fecha: "",
+        bj_cantidad: "",
+        bj_fase_cultivo: "",
+        bj_observacion: ""
+      });
+      this.fnErrorJson();
+    },
+    // Método agrega una posición en el json de errores.
+    fnErrorJson: function fnErrorJson() {
+      this.error.errores.push({});
+    },
+    fnEliminarBaja: function fnEliminarBaja(index) {
+      this.dataBajasModal.bajas.splice(index, 1);
+      this.error.errores.splice(index, 1);
+    }
+  }
+});
 
 /***/ }),
 
@@ -3184,7 +3518,95 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      bajas: [{
+        groupName: "Group Name",
+        equipmentNo: "123456789",
+        description: "Description",
+        timeStart: {
+          option1: "09:00",
+          option2: "09:30"
+        },
+        timeFinish: {
+          option1: "18:00",
+          option2: "18:30"
+        }
+      }]
+    };
+  },
+  methods: {
+    addGroup: function addGroup() {
+      this.bajas.push({
+        groupName: "New Group",
+        equipmentNo: "123456789",
+        description: "New Description",
+        timeStart: {
+          option1: "09:00",
+          option2: "09:30",
+          option3: "10:00"
+        },
+        timeFinish: {
+          option1: "18:00",
+          option2: "18:30",
+          option3: "19:00"
+        }
+      });
+    },
+    deleteGroup: function deleteGroup(index) {
+      this.bajas.splice(index, 1);
+    }
+  }
+});
 
 /***/ }),
 
@@ -25277,16 +25699,428 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
+      _vm._v(" "),
+      _c("h4", [_vm._v("Bajas")]),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-card",
+            { attrs: { elevation: "2" } },
+            [
+              _c("v-card-title", { staticClass: "rounded-sm py-2" }, [
+                _c("span", { staticClass: "text-h6 font-weight-bold" }, [
+                  _vm._v("Listando de Bajas de lotes"),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                [
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12" } },
+                    [
+                      _c(
+                        "v-card-title",
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              type: "text",
+                              "append-icon": "mdi-magnify",
+                              label: "Buscar",
+                              "single-line": "",
+                              "hide-details": "",
+                            },
+                            on: { input: _vm.filterSearch },
+                            model: {
+                              value: _vm.buscar,
+                              callback: function ($$v) {
+                                _vm.buscar = $$v
+                              },
+                              expression: "buscar",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-data-table", {
+                        staticClass: "elevation-1",
+                        attrs: {
+                          page: _vm.page,
+                          pageCount: _vm.numberOfPages,
+                          headers: _vm.headers,
+                          items: _vm.dataSet,
+                          options: _vm.options,
+                          "server-items-length": _vm.totalRegistros,
+                          loading: _vm.loading,
+                          "items-per-page": 5,
+                          "item-key": "id_lote",
+                          "footer-props": {
+                            "items-per-page-options": [3, 5, 10, 15],
+                          },
+                          "sort-by": "id_lote",
+                          "sort-desc": true,
+                          "no-data-text": "Sin registros",
+                        },
+                        on: {
+                          "update:options": function ($event) {
+                            _vm.options = $event
+                          },
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "item.acciones",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-icon",
+                                  {
+                                    staticClass: "mr-2",
+                                    attrs: {
+                                      color: "primary",
+                                      title: "Editar Bajas del lote",
+                                    },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.consultarLotesBajas(
+                                          item.id_lote
+                                        )
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                mdi-pencil\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-dialog",
+        {
+          attrs: { persistent: "", width: "1000px" },
+          model: {
+            value: _vm.modal,
+            callback: function ($$v) {
+              _vm.modal = $$v
+            },
+            expression: "modal",
+          },
+        },
+        [
+          _c(
+            "v-card",
+            [
+              _c(
+                "v-card-title",
+                { staticClass: "text-h5 py-2" },
+                [
+                  _vm._v("\n                Editar\n                "),
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: {
+                        color: "black",
+                        icon: "",
+                        title: "Cerrar Modal de bajas.",
+                      },
+                      on: {
+                        click: function ($event) {
+                          _vm.modal = false
+                        },
+                      },
+                    },
+                    [
+                      _c("v-icon", { attrs: { dark: "" } }, [
+                        _vm._v(
+                          "\n                        close\n                    "
+                        ),
+                      ]),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c("h1", { staticClass: "pt-4 pb-4" }, [
+                    _vm._v(" Lote: " + _vm._s(_vm.id_lote) + " "),
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.dataBajasModal.bajas, function (baja, index) {
+                    return _c(
+                      "v-row",
+                      { key: index },
+                      [
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "3", sm: "3" } },
+                          [
+                            _c("v-text-field", {
+                              ref: "bj_fecha",
+                              refInFor: true,
+                              attrs: {
+                                type: "date",
+                                filled: "",
+                                label: "Fecha de baja",
+                                "error-messages":
+                                  _vm.error.errores[index].bj_fecha != undefined
+                                    ? _vm.error.errores[index].bj_fecha
+                                    : "",
+                              },
+                              model: {
+                                value: baja.bj_fecha,
+                                callback: function ($$v) {
+                                  _vm.$set(baja, "bj_fecha", $$v)
+                                },
+                                expression: "baja.bj_fecha",
+                              },
+                            }),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "2", sm: "2" } },
+                          [
+                            _c("v-text-field", {
+                              ref: "bj_cantidad",
+                              refInFor: true,
+                              attrs: {
+                                type: "number",
+                                filled: "",
+                                "error-messages":
+                                  _vm.error.errores[index].bj_cantidad !=
+                                  undefined
+                                    ? _vm.error.errores[index].bj_cantidad
+                                    : "",
+                                label: "Cantidad Bajas",
+                              },
+                              model: {
+                                value: baja.bj_cantidad,
+                                callback: function ($$v) {
+                                  _vm.$set(baja, "bj_cantidad", $$v)
+                                },
+                                expression: "baja.bj_cantidad",
+                              },
+                            }),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "2", sm: "2" } },
+                          [
+                            _c("v-select", {
+                              ref: "bj_fase_cultivo",
+                              refInFor: true,
+                              attrs: {
+                                items: [
+                                  "Esquejes",
+                                  "Bolsa",
+                                  "Campo",
+                                  "Cosecha",
+                                ],
+                                "error-messages":
+                                  _vm.error.errores[index].bj_fase_cultivo !=
+                                  undefined
+                                    ? _vm.error.errores[index].bj_fase_cultivo
+                                    : "",
+                                filled: "",
+                                label: "Fase de Cultivo",
+                              },
+                              model: {
+                                value: baja.bj_fase_cultivo,
+                                callback: function ($$v) {
+                                  _vm.$set(baja, "bj_fase_cultivo", $$v)
+                                },
+                                expression: "baja.bj_fase_cultivo",
+                              },
+                            }),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "4", sm: "4" } },
+                          [
+                            _c("v-textarea", {
+                              ref: "bj_observacion",
+                              refInFor: true,
+                              attrs: {
+                                "error-messages":
+                                  _vm.error.errores[index].bj_observacion !=
+                                  undefined
+                                    ? _vm.error.errores[index].bj_observacion
+                                    : "",
+                                label: "Observaciones",
+                                rows: "1",
+                                filled: "",
+                              },
+                              model: {
+                                value: baja.bj_observacion,
+                                callback: function ($$v) {
+                                  _vm.$set(baja, "bj_observacion", $$v)
+                                },
+                                expression: "baja.bj_observacion",
+                              },
+                            }),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          {
+                            staticClass: "mt-3",
+                            attrs: { cols: "1", sm: "1" },
+                          },
+                          [
+                            _c(
+                              "v-btn",
+                              {
+                                staticClass: "mx-2",
+                                attrs: {
+                                  fab: "",
+                                  dark: "",
+                                  small: "",
+                                  color: "red",
+                                  title: "Elimina registro de baja.",
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.fnEliminarBaja(index)
+                                  },
+                                },
+                              },
+                              [
+                                _c("v-icon", { attrs: { dark: "" } }, [
+                                  _vm._v(
+                                    "\n                                cancel\n                            "
+                                  ),
+                                ]),
+                              ],
+                              1
+                            ),
+                          ],
+                          1
+                        ),
+                      ],
+                      1
+                    )
+                  }),
+                  _vm._v(" "),
+                  _vm.dataBajasModal.bajas.length == 0
+                    ? _c("h1", { staticClass: "text-center" }, [
+                        _vm._v("Sin Bajas"),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "d-flex justify-end" },
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "white--text text-none",
+                          attrs: {
+                            type: "submit",
+                            small: "",
+                            color: "success",
+                            tile: "",
+                            title: "Añade un nueva fila para agregar baja.",
+                          },
+                          on: { click: _vm.fnNuevaBaja },
+                        },
+                        [
+                          _c("v-icon", [_vm._v(" add ")]),
+                          _vm._v("Añadir Baja\n                    "),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "d-flex justify-center" },
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "white--text text-none",
+                          attrs: {
+                            type: "submit",
+                            small: "",
+                            color: "success",
+                            tile: "",
+                            title: "Guarda todos los registros de Bajas.",
+                          },
+                          on: { click: _vm.guardarBajas },
+                        },
+                        [
+                          _c("v-icon", [_vm._v(" save ")]),
+                          _vm._v("Guardar\n                    "),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                2
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("bajas")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -26103,14 +26937,120 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "content", attrs: { id: "app" } }, [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function ($event) {
+                $event.preventDefault()
+              },
+            },
+          },
+          [
+            _c(
+              "table",
+              {
+                staticClass: "table table-hover table-striped table-dark w-100",
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.bajas, function (baja, index) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: baja.groupName,
+                              expression: "baja.groupName",
+                            },
+                          ],
+                          staticClass: "form-control groupName",
+                          attrs: { type: "text", value: "baja.groupName" },
+                          domProps: { value: baja.groupName },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(baja, "groupName", $event.target.value)
+                            },
+                          },
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function ($event) {
+                              return _vm.deleteGroup(index)
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    X\n                                "
+                          ),
+                        ]
+                      ),
+                    ])
+                  }),
+                  0
+                ),
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-info float-right",
+                  on: { click: _vm.addGroup },
+                },
+                [
+                  _vm._v(
+                    "\n                        Add New Group with Vue.Js\n                    "
+                  ),
+                ]
+              ),
+            ]),
+          ]
+        ),
+        _vm._v(" "),
+        _c("pre", [
+          _vm._v("                " + _vm._s(_vm.bajas) + "\n            "),
+        ]),
+      ]),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("post cosecha")])])
+    return _c("thead", [
+      _c("tr", { staticClass: "table-active" }, [
+        _c("th", [_vm._v("Group")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("No")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Time")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Delete")]),
+      ]),
+    ])
   },
 ]
 render._withStripped = true

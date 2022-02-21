@@ -27,6 +27,20 @@ class PlantaMadre extends Model
     ];
 
     /**
+     * Los atributos que deberían estar visibles.
+     *
+     * @var array
+     */
+    protected $visible = [
+        "pm_id",
+        "pm_pro_id_lote",
+        "pm_fecha_esquejacion",
+        "pm_cantidad_semillas",
+        "pm_cantidad_esquejes",
+        "pm_estado",
+    ];
+
+    /**
      * Scope para realizar una búsqueda mixta en el módulo de Transplante.
      *
      * @param Illuminate\Database\Eloquent\Builder $query

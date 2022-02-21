@@ -42,7 +42,8 @@ class Propagacion extends Model
         "pro_cantidad_material",
         "pro_cantidad_plantas_madres",
         "pro_estado",
-        "getPlantaMadre"
+        "getPlantaMadre",
+        "getBaja"
     ];
 
     /**
@@ -83,12 +84,21 @@ class Propagacion extends Model
     }
 
     /**
-     * Obtiene el registro de planta madre asociado a propagacion
+     * Obtiene el registro de planta madre asociado a propagación
      *
      * @return Illuminate\Support\Collection;
      */
     public function getPlantaMadre(){
         return $this->belongsTo(PlantaMadre::class,'pro_id_lote', 'pm_pro_id_lote');
+    }
+
+    /**
+     * Obtiene el registro de bajas asociados a propagación.
+     *
+     * @return Illuminate\Support\Collection;
+     */
+    public function getBaja(){
+        return $this->hasMany(Baja::class,'bj_pro_id_lote', 'pro_id_lote');
     }
 
 }
