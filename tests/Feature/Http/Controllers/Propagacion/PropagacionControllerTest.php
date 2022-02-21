@@ -21,7 +21,7 @@ class PropagacionControllerTest extends TestCase
         $this->withoutExceptionHandling();
 
         $response = $this->post('/sajona/propagacion',[
-            "pro_fecha"                     => date("Y-m-d H:i:s"),
+            "pro_fecha"                     => date("Y-m-d"),
             "pro_tipo_propagacion"          => "Esqueje",
             "pro_variedad"                  => 2,
             "pro_tipo_incorporacion"        => "PROPIA",
@@ -32,7 +32,11 @@ class PropagacionControllerTest extends TestCase
         $response->assertValid();
 
         // $response->assertUnprocessable();
-        $response->assertStatus(201);
+        $response->assertStatus(201)
+                 ->assertExactJson([
+                    'message' => 'Datos Guardados',
+                 ]);
+        
     }
 
     /**

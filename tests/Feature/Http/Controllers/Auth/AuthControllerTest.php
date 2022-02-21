@@ -22,20 +22,18 @@ class AuthControllerTest extends TestCase
         // Errores mas detallados
         // $this->withoutExceptionHandling();
 
-        $user = User::factory(1)->create();
-
+        $user = User::factory()->create();
+        
         $response = $this->post('/sajona/login', [
-            'email'     => 'cristian@gmail.com',
-            'password'  => 'admin1235',
-        ]);
-
-        // Comprobacion de credenciales.
-        $this->assertCredentials([
-            'email'     => 'cristian@gmail.com',
+            'email'     => $user->email,
             'password'  => 'admin123',
         ]);
-
         $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'access_token',
+            'token_type'
+        ]);
+
     }
 }
 
