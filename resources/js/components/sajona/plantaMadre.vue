@@ -118,7 +118,7 @@
                             :server-items-length="totalRegistros"
                             :loading="loading"
                             class="elevation-1"
-                            :items-per-page="3"
+                            :items-per-page="10"
                             item-key="pro_id_lote"
                             :footer-props="{
                                 'items-per-page-options': [3, 5, 10, 15],

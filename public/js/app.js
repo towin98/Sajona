@@ -3518,95 +3518,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      bajas: [{
-        groupName: "Group Name",
-        equipmentNo: "123456789",
-        description: "Description",
-        timeStart: {
-          option1: "09:00",
-          option2: "09:30"
-        },
-        timeFinish: {
-          option1: "18:00",
-          option2: "18:30"
-        }
-      }]
-    };
-  },
-  methods: {
-    addGroup: function addGroup() {
-      this.bajas.push({
-        groupName: "New Group",
-        equipmentNo: "123456789",
-        description: "New Description",
-        timeStart: {
-          option1: "09:00",
-          option2: "09:30",
-          option3: "10:00"
-        },
-        timeFinish: {
-          option1: "18:00",
-          option2: "18:30",
-          option3: "19:00"
-        }
-      });
-    },
-    deleteGroup: function deleteGroup(index) {
-      this.bajas.splice(index, 1);
-    }
-  }
-});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
 
@@ -26514,7 +26426,7 @@ var render = function () {
                           options: _vm.options,
                           "server-items-length": _vm.totalRegistros,
                           loading: _vm.loading,
-                          "items-per-page": 3,
+                          "items-per-page": 10,
                           "item-key": "pro_id_lote",
                           "footer-props": {
                             "items-per-page-options": [3, 5, 10, 15],
@@ -26937,120 +26849,14 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "container-fluid" }, [
-      _c("div", { staticClass: "content", attrs: { id: "app" } }, [
-        _c(
-          "form",
-          {
-            on: {
-              submit: function ($event) {
-                $event.preventDefault()
-              },
-            },
-          },
-          [
-            _c(
-              "table",
-              {
-                staticClass: "table table-hover table-striped table-dark w-100",
-              },
-              [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.bajas, function (baja, index) {
-                    return _c("tr", { key: index }, [
-                      _c("td", [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: baja.groupName,
-                              expression: "baja.groupName",
-                            },
-                          ],
-                          staticClass: "form-control groupName",
-                          attrs: { type: "text", value: "baja.groupName" },
-                          domProps: { value: baja.groupName },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(baja, "groupName", $event.target.value)
-                            },
-                          },
-                        }),
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          on: {
-                            click: function ($event) {
-                              return _vm.deleteGroup(index)
-                            },
-                          },
-                        },
-                        [
-                          _vm._v(
-                            "\n                                    X\n                                "
-                          ),
-                        ]
-                      ),
-                    ])
-                  }),
-                  0
-                ),
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-info float-right",
-                  on: { click: _vm.addGroup },
-                },
-                [
-                  _vm._v(
-                    "\n                        Add New Group with Vue.Js\n                    "
-                  ),
-                ]
-              ),
-            ]),
-          ]
-        ),
-        _vm._v(" "),
-        _c("pre", [
-          _vm._v("                " + _vm._s(_vm.bajas) + "\n            "),
-        ]),
-      ]),
-    ]),
-  ])
+  return _vm._m(0)
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", { staticClass: "table-active" }, [
-        _c("th", [_vm._v("Group")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("No")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Description")]),
-        _vm._v(" "),
-        _c("th", { attrs: { colspan: "2" } }, [_vm._v("Time")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Delete")]),
-      ]),
-    ])
+    return _c("div", [_c("h1", [_vm._v("post cosecha")])])
   },
 ]
 render._withStripped = true
