@@ -28,7 +28,7 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+      - ./docker-compose/mysql/data:/var/lib/mysql
     networks:
       - sajona
 
@@ -44,6 +44,18 @@ services:
     networks:
       - sajona
 
+  node:
+    image: node:14-alpine
+    working_dir: /app
+    container_name: node
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+    depends_on:
+      - 'app'
+    command: sh -c "npm install && npm run watch"
+    networks:
+      - sajona
 networks:
   sajona:
     driver: bridge
