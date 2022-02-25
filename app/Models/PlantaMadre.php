@@ -38,7 +38,17 @@ class PlantaMadre extends Model
         "pm_cantidad_semillas",
         "pm_cantidad_esquejes",
         "pm_estado",
+        "getTransplante",
     ];
+
+    /**
+     *
+     *
+     * @return Illuminate\Support\Collection;
+     */
+    public function getTransplante(){
+        return $this->belongsTo(Transplante::class,'pm_id', 'tp_pm_id');
+    }
 
     /**
      * Scope para realizar una búsqueda mixta en el módulo de Transplante.

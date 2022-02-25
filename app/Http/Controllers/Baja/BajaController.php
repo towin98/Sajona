@@ -6,15 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Baja;
 use App\Models\Propagacion;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Optional;
 use Throwable;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\paginationTrait;
 
 class BajaController extends Controller
 {
+    use paginationTrait;
+
     /**
      * Método que busca lotes.
      *
@@ -109,18 +108,7 @@ class BajaController extends Controller
 
         $registros = $registros->toArray();
 
-        $pageName = 'page';
-        $currentPage = $request->page;
-        if ($currentPage == null) {
-            $currentPage = 1;
-        }
-        $currentElements = array_slice($registros, $length * ($currentPage - 1), $length);
-
-        $page = Paginator::resolveCurrentPage($pageName);
-        $registros =  new LengthAwarePaginator($currentElements, count($registros), $length, $page, [
-            'path' => Paginator::resolveCurrentPath(),
-            'pageName' => $pageName,
-        ]);
+        $registros = $this->paginar($request, $registros, $length);
 
         return response()->json($registros, 200);
     }
@@ -201,39 +189,5 @@ class BajaController extends Controller
         return response()->json([
             'data' => $registrosBajas,
         ], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

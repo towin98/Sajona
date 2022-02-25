@@ -26,4 +26,21 @@ class Transplante extends Model
         "tp_cantidad_area",
         "tp_estado",
     ];
+
+
+    /**
+     * Los atributos que deberían estar visibles.
+     *
+     * @var array
+     */
+    protected $visible = [
+        "tp_id",
+        "tp_pm_id",
+        "tp_tipo",
+        "tp_tipo_lote",
+        "tp_fecha",
+        "tp_ubicacion",
+        "tp_cantidad_area",
+        "tp_estado",
+    ];
 }

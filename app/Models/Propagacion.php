@@ -84,6 +84,26 @@ class Propagacion extends Model
     }
 
     /**
+     * Scope para realizar una búsqueda mixta en el módulo de Transplante Bolsa.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @param string $buscar Valor a buscar
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBuscarTransplanteBolsa($query, $buscar) {
+        if($buscar) {
+            return $query
+                ->where('pro_id_lote', 'LIKE', "%$buscar%")
+                ->orWhere('pro_fecha', 'LIKE', "%$buscar%")
+                ->orWhereHas('getPlantaMadre', function ($query) use ($buscar) {
+                    $query->whereHas('getTransplante', function ($query) use ($buscar) {
+                        $query->where('tp_fecha', 'LIKE', "%$buscar%");
+                    });
+                });
+        }
+    }
+
+    /**
      * Obtiene el registro de planta madre asociado a propagación
      *
      * @return Illuminate\Support\Collection;
