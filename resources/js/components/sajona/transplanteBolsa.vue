@@ -119,7 +119,7 @@
                             :server-items-length="totalRegistros"
                             :loading="loading"
                             class="elevation-1"
-                            :items-per-page="3"
+                            :items-per-page="5"
                             item-key="id_lote"
                             :footer-props="{
                                 'items-per-page-options': [3, 5, 10, 15],
@@ -188,13 +188,13 @@
                         </v-col>
 
                         <v-col cols="6" sm="3" class="pa-0 pt-4">
-                            <v-subheader>Cantidad Buenas</v-subheader>
+                            <v-subheader>Cantidad Transplante Bolsa</v-subheader>
                         </v-col>
                         <v-col cols="6" sm="3" class="pa-0 pt-4">
                             <v-text-field
                                 type="number"
-                                v-model="modalInfo.cantidad_buenas"
-                                ref="cantidad_buenas"
+                                v-model="modalInfo.cantidad_transplante_bolsa"
+                                ref="cantidad_transplante_bolsa"
                                 dense
                                 disabled
                             ></v-text-field>
@@ -283,7 +283,6 @@ export default {
             },
 
             /* Variables Table. */
-            contador: 0,
             // Tabla filtro.
             debounce: null,
             buscar: "",
@@ -310,7 +309,7 @@ export default {
                 tp_tipo          : 'Transplante Bolsa',
                 tp_pm_id         : '',
                 tp_fecha         : '',
-                cantidad_buenas  : '',
+                cantidad_transplante_bolsa  : '',
                 tp_tipo_lote     : '',
                 tp_ubicacion     : '',
                 tp_cantidad_area : ''
@@ -370,13 +369,11 @@ export default {
                 });
         },
         filterSearch() {
-            if (this.contador > 0) {
+                this.overlayLoading = true;
                 clearTimeout(this.debounce);
                 this.debounce = setTimeout(() => {
                     this.buscarTransplantes(this.buscar);
                 }, 600);
-            }
-            this.contador++;
         },
         consultarTransplante(item) {
             this.modalErrors = '';
@@ -394,7 +391,7 @@ export default {
 
                     // Cargando Data.
                     this.modalInfo.tp_pm_id = response.data.data.tp_pm_id;
-                    this.modalInfo.cantidad_buenas = response.data.data.cantidad_buenas; // label
+                    this.modalInfo.cantidad_transplante_bolsa = response.data.data.cantidad_transplante_bolsa; // label
                     this.modalInfo.tp_tipo_lote = response.data.data.tp_tipo_lote;
                     this.modalInfo.tp_ubicacion = response.data.data.tp_ubicacion;
                     this.modalInfo.tp_cantidad_area = response.data.data.tp_cantidad_area;

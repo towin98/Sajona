@@ -4205,7 +4205,6 @@ __webpack_require__.r(__webpack_exports__);
       },
 
       /* Variables Table. */
-      contador: 0,
       // Tabla filtro.
       debounce: null,
       buscar: "",
@@ -4244,7 +4243,7 @@ __webpack_require__.r(__webpack_exports__);
         tp_tipo: 'Transplante Bolsa',
         tp_pm_id: '',
         tp_fecha: '',
-        cantidad_buenas: '',
+        cantidad_transplante_bolsa: '',
         tp_tipo_lote: '',
         tp_ubicacion: '',
         tp_cantidad_area: ''
@@ -4307,14 +4306,11 @@ __webpack_require__.r(__webpack_exports__);
     filterSearch: function filterSearch() {
       var _this2 = this;
 
-      if (this.contador > 0) {
-        clearTimeout(this.debounce);
-        this.debounce = setTimeout(function () {
-          _this2.buscarTransplantes(_this2.buscar);
-        }, 600);
-      }
-
-      this.contador++;
+      this.overlayLoading = true;
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this2.buscarTransplantes(_this2.buscar);
+      }, 600);
     },
     consultarTransplante: function consultarTransplante(item) {
       var _this3 = this;
@@ -4332,7 +4328,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
         _this3.modalInfo.tp_pm_id = response.data.data.tp_pm_id;
-        _this3.modalInfo.cantidad_buenas = response.data.data.cantidad_buenas; // label
+        _this3.modalInfo.cantidad_transplante_bolsa = response.data.data.cantidad_transplante_bolsa; // label
 
         _this3.modalInfo.tp_tipo_lote = response.data.data.tp_tipo_lote;
         _this3.modalInfo.tp_ubicacion = response.data.data.tp_ubicacion;
@@ -27654,7 +27650,7 @@ var render = function () {
                           options: _vm.options,
                           "server-items-length": _vm.totalRegistros,
                           loading: _vm.loading,
-                          "items-per-page": 3,
+                          "items-per-page": 5,
                           "item-key": "id_lote",
                           "footer-props": {
                             "items-per-page-options": [3, 5, 10, 15],
@@ -27866,7 +27862,11 @@ var render = function () {
                           staticClass: "pa-0 pt-4",
                           attrs: { cols: "6", sm: "3" },
                         },
-                        [_c("v-subheader", [_vm._v("Cantidad Buenas")])],
+                        [
+                          _c("v-subheader", [
+                            _vm._v("Cantidad Transplante Bolsa"),
+                          ]),
+                        ],
                         1
                       ),
                       _vm._v(" "),
@@ -27878,14 +27878,19 @@ var render = function () {
                         },
                         [
                           _c("v-text-field", {
-                            ref: "cantidad_buenas",
+                            ref: "cantidad_transplante_bolsa",
                             attrs: { type: "number", dense: "", disabled: "" },
                             model: {
-                              value: _vm.modalInfo.cantidad_buenas,
+                              value: _vm.modalInfo.cantidad_transplante_bolsa,
                               callback: function ($$v) {
-                                _vm.$set(_vm.modalInfo, "cantidad_buenas", $$v)
+                                _vm.$set(
+                                  _vm.modalInfo,
+                                  "cantidad_transplante_bolsa",
+                                  $$v
+                                )
                               },
-                              expression: "modalInfo.cantidad_buenas",
+                              expression:
+                                "modalInfo.cantidad_transplante_bolsa",
                             },
                           }),
                         ],

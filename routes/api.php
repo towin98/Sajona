@@ -31,7 +31,7 @@ Route::group(['prefix' => 'planta-madre', /* 'middleware' => 'auth:sanctum' */] 
     Route::get('/{Propagacion}', [PlantaMadreController::class, 'show']);
 });
 
-Route::group(['prefix' => 'transplante-bolsa', 'middleware' => 'auth:sanctum'] , function(){
+Route::group(['prefix' => 'transplante-bolsa', /* 'middleware' => 'auth:sanctum' */] , function(){
     Route::resource('/',  TransplanteController::class)->only(['store']);
     Route::get('/buscar', [TransplanteController::class, 'buscar']);
     Route::get('/{id}', [TransplanteController::class, 'show']);
@@ -41,7 +41,7 @@ Route::group(['prefix' => 'transplante-campo'/* , 'middleware' => 'auth:sanctum'
     // Route::resource('/',  TransplanteController::class)->only(['store']);
 });
 
-Route::group(['prefix' => 'baja', 'middleware' => 'auth:sanctum'] , function(){
+Route::group(['prefix' => 'baja'/* , 'middleware' => 'auth:sanctum' */] , function(){
     Route::resource('/',  BajaController::class)->only(['store']);
     Route::get('/buscar', [BajaController::class, 'buscarLotes']);
     Route::get('/{id_lote}', [BajaController::class, 'show']);
