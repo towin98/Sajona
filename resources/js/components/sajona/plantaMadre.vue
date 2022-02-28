@@ -118,7 +118,7 @@
                             :server-items-length="totalRegistros"
                             :loading="loading"
                             class="elevation-1"
-                            :items-per-page="10"
+                            :items-per-page="5"
                             item-key="pro_id_lote"
                             :footer-props="{
                                 'items-per-page-options': [3, 5, 10, 15],
@@ -129,7 +129,7 @@
                         >
                             <template v-slot:item.pro_fecha="{ item }">
                                 <v-chip
-                                    :color="fnAlertaTransplante(item.dias_transcurridos)"
+                                    :color="item.color"
                                     dark
                                 >
                                     {{ item.pro_fecha }}
@@ -137,7 +137,7 @@
                             </template>
                             <template v-slot:item.dias_transcurridos="{ item }">
                                 <v-chip
-                                    :color="fnAlertaTransplante(item.dias_transcurridos)"
+                                    :color="item.color"
                                     dark
                                 >
                                     {{ item.dias_transcurridos }}
@@ -278,7 +278,6 @@ export default {
             },
 
             /* Variables Table. */
-            contador: 0,
             // Tabla filtro.
             debounce: null,
             buscar: "",
@@ -291,8 +290,9 @@ export default {
             headers: [
                 { text: "Id Lote", align: "start", value: "pro_id_lote" },
                 { text: "Fecha Propagación", value: "pro_fecha" },
-                { text: "Fecha Transplante", value: "pm_fecha_esquejacion" },
-                { text: "Cantidad Buenas", value: "pro_cantidad_plantas_madres" },
+                { text: "Fecha Esqueje", value: "pm_fecha_esquejacion" },
+                { text: "Cantidad Plantas Madres", value: "pro_cantidad_plantas_madres" },
+                { text: "Estado", value: "estado_lote", sortable: false },
                 { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
                 { text: "Esquejes-Semilla", value: "esquejes_semilla", sortable: false },
             ],
@@ -363,18 +363,11 @@ export default {
                 });
         },
         filterSearch() {
-            if (this.contador > 0) {
-                this.overlayLoading = true;
-                clearTimeout(this.debounce);
-                this.debounce = setTimeout(() => {
-                    this.buscarLotes(this.buscar);
-                }, 800);
-            }
-            this.contador++;
-        },
-        fnAlertaTransplante (diasParaTransplante) {
-            if (diasParaTransplante == "REQUIERE TRANSPLANTE") return 'red'
-            else return 'green'
+            this.overlayLoading = true;
+            clearTimeout(this.debounce);
+            this.debounce = setTimeout(() => {
+                this.buscarLotes(this.buscar);
+            }, 800);
         },
         esquejesSemilla(item) {
             this.modalErrors = '';
