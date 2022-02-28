@@ -7,12 +7,12 @@ use App\Http\Requests\PlantaMadreBuscarRequest;
 use App\Http\Requests\PlantaMadreStoreRequest;
 use App\Models\PlantaMadre;
 use App\Models\Propagacion;
-use App\Models\Transplante;
-use DateTime;
-use Illuminate\Mail\Transport\Transport;
+use App\Traits\alertaTrait;
 
 class PlantaMadreController extends Controller
 {
+
+    use alertaTrait;
     /**
      * Método que busca lotes de propagación por un rango de fechas.
      *
@@ -46,28 +46,28 @@ class PlantaMadreController extends Controller
             }
         }
 
-        // Consulta Valor a buscar.
-        $registros = $registros->whereBetween('pro_fecha',[$request->fecha_inicio.' 00:00:00', $request->fecha_fin.' 23:59:59'])
-            ->paginate($length);
+        if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
+            $registros = $registros->whereBetween('pro_fecha',[$request->fecha_inicio.' 00:00:00', $request->fecha_fin.' 23:59:59']);
+        }
 
-            $registros->getCollection()->transform(function($data, $key) {
+        $registros = $registros->paginate($length);
 
-            $transplante = Transplante::select(['tp_fecha'])->where('tp_pm_id', optional($data->getPlantaMadre)->pm_id )->get();
-            if (count($transplante) == 0) {
-                // Dias transcurridos desde la fecha de propagacion hasta el dia de hoy.
-                $today = date_create();
-                $diasTranscurridos = date_diff(date_create($data->pro_fecha),$today)->format('%a') >= 21 ? 'REQUIERE TRANSPLANTE' : date_diff(date_create($data->pro_fecha),$today)->format('%a');
-            }
-            else{
-                $diasTranscurridos = "Tiene Transplante";
-            }
+        $registros->getCollection()->transform(function($data, $key) {
+
+            $arrAlerta = $this->alerta($data);
+
+            $evento            = $arrAlerta[0];
+            $color             = $arrAlerta[1];
+            $diasTranscurridos = $arrAlerta[2];
 
             return [
                 'pro_id_lote'                   => $data->pro_id_lote,              // ( Id lote )
                 'pro_fecha'                     => $data->pro_fecha,                // ( Fecha propagación )
                 'pm_fecha_esquejacion'          => optional($data->getPlantaMadre)->pm_fecha_esquejacion, // plantas madres ( Fecha Transplante )
-                'pro_cantidad_plantas_madres'   => $data->pro_cantidad_plantas_madres, // ( Cantidad Buenas )
-                'dias_transcurridos'            => $diasTranscurridos
+                'pro_cantidad_plantas_madres'   => $data->pro_cantidad_plantas_madres,
+                'estado_lote'                   => $evento,
+                'dias_transcurridos'            => $diasTranscurridos,
+                'color'                         => $color
             ];
         });
 
