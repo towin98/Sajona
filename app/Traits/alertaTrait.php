@@ -30,10 +30,15 @@ trait alertaTrait {
             ->where('tp_tipo', 'bolsa')
             ->get();
         if (count($transplante) == 0) {
-            if ($diasTranscurridos <= 21) {
-                $arrAlerta[0] = "Aun no Requiere Transplante a Bolsa.";
+            if ($diasTranscurridos <= 18) {
+                $arrAlerta[0] = "fase inicial";
                 $arrAlerta[1] = "#ff8000";
-            }else{
+            }else if($diasTranscurridos > 18 && $diasTranscurridos < 21 )
+            {
+                $arrAlerta[0] = "proximo a Bolsa";
+                $arrAlerta[1] = "#ff8000";
+            }
+            else{
                 $arrAlerta[0] = "Requiere Transplante a Bolsa.";
                 $arrAlerta[1] = "#FF0000";
             }
@@ -45,10 +50,16 @@ trait alertaTrait {
                 ->where('tp_tipo', 'campo')
                 ->get();
             if (count($transplante) == 0) {
-                if ($diasTranscurridos <= 150) {
+                if ($diasTranscurridos <= 148) {
                     $arrAlerta[0] = "Aun No Requiere Transplante a Campo.";
                     $arrAlerta[1] = "#ff8000";
-                }else{
+                }else if($diasTranscurridos > 148 && $diasTranscurridos < 150 )
+                {
+                    $arrAlerta[0] = "Proximo a transpasar a Campo";
+                    $arrAlerta[1] = "#ff8000";
+                }
+                
+                else{
                     $arrAlerta[0] = "Requiere Transplante a Campo.";
                     $arrAlerta[1] = "#FF0000";
                 }
