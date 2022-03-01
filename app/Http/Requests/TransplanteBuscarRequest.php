@@ -27,8 +27,8 @@ class TransplanteBuscarRequest extends FormRequest
     public function rules()
     {
         return [
-            'fecha_inicial'              => 'required|date_format:Y-m-d',
-            'fecha_final'                => 'required|date_format:Y-m-d|after_or_equal:fecha_inicial',
+            'fecha_inicial'              => 'nullable|date_format:Y-m-d',
+            'fecha_final'                => 'nullable|date_format:Y-m-d|after_or_equal:fecha_inicial',
         ];
     }
 
@@ -40,8 +40,6 @@ class TransplanteBuscarRequest extends FormRequest
     public function messages()
     {
         return [
-            'fecha_inicial.required'                  => 'La fecha inicial es requerida.',
-            'fecha_final.required'                    => 'La fecha final es requerida.',
             'fecha_inicial.date_format'               => 'El tipo de formato del campo fecha inicial debe ser ej: Y-m-d.',
             'fecha_final.date_format'                 => 'El tipo de formato del campo fecha final debe ser ej: Y-m-d.',
             'fecha_final.after_or_equal'              => 'La fecha fin debe de ser mayor que la fecha inicial.',

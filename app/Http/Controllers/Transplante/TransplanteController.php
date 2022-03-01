@@ -9,17 +9,21 @@ use App\Models\PlantaMadre;
 use App\Models\Propagacion;
 use App\Models\Transplante;
 use Illuminate\Http\Request;
+use App\Traits\paginationTrait;
+use App\Http\Resources\ListarTransplanteBolsaCollection;
+use App\Models\Baja;
 
 class TransplanteController extends Controller
 {
+    use paginationTrait;
+
     /**
-     * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de transplantes.
+     * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de transplantes a bolsa.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function buscar(TransplanteBuscarRequest $request)
-    {
+    public function buscar(TransplanteBuscarRequest $request) {
         // Se válida si envian los parámetros length
         if(!$request->filled('length')){
             $length = 15;
@@ -27,15 +31,32 @@ class TransplanteController extends Controller
             $length = $request->length;
         }
 
-        $registros = PlantaMadre::select([
-                                            'planta_madre.pm_pro_id_lote as id_lote',
-                                            'planta_madre.pm_id',
-                                            'propagacion.pro_fecha as fecha_propagacion',
-                                            'transplante.tp_fecha as fecha_transplante'
-                                        ])
-            ->join('propagacion', 'planta_madre.pm_pro_id_lote', '=', 'propagacion.pro_id_lote')
-            ->leftjoin('transplante', 'planta_madre.pm_id', '=', 'transplante.tp_pm_id')
-            ->BuscarTransplante($request->buscar);
+        $registros = Propagacion::select(['pro_id_lote', 'pro_fecha'])
+            ->with([
+                'getPlantaMadre' => function ($query) use ($request) {
+                    $query->select([
+                        'pm_id',
+                        'pm_pro_id_lote',
+                        'pm_fecha_esquejacion'
+                    ])
+                    ->with([
+                        'getTransplante' => function ($query) use ($request){
+                            $query->select([
+                                'tp_pm_id',
+                                'tp_fecha'
+                            ]);
+                        }]);
+                }
+            ]);
+
+        if ($request->filled('fecha_inicial') && $request->filled('fecha_final')) {
+
+            $registros = $registros->whereHas('getPlantaMadre', function ($query) use ($request) {
+                $query->whereBetween('pm_fecha_esquejacion',[$request->fecha_inicial.' 00:00:00', $request->fecha_final.' 23:59:59']);
+            });
+        }
+
+        $registros = $registros->BuscarTransplanteBolsa($request->buscar);
 
         // Consultas
         if ($request->filled('orderColumn') && $request->filled('order')) {
@@ -45,15 +66,11 @@ class TransplanteController extends Controller
             switch ($request->orderColumn) {
                 case 'id_lote':
                     $existeColumna = true;
-                    $request->orderColumn = 'pm_pro_id_lote';
+                    $request->orderColumn = 'pro_id_lote';
                 break;
                 case 'fecha_propagacion':
                     $existeColumna = true;
                     $request->orderColumn = 'pro_fecha';
-                break;
-                case 'fecha_transplante':
-                    $existeColumna = true;
-                    $request->orderColumn = 'tp_fecha';
                 break;
             }
 
@@ -62,20 +79,19 @@ class TransplanteController extends Controller
             }
         }
 
-        // Consulta Valor a buscar.
-        $registros = $registros->whereBetween('pm_fecha_esquejacion',[$request->fecha_inicial.' 00:00:00', $request->fecha_final.' 23:59:59'])
-            ->paginate($length);
+        $registros = $registros->get()
+            ->whereNotNull('getPlantaMadre');
+        $registros = $registros->toArray();
 
-        $registros->getCollection()->transform(function($data, $key) {
-            return [
-                'pm_id'                         => $data->pm_id,              // ( Id lote )
-                'id_lote'                       => $data->id_lote,              // ( Id lote )
-                'fecha_propagacion'             => $data->fecha_propagacion,    // (Fecha de Propagación)
-                'fecha_transplante'             => $data->fecha_transplante,    // (Fecha transplante Bolsa)
-                'accion'                        => $data->fecha_transplante == '' || $data->fecha_transplante == '0000-00-00 00:00:00' ? 'Pendiente' : 'Finalizado',
-            ];
-        });
+        $registrosNuevos = ListarTransplanteBolsaCollection::collection($registros);
 
+        if ($request->orderColumn == 'fecha_transplante') {
+            $registrosNuevos = collect($registrosNuevos)->sortBy([
+                ['fecha_transplante', strtolower($request->order)]
+            ]);
+        }
+
+        $registros = $this->paginar($request,$registrosNuevos->all(), $length);
         return response()->json($registros, 200);
     }
 
@@ -85,8 +101,7 @@ class TransplanteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TransplanteStoreRequest $request)
-    {
+    public function store(TransplanteStoreRequest $request) {
         $plantaMadre = PlantaMadre::select('planta_madre.pm_id',
                                             'planta_madre.pm_pro_id_lote',
                                             'propagacion.pro_cantidad_plantas_madres',
@@ -126,9 +141,11 @@ class TransplanteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $registro = PlantaMadre::select('planta_madre.pm_id',
+                                        'planta_madre.pm_pro_id_lote',
+                                        'planta_madre.pm_cantidad_semillas',
+                                        'planta_madre.pm_cantidad_esquejes',
                                         'transplante.tp_fecha',
                                         'transplante.tp_tipo_lote',
                                         'transplante.tp_ubicacion',
@@ -137,17 +154,7 @@ class TransplanteController extends Controller
             ->leftjoin('transplante', 'planta_madre.pm_id', '=', 'transplante.tp_pm_id')
             ->join('propagacion', 'planta_madre.pm_pro_id_lote', '=', 'propagacion.pro_id_lote')
             ->where('planta_madre.pm_id', $id)
-            ->get()
-            ->map(function ($data) {
-                return [
-                    'tp_pm_id'                => $data->pm_id,
-                    'tp_fecha'                => $data->tp_fecha == '' || $data->tp_fecha == '0000-00-00 00:00:00' ?  '' : substr($data->tp_fecha,0,10), // Fecha transplante
-                    'cantidad_buenas'         => $data->pro_cantidad_plantas_madres,                         // PLantans buenas
-                    'tp_tipo_lote'            => $data->tp_tipo_lote == '' ? '' : $data->tp_tipo_lote,       // Tipo Lote
-                    'tp_ubicacion'            => $data->tp_ubicacion == '' ? '' : $data->tp_ubicacion, // Ubicación
-                    'tp_cantidad_area'        => $data->tp_cantidad_area == '' || $data->tp_cantidad_area == 0 ?  '' : $data->tp_cantidad_area
-                ];
-            });
+            ->get();
 
         if ($registro->isEmpty()) {
             return response()->json([
@@ -155,6 +162,28 @@ class TransplanteController extends Controller
                 "code"  => 404
             ], 404);
         }
+
+        // Obteniendo bajas del lote.
+        $bajas = Baja::select(['bj_cantidad'])
+            ->where('bj_fase_cultivo','bolsa')
+            ->where('bj_pro_id_lote', $registro[0]->pm_pro_id_lote)
+            ->get();
+
+        $sumaCantidadBajas = 0;
+        foreach ($bajas as $cantidadBaja) {
+            $sumaCantidadBajas = $cantidadBaja->bj_cantidad + $sumaCantidadBajas;
+        }
+
+        $registro = $registro->map(function ($data) use ($sumaCantidadBajas){
+            return [
+                'tp_pm_id'                     => $data->pm_id,
+                'tp_fecha'                     => $data->tp_fecha == '' || $data->tp_fecha == '0000-00-00 00:00:00' ?  '' : substr($data->tp_fecha,0,10), // Fecha transplante
+                'cantidad_transplante_bolsa'   => (($data->pm_cantidad_semillas + $data->pm_cantidad_esquejes) - $sumaCantidadBajas), // Cantidad Sembrada en bolsa
+                'tp_tipo_lote'                 => $data->tp_tipo_lote == '' ? '' : $data->tp_tipo_lote,       // Tipo Lote
+                'tp_ubicacion'                 => $data->tp_ubicacion == '' ? '' : $data->tp_ubicacion, // Ubicación
+                'tp_cantidad_area'             => $data->tp_cantidad_area == '' || $data->tp_cantidad_area == 0 ?  '' : $data->tp_cantidad_area
+            ];
+        });
 
         return response()->json([
             'data' => $registro[0],
