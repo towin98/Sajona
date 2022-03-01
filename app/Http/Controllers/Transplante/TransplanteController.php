@@ -79,8 +79,10 @@ class TransplanteController extends Controller
             }
         }
 
-        $registros = $registros->get();
+        $registros = $registros->get()
+            ->whereNotNull('getPlantaMadre');
         $registros = $registros->toArray();
+
         $registrosNuevos = ListarTransplanteBolsaCollection::collection($registros);
 
         if ($request->orderColumn == 'fecha_transplante') {
