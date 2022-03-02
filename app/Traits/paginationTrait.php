@@ -13,7 +13,7 @@ trait paginationTrait {
      * @param Request $request
      * @param array $registros
      * @param integer $length
-     * @return void
+     * @return object
      */
     public function paginar(Request $request, $registros, $length)
     {

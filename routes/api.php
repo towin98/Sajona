@@ -34,7 +34,7 @@ Route::group(['prefix' => 'planta-madre', /* 'middleware' => 'auth:sanctum' */] 
 Route::group(['prefix' => 'transplante-bolsa', /* 'middleware' => 'auth:sanctum' */] , function(){
     Route::resource('/',  TransplanteController::class)->only(['store']);
     Route::get('/buscar', [TransplanteController::class, 'buscar']);
-    Route::get('/{id}', [TransplanteController::class, 'show']);
+    Route::get('/{id}', [TransplanteController::class, 'showBolsa']);
 });
 
 Route::group(['prefix' => 'transplante-campo'/* , 'middleware' => 'auth:sanctum' */] , function(){

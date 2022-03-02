@@ -136,12 +136,12 @@ class TransplanteController extends Controller
     }
 
     /**
-     * Muestra un registro.
+     * Muestra un registro de transplante a bolsa.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
+    public function showBolsa($id) {
         $registro = PlantaMadre::select('planta_madre.pm_id',
                                         'planta_madre.pm_pro_id_lote',
                                         'planta_madre.pm_cantidad_semillas',
