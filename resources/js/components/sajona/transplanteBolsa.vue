@@ -128,6 +128,22 @@
                             :sort-desc="true"
                             no-data-text="Sin registros"
                         >
+                            <template v-slot:item.fecha_propagacion="{ item }">
+                                <v-chip
+                                    :color="item.color"
+                                    dark
+                                >
+                                    {{ item.fecha_propagacion }}
+                                </v-chip>
+                            </template>
+                            <template v-slot:item.dias_transcurridos="{ item }">
+                                <v-chip
+                                    :color="item.color"
+                                    dark
+                                >
+                                    {{ item.dias_transcurridos }}
+                                </v-chip>
+                            </template>
                             <template v-slot:item.consultar="{ item }">
                                 <a @click="consultarTransplante(item)">Clic</a>
                             </template>
@@ -296,6 +312,8 @@ export default {
                 { text: "Id Lote", align: "start", value: "id_lote" },
                 { text: "Fecha Propagación", value: "fecha_propagacion" },
                 { text: "Fecha Transplante a Bolsa", value: "fecha_transplante" },
+                { text: "Estado", value: "estado_lote", sortable: false },
+                { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
                 { text: "Acción", value: "accion" },
                 { text: "Consultar", value: "consultar", sortable: false },
             ],

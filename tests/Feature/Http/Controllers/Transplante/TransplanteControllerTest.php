@@ -45,6 +45,9 @@ class TransplanteControllerTest extends TestCase
                     'fecha_propagacion',
                     'fecha_transplante',
                     'accion',
+                    'estado_lote',
+                    'dias_transcurridos',
+                    'color'
                 ]
             ],
             'first_page_url',
@@ -136,7 +139,7 @@ class TransplanteControllerTest extends TestCase
             '*'=> [
                 'tp_pm_id',
                 'tp_fecha',
-                'cantidad_buenas',
+                'cantidad_transplante_bolsa',
                 'tp_tipo_lote',
                 'tp_ubicacion',
                 'tp_cantidad_area'

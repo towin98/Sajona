@@ -4179,6 +4179,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4220,6 +4236,14 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Fecha Transplante a Bolsa",
         value: "fecha_transplante"
+      }, {
+        text: "Estado",
+        value: "estado_lote",
+        sortable: false
+      }, {
+        text: "Días transcurridos",
+        value: "dias_transcurridos",
+        sortable: false
       }, {
         text: "Acción",
         value: "accion"
@@ -27647,6 +27671,44 @@ var render = function () {
                           },
                         },
                         scopedSlots: _vm._u([
+                          {
+                            key: "item.fecha_propagacion",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  { attrs: { color: item.color, dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.fecha_propagacion) +
+                                        "\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                          {
+                            key: "item.dias_transcurridos",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  { attrs: { color: item.color, dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.dias_transcurridos) +
+                                        "\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
                           {
                             key: "item.consultar",
                             fn: function (ref) {
