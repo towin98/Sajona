@@ -101,7 +101,7 @@
                             <v-select
                                 v-model="baja.bj_fase_cultivo"
                                 ref="bj_fase_cultivo"
-                                :items="['Esquejes','Bolsa', 'Campo', 'Cosecha']"
+                                :items="['esquejes','bolsa', 'campo', 'cosecha']"
                                 :error-messages="(error.errores[index].bj_fase_cultivo != undefined) ? error.errores[index].bj_fase_cultivo : ''"
                                 filled
                                 label="Fase de Cultivo"

@@ -39,6 +39,7 @@ class PlantaMadre extends Model
         "pm_cantidad_esquejes",
         "pm_estado",
         "getTransplante",
+        "getTransplantes" // Utilizado para traer todos los transplantes, (Modulo transplante bolsa)
     ];
 
     /**
@@ -48,6 +49,15 @@ class PlantaMadre extends Model
      */
     public function getTransplante(){
         return $this->belongsTo(Transplante::class,'pm_id', 'tp_pm_id');
+    }
+
+    /**
+     *  Obtiene los registros de transplantes que hacen parte de planta madres.
+     *
+     * @return Illuminate\Support\Collection;
+     */
+    public function getTransplantes(){
+        return $this->hasMany(Transplante::class,'tp_pm_id', 'pm_id');
     }
 
     /**
