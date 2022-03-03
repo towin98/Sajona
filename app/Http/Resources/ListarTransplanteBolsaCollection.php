@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Traits\alertaTrait;
-use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ListarTransplanteBolsaCollection extends ResourceCollection
