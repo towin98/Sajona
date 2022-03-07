@@ -4,12 +4,14 @@ namespace App\Http\Resources;
 
 use App\Models\Baja;
 use App\Traits\alertaTrait;
+use App\Traits\bajasTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ListarTransplanteCampoCollection extends ResourceCollection
 {
     use alertaTrait;
+    use bajasTrait;
 
     private $fechaTransplanteBolsa = "";
     private $fechaTransplanteCampo = "";
@@ -40,7 +42,7 @@ class ListarTransplanteCampoCollection extends ResourceCollection
             $this->registrosTransplante($this['get_planta_madre']['get_transplantes']);
         }
 
-        $sumaCantidadBajas = $this->cantidadBajasCampo($this['pro_id_lote']);
+        $sumaCantidadBajas = $this->cantidadBajas($this['pro_id_lote'], ['esquejes','campo', 'bolsa']);
         $cantidadTransplarCampo = (($this['get_planta_madre']['pm_cantidad_semillas'] + $this['get_planta_madre']['pm_cantidad_esquejes']) - $sumaCantidadBajas);
 
         return [
@@ -87,25 +89,4 @@ class ListarTransplanteCampoCollection extends ResourceCollection
         }
     }
 
-    /**
-     * Obteiene cantidad bajas para el módulo de campo.
-     *
-     * @param integer $id_lote
-     * @return integer Cantidad bajas.
-     */
-    static function cantidadBajasCampo($id_lote) {
-
-        // Obteniendo bajas del lote.
-        $bajas = Baja::select(['bj_cantidad'])
-            ->whereIn('bj_fase_cultivo',['campo', 'bolsa'])
-            ->where('bj_pro_id_lote', $id_lote)
-            ->get();
-
-        $sumaCantidadBajas = 0;
-        foreach ($bajas as $cantidadBaja) {
-            $sumaCantidadBajas = $cantidadBaja->bj_cantidad + $sumaCantidadBajas;
-        }
-
-        return $sumaCantidadBajas;
-    }
 }

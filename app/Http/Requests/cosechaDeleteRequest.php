@@ -3,10 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class TransplanteCampoStoreRequest extends FormRequest
+class cosechaDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,14 +20,14 @@ class TransplanteCampoStoreRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reglas de validación.
      *
      * @return array
      */
     public function rules()
     {
         return [
-            'tp_fecha'                      => 'required|date_format:Y-m-d',
+            'tp_id'         => 'required|integer'
         ];
     }
 
@@ -38,8 +39,9 @@ class TransplanteCampoStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'tp_fecha.required'                      => 'La fecha de transplante a Campo es requerida.',
-            'tp_fecha.date_format'                   => 'La fecha de Transplante a Campo debe cumplir el formato: Y-m-d.',
+            'tp_id.required'                => 'El Id transplante a campo es requerido.',
+            'tp_id.integer'                 => 'El Id transplante a campo debe ser númerico.',
+
         ];
     }
 

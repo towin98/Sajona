@@ -39,7 +39,8 @@ class PlantaMadre extends Model
         "pm_cantidad_esquejes",
         "pm_estado",
         "getTransplante",
-        "getTransplantes" // Utilizado para traer todos los transplantes, (Modulo transplante bolsa)
+        "getTransplantes", // Utilizado para traer todos los transplantes, (Modulo transplante bolsa)
+        "getPropagacion" // utilizado para modulo de cosecha, tracking.
     ];
 
     /**
@@ -58,6 +59,15 @@ class PlantaMadre extends Model
      */
     public function getTransplantes(){
         return $this->hasMany(Transplante::class,'tp_pm_id', 'pm_id');
+    }
+
+    /**
+     *  Obtiene los registros de Propagacion que hacen parte de planta madres.
+     *
+     * @return Illuminate\Support\Collection;
+     */
+    public function getPropagacion(){
+        return $this->belongsTo(Propagacion::class,'pm_pro_id_lote', 'pro_id_lote');
     }
 
     /**
