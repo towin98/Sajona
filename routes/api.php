@@ -6,6 +6,7 @@ use App\Http\Controllers\PlantaMadre\PlantaMadreController;
 use App\Http\Controllers\Propagacion\PropagacionController;
 use App\Http\Controllers\Transplante\TransplanteController;
 use App\Http\Controllers\Baja\BajaController;
+use App\Http\Controllers\Cosecha\CosechaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,13 @@ Route::group(['prefix' => 'transplante-campo'/* , 'middleware' => 'auth:sanctum'
     Route::post('/',  [TransplanteController::class, 'storeTransplanteCampo']);
     Route::get('/buscar', [TransplanteController::class, 'buscarTransplanteCampo']);
     Route::get('/{id}', [TransplanteController::class, 'showTransplanteCampo']);
+});
+
+Route::group(['prefix' => 'cosecha'/* , 'middleware' => 'auth:sanctum' */] , function(){
+    Route::post('/',  [CosechaController::class, 'storeCosecha']);
+    Route::get('/buscar', [CosechaController::class, 'buscarCosechas']);
+    Route::get('/{id_transplante}', [CosechaController::class, 'showCosecha']);
+    Route::post('/delete', [CosechaController::class, 'deleteCosecha']);
 });
 
 Route::group(['prefix' => 'baja'/* , 'middleware' => 'auth:sanctum' */] , function(){

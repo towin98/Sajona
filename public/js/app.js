@@ -3024,12 +3024,396 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
 //
 //
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      token: localStorage.getItem("token"),
+      overlayLoading: false,
+      form: {
+        tp_id: '',
+        tp_fecha: '',
+        cos_fecha_cosecha: '',
+        id_lote: '',
+        cos_numero_plantas: '',
+        cos_estado_cosecha: '',
+        cos_dias_floracion: '',
+        tp_ubicacion: '',
+        cos_peso_verde: '',
+        cos_observacion: '',
+        hoy: new Date().toLocaleDateString()
+      },
+      errors: {},
+      // Tabla filtro.
+      debounce: null,
+      buscar: '',
+      // Table listar
+      page: 1,
+      totalRegistros: 0,
+      loading: true,
+      options: {},
+      headers: [{
+        text: "Id Lote",
+        align: "start",
+        value: "id_lote"
+      }, {
+        text: "Cantidad Planta Madre",
+        value: "pro_cantidad_plantas_madres"
+      }, {
+        text: "Fecha transplante Bolsa",
+        value: "tp_fecha"
+      }, {
+        text: "Fecha de cosecha",
+        value: "cos_fecha_cosecha"
+      }, {
+        text: "Estado",
+        value: "estado"
+      }, {
+        text: "Acciones",
+        value: "actions"
+      }],
+      dataSet: [],
+      startData: 0,
+      length: 0
+    };
+  },
+  watch: {
+    options: {
+      handler: function handler() {
+        this.buscarCosechas();
+      }
+    },
+    deep: true
+  },
+  methods: {
+    filterSearch: function filterSearch() {
+      var _this = this;
+
+      this.loading = true;
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this.buscarCosechas(_this.buscar);
+      }, 800);
+    },
+    buscarCosechas: function buscarCosechas() {
+      var _this2 = this;
+
+      var buscar = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.buscar;
+      this.overlayLoading = true;
+      var _this$options = this.options,
+          page = _this$options.page,
+          itemsPerPage = _this$options.itemsPerPage,
+          sortBy = _this$options.sortBy,
+          sortDesc = _this$options.sortDesc; // Obteniendo rangos de consultado paginación.
+
+      this.start = itemsPerPage * (page - 1);
+      this.length = this.start + itemsPerPage;
+
+      if (sortDesc[0] == true) {
+        sortBy = sortBy[0];
+        sortDesc = "DESC";
+      } else if (sortDesc[0] == false) {
+        sortBy = sortBy[0];
+        sortDesc = "ASC";
+      } else {
+        sortBy = "";
+        sortDesc = "";
+      }
+
+      this.loading = true;
+      axios.get("/sajona/cosecha/buscar?length=".concat(this.length, "&start=").concat(this.start, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(buscar)).then(function (response) {
+        _this2.loading = false;
+        _this2.dataSet = response.data.data;
+        _this2.totalRegistros = response.data.total;
+        _this2.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this2.loading = false;
+        _this2.overlayLoading = false; // console.log(errors.response.data);
+      });
+    },
+    editCosecha: function editCosecha(item) {
+      var _this3 = this;
+
+      this.overlayLoading = true;
+      axios.get("/sajona/cosecha/".concat(item.tp_id)).then(function (response) {
+        var data = response.data.data;
+        _this3.form = data;
+        _this3.form.id_lote = data.id_lote;
+        _this3.form.tp_id = item.tp_id; // Importante
+
+        _this3.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this3.overlayLoading = false;
+      });
+    },
+    deleteCosecha: function deleteCosecha(item) {
+      var _this4 = this;
+
+      console.log(item);
+
+      if (item.cos_fecha_cosecha == "") {
+        this.$swal("El lote[".concat(item.id_lote, "] aun no tiene una cosecha."), 'Solo los lotes que tengan cosecha pueden ser eliminados.', 'info');
+      } else {
+        this.$swal({
+          title: 'Quiere eliminar la cosecha?',
+          text: "Se removera la cosecha del lote ".concat(item.id_lote, "!"),
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, Eliminarlo!'
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            _this4.overlayLoading = true;
+            axios.post("/sajona/cosecha/delete/", {
+              tp_id: item.tp_id
+            }).then(function (response) {
+              _this4.overlayLoading = false;
+
+              _this4.$swal(response.data.message, '', 'success');
+
+              _this4.buscarCosechas();
+            })["catch"](function (errors) {
+              _this4.overlayLoading = false;
+            });
+          }
+        });
+      }
+    },
+    guardarCosecha: function guardarCosecha() {
+      var _this5 = this;
+
+      axios.post("/sajona/cosecha", this.form).then(function (response) {
+        _this5.errors = "";
+
+        _this5.$swal(response.data.message, '', 'success');
+
+        _this5.buscarCosechas();
+
+        _this5.limpiarCampos();
+      })["catch"](function (errores) {
+        _this5.errors = errors.response.data.errors;
+      });
+    },
+    limpiarCampos: function limpiarCampos() {
+      this.form.tp_id = '';
+      this.$refs["tp_fecha"].reset();
+      this.$refs["cos_fecha_cosecha"].reset();
+      this.$refs["id_lote"].reset();
+      this.form.id_lote = '';
+      this.$refs["cos_numero_plantas"].reset();
+      this.$refs["cos_estado_cosecha"].reset();
+      this.$refs["cos_dias_floracion"].reset();
+      this.$refs["tp_ubicacion"].reset();
+      this.$refs["cos_peso_verde"].reset();
+      this.$refs["cos_observacion"].reset();
+    }
+  },
+  mounted: function mounted() {
+    window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
+  }
+});
 
 /***/ }),
 
@@ -26481,16 +26865,450 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
+      _vm._v(" "),
+      _c("h4", [_vm._v("Cosecha")]),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-card",
+            { attrs: { elevation: "2" } },
+            [
+              _c("v-card-title", { staticClass: "rounded-sm" }, [
+                _c("span", { staticClass: "text-h6 font-weight-bold" }, [
+                  _vm._v("Nuevo"),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                { staticClass: "pl-4 pr-4" },
+                [
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Fecha Transplante Terreno")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "tp_fecha",
+                        attrs: {
+                          type: "date",
+                          dense: "",
+                          "error-messages": _vm.errors.tp_fecha,
+                          readonly: "",
+                        },
+                        model: {
+                          value: _vm.form.tp_fecha,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "tp_fecha", $$v)
+                          },
+                          expression: "form.tp_fecha",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Fecha de Cosecha")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "cos_fecha_cosecha",
+                        attrs: {
+                          type: "date",
+                          "error-messages": _vm.errors.cos_fecha_cosecha,
+                          dense: "",
+                        },
+                        model: {
+                          value: _vm.form.cos_fecha_cosecha,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_fecha_cosecha", $$v)
+                          },
+                          expression: "form.cos_fecha_cosecha",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Id Lote")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "id_lote",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.id_lote,
+                        },
+                        model: {
+                          value: _vm.form.id_lote,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "id_lote", $$v)
+                          },
+                          expression: "form.id_lote",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("N° Plantas")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "cos_numero_plantas",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.cos_numero_plantas,
+                          readonly: "",
+                        },
+                        model: {
+                          value: _vm.form.cos_numero_plantas,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_numero_plantas", $$v)
+                          },
+                          expression: "form.cos_numero_plantas",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Estado de Cosecha")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-select", {
+                        ref: "cos_estado_cosecha",
+                        attrs: {
+                          items: ["Estado 1", "Estado 2"],
+                          dense: "",
+                          "error-messages": _vm.errors.cos_estado_cosecha,
+                        },
+                        model: {
+                          value: _vm.form.cos_estado_cosecha,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_estado_cosecha", $$v)
+                          },
+                          expression: "form.cos_estado_cosecha",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Días de Floración")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "cos_dias_floracion",
+                        attrs: {
+                          dense: "",
+                          "error-messages": _vm.errors.cos_dias_floracion,
+                          readonly: "",
+                        },
+                        model: {
+                          value: _vm.form.cos_dias_floracion,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_dias_floracion", $$v)
+                          },
+                          expression: "form.cos_dias_floracion",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Ubicación")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "tp_ubicacion",
+                        attrs: {
+                          type: "text",
+                          readonly: "",
+                          dense: "",
+                          "error-messages": _vm.errors.tp_ubicacion,
+                        },
+                        model: {
+                          value: _vm.form.tp_ubicacion,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "tp_ubicacion", $$v)
+                          },
+                          expression: "form.tp_ubicacion",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Peso verde Campo (Gramos)")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "cos_peso_verde",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.cos_peso_verde,
+                        },
+                        model: {
+                          value: _vm.form.cos_peso_verde,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_peso_verde", $$v)
+                          },
+                          expression: "form.cos_peso_verde",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Observaciones")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "6", sm: "10" } },
+                    [
+                      _c("v-textarea", {
+                        ref: "cos_observacion",
+                        attrs: {
+                          label: "Observacion",
+                          outlined: "",
+                          dense: "",
+                          "error-messages": _vm.errors.cos_observacion,
+                          rows: "1",
+                        },
+                        model: {
+                          value: _vm.form.cos_observacion,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_observacion", $$v)
+                          },
+                          expression: "form.cos_observacion",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    {
+                      staticClass: "d-flex justify-end",
+                      attrs: { cols: "12" },
+                    },
+                    [
+                      _vm.form.id_lote != ""
+                        ? _c(
+                            "v-btn",
+                            {
+                              staticClass: "white--text text-none",
+                              attrs: {
+                                type: "submit",
+                                small: "",
+                                color: "success",
+                                tile: "",
+                              },
+                              on: { click: _vm.guardarCosecha },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" save ")]),
+                              _vm._v("Guardar\n                    "),
+                            ],
+                            1
+                          )
+                        : _vm._e(),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12" } },
+                    [
+                      _c(
+                        "v-card-title",
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              type: "text",
+                              "append-icon": "mdi-magnify",
+                              label: "Buscar",
+                              "single-line": "",
+                              "hide-details": "",
+                            },
+                            on: { input: _vm.filterSearch },
+                            model: {
+                              value: _vm.buscar,
+                              callback: function ($$v) {
+                                _vm.buscar = $$v
+                              },
+                              expression: "buscar",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-data-table", {
+                        staticClass: "elevation-1",
+                        attrs: {
+                          page: _vm.page,
+                          headers: _vm.headers,
+                          items: _vm.dataSet,
+                          options: _vm.options,
+                          "server-items-length": _vm.totalRegistros,
+                          loading: _vm.loading,
+                          "items-per-page": 5,
+                          "item-key": "id_lote",
+                          "footer-props": {
+                            "items-per-page-options": [3, 5, 10, 15],
+                          },
+                          "sort-by": "id_lote",
+                          "sort-desc": true,
+                          "no-data-text": "Sin registros",
+                        },
+                        on: {
+                          "update:options": function ($event) {
+                            _vm.options = $event
+                          },
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "item.actions",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-icon",
+                                  {
+                                    staticClass: "mr-2",
+                                    attrs: { small: "" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.editCosecha(item)
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                            mdi-pencil\n                        "
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-icon",
+                                  {
+                                    attrs: { small: "" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.deleteCosecha(item)
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                            mdi-delete\n                        "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("cosecha")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

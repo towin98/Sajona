@@ -22,8 +22,8 @@ class CreateCosechaTable extends Migration
             $table->string("cos_estado_cosecha", 45);
             $table->integer("cos_dias_floracion");
             $table->integer("cos_peso_verde");
-            $table->string("cos_observacion", 500);
-            $table->string("cos_estado", 20);
+            $table->string("cos_observacion", 500)->nullable();
+            $table->boolean("cos_estado");
             $table->timestamps();
 
             $table->foreign('cos_tp_id')->references('tp_id')->on('transplante');

@@ -14,10 +14,12 @@ use App\Traits\paginationTrait;
 use App\Http\Resources\ListarTransplanteBolsaCollection;
 use App\Http\Resources\ListarTransplanteCampoCollection;
 use App\Models\Baja;
+use App\Traits\bajasTrait;
 
 class TransplanteController extends Controller
 {
     use paginationTrait;
+    use bajasTrait;
 
     /**
      * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de transplantes a bolsa.
@@ -166,15 +168,7 @@ class TransplanteController extends Controller
         }
 
         // Obteniendo bajas del lote.
-        $bajas = Baja::select(['bj_cantidad'])
-            ->where('bj_fase_cultivo','bolsa')
-            ->where('bj_pro_id_lote', $registro[0]->pm_pro_id_lote)
-            ->get();
-
-        $sumaCantidadBajas = 0;
-        foreach ($bajas as $cantidadBaja) {
-            $sumaCantidadBajas = $cantidadBaja->bj_cantidad + $sumaCantidadBajas;
-        }
+        $sumaCantidadBajas = $this->cantidadBajas($registro[0]->pm_pro_id_lote, ['esquejes','bolsa']);
 
         $registro = $registro->map(function ($data) use ($sumaCantidadBajas){
             return [
@@ -288,7 +282,8 @@ class TransplanteController extends Controller
 
         if ($plantaMadre) {
 
-            $sumaCantidadBajas = ListarTransplanteCampoCollection::cantidadBajasCampo($plantaMadre->pm_pro_id_lote);
+            $sumaCantidadBajas = $this->cantidadBajas($plantaMadre->pm_pro_id_lote, ['esquejes','campo', 'bolsa']);
+
             // Calculando cantidad transplante a campo.
             $data['pm_pro_id_lote'] = $plantaMadre->pm_pro_id_lote;
             $data['cantidad_transplante_campo'] = (($plantaMadre->pm_cantidad_semillas + $plantaMadre->pm_cantidad_esquejes) - $sumaCantidadBajas);
