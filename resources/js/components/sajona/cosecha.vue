@@ -5,7 +5,7 @@
         <v-container fluid>
             <v-card elevation="2">
                 <v-card-title class="rounded-sm">
-                    <span class="text-h6 font-weight-bold">Nuevo</span>
+                    <span class="text-h6 font-weight-bold">{{ titleAccion }}</span>
                 </v-card-title>
                 <v-row class="pl-4 pr-4">
                     <v-col cols="6" sm="2" class="py-0 pl-0">
@@ -19,6 +19,7 @@
                             dense
                             :error-messages="errors.tp_fecha"
                             readonly
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="2" class="py-0 pl-0">
@@ -31,6 +32,7 @@
                             ref="cos_fecha_cosecha"
                             :error-messages="errors.cos_fecha_cosecha"
                             dense
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
 
@@ -43,7 +45,9 @@
                             v-model="form.id_lote"
                             ref="id_lote"
                             dense
+                            readonly
                             :error-messages="errors.id_lote"
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
 
@@ -59,6 +63,7 @@
                             dense
                             :error-messages="errors.cos_numero_plantas"
                             readonly
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
 
@@ -72,6 +77,7 @@
                             :items="['Estado 1', 'Estado 2']"
                             dense
                             :error-messages="errors.cos_estado_cosecha"
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-select>
                     </v-col>
 
@@ -86,6 +92,7 @@
                             dense
                             :error-messages="errors.cos_dias_floracion"
                             readonly
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
 
@@ -100,6 +107,7 @@
                             readonly
                             dense
                             :error-messages="errors.tp_ubicacion"
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
 
@@ -113,6 +121,7 @@
                             ref="cos_peso_verde"
                             dense
                             :error-messages="errors.cos_peso_verde"
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="2" class="py-0 pl-0">
@@ -126,7 +135,8 @@
                             outlined
                             dense
                             :error-messages="errors.cos_observacion"
-                            rows="1"
+                            rows="2"
+                            :disabled="titleAccion == 'Nuevo'"
                             >
                         </v-textarea>
                     </v-col>
@@ -205,6 +215,7 @@ export default {
         return {
             token               : localStorage.getItem("token"),
             overlayLoading      : false,
+            titleAccion         : 'Nuevo',
 
             form: {
                 tp_id              : '',
@@ -297,6 +308,7 @@ export default {
                 });
         },
         editCosecha(item){
+            this.titleAccion = 'Editar';
             this.overlayLoading = true;
             axios
                 .get(`/sajona/cosecha/${item.tp_id}`)
@@ -313,6 +325,7 @@ export default {
 
         },
         deleteCosecha(item){
+            this.titleAccion = 'Nuevo';
             console.log(item);
             if (item.cos_fecha_cosecha == "") {
                 this.$swal(
@@ -365,7 +378,7 @@ export default {
                     this.limpiarCampos();
                 })
                 .catch((errores) => {
-                    this.errors = errors.response.data.errors;
+                    this.errors = errores.response.data.errors;
                 });
         },
         limpiarCampos() {

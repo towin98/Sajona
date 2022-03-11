@@ -23,7 +23,8 @@ class CreatePostCosechaTable extends Migration
             $table->integer("post_peso_flor_seco");
             $table->float("post_cbd", 8,2);
             $table->float("post_thc", 8,2);
-            $table->string("post_observacion", 500);
+            $table->string("post_observacion", 500)->nullable();
+            $table->boolean("post_estado");
             $table->timestamps();
 
             $table->foreign('post_cos_id')->references('cos_id')->on('cosecha');

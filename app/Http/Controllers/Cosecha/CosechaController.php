@@ -225,14 +225,13 @@ class CosechaController extends Controller
                 'errors' => [
                     "No existe registros con el Id[$id_transplante] proporcionado."
                 ],
-            ], 200);
+            ], 404);
         }
 
         return response()->json([
             'data' => $cosecha[0],
         ], 200);
     }
-
 
     /**
      * Elimina un registro de cosecha (cambia a estado 0)
