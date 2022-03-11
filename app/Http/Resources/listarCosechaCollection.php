@@ -14,7 +14,6 @@ class listarCosechaCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        // return parent::toArray($request);
         return [
             'id_lote'                       => $this['get_planta_madre']['pm_pro_id_lote'],
             'tp_id'                         => $this['tp_id'],

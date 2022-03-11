@@ -46,7 +46,8 @@ class Cosecha extends Model
         "cos_peso_verde",
         "cos_observacion",
         "cos_estado",
-        "getTransplanteCampo"
+        "getTransplanteCampo",
+        "getPostCosecha"
     ];
 
     /**
@@ -55,6 +56,37 @@ class Cosecha extends Model
      * @return Illuminate\Support\Collection;
      */
     public function getTransplanteCampo(){
-        return $this->belongsTo(Propagacion::class,'cos_tp_id', 'cos_id');
+        return $this->belongsTo(Transplante::class,'cos_tp_id', 'tp_id');
+    }
+
+    /**
+     *  Obtiene los registros de post cosecha que hacen parte de cosecha.
+     *
+     * @return Illuminate\Support\Collection;
+     */
+    public function getPostCosecha(){
+        return $this->belongsTo(PostCosecha::class,'cos_id', 'post_cos_id');
+    }
+
+    /**
+     * Scope para realizar una búsqueda mixta en el módulo de Post Cosecha.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @param string $buscar Valor a buscar
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBuscarPostCosecha($query, $buscar) {
+        if($buscar) {
+            return $query
+                ->whereHas('getTransplanteCampo', function ($query) use ($buscar) {
+                    $query->whereHas('getPlantaMadre', function ($query) use ($buscar) {
+                        $query->where('pm_pro_id_lote', 'LIKE', "%$buscar%");
+                    });
+                })
+                ->orWhereHas('getPostCosecha', function ($query) use ($buscar) {
+                    $query->where('post_fecha_ini_secado', 'LIKE', "%$buscar%");
+                    $query->where('post_fecha_fin_secado', 'LIKE', "%$buscar%"); // Registros no eliminados
+                });
+        }
     }
 }

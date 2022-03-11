@@ -3222,6 +3222,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -3231,6 +3241,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       token: localStorage.getItem("token"),
       overlayLoading: false,
+      titleAccion: 'Nuevo',
       form: {
         tp_id: '',
         tp_fecha: '',
@@ -3335,6 +3346,7 @@ __webpack_require__.r(__webpack_exports__);
     editCosecha: function editCosecha(item) {
       var _this3 = this;
 
+      this.titleAccion = 'Editar';
       this.overlayLoading = true;
       axios.get("/sajona/cosecha/".concat(item.tp_id)).then(function (response) {
         var data = response.data.data;
@@ -3350,6 +3362,7 @@ __webpack_require__.r(__webpack_exports__);
     deleteCosecha: function deleteCosecha(item) {
       var _this4 = this;
 
+      this.titleAccion = 'Nuevo';
       console.log(item);
 
       if (item.cos_fecha_cosecha == "") {
@@ -3393,7 +3406,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this5.limpiarCampos();
       })["catch"](function (errores) {
-        _this5.errors = errors.response.data.errors;
+        _this5.errors = errores.response.data.errors;
       });
     },
     limpiarCampos: function limpiarCampos() {
@@ -3893,12 +3906,522 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      token: localStorage.getItem("token"),
+      overlayLoading: false,
+      titleAccion: 'Nuevo',
+      post_porcentaje_humedad: [function (valor) {
+        return valor > 0 || "El valor porcentaje humedad debe ser positivo.";
+      }],
+      form: {
+        pos_id: '',
+        cos_id: '',
+        cos_fecha_cosecha: '',
+        post_fecha_ini_secado: '',
+        post_fecha_fin_secado: '',
+        id_lote: '',
+        cos_numero_plantas: '',
+        cos_estado_cosecha: '',
+        cos_dias_floracion: '',
+        cos_peso_verde: '',
+        post_peso_flor_verde: '',
+        post_peso_biomasa: '',
+        post_peso_flor_seco: '',
+        post_cbd: '',
+        post_thc: '',
+        post_porcentaje_humedad: '',
+        post_observacion: ''
+      },
+      errors: {},
+      // Tabla filtro.
+      debounce: null,
+      buscar: '',
+      // Table listar
+      page: 1,
+      totalRegistros: 0,
+      loading: true,
+      options: {},
+      headers: [{
+        text: "Id Lote",
+        align: "start",
+        value: "id_lote"
+      }, {
+        text: "fecha Inicio Secado",
+        value: "post_fecha_ini_secado"
+      }, {
+        text: "Fecha Fin Secado",
+        value: "post_fecha_fin_secado"
+      }, {
+        text: "Estado",
+        value: "estado"
+      }, {
+        text: "Acciones",
+        value: "actions"
+      }],
+      dataSet: [],
+      startData: 0,
+      length: 0
+    };
+  },
+  watch: {
+    options: {
+      handler: function handler() {
+        this.buscarPostCosechas();
+      }
+    },
+    deep: true
+  },
+  methods: {
+    filterSearch: function filterSearch() {
+      var _this = this;
+
+      this.loading = true;
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(function () {
+        _this.buscarPostCosechas(_this.buscar);
+      }, 800);
+    },
+    buscarPostCosechas: function buscarPostCosechas() {
+      var _this2 = this;
+
+      var buscar = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.buscar;
+      this.overlayLoading = true;
+      var _this$options = this.options,
+          page = _this$options.page,
+          itemsPerPage = _this$options.itemsPerPage,
+          sortBy = _this$options.sortBy,
+          sortDesc = _this$options.sortDesc; // Obteniendo rangos de consultado paginación.
+
+      this.start = itemsPerPage * (page - 1);
+      this.length = this.start + itemsPerPage;
+
+      if (sortDesc[0] == true) {
+        sortBy = sortBy[0];
+        sortDesc = "DESC";
+      } else if (sortDesc[0] == false) {
+        sortBy = sortBy[0];
+        sortDesc = "ASC";
+      } else {
+        sortBy = "";
+        sortDesc = "";
+      }
+
+      this.loading = true;
+      axios.get("/sajona/post-cosecha/buscar?length=".concat(this.length, "&start=").concat(this.start, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(buscar)).then(function (response) {
+        _this2.loading = false;
+        _this2.dataSet = response.data.data;
+        _this2.totalRegistros = response.data.total;
+        _this2.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this2.loading = false;
+        _this2.overlayLoading = false; // console.log(errors.response.data);
+      });
+    },
+    editPostCosecha: function editPostCosecha(item) {
+      var _this3 = this;
+
+      this.titleAccion = 'Editar';
+      this.overlayLoading = true;
+      axios.get("/sajona/post-cosecha/".concat(item.cos_id)).then(function (response) {
+        var data = response.data.data;
+        _this3.form = _objectSpread({}, data);
+        _this3.overlayLoading = false;
+      })["catch"](function (errors) {
+        _this3.overlayLoading = false;
+      });
+    },
+    deletePostCosecha: function deletePostCosecha(item) {
+      var _this4 = this;
+
+      this.titleAccion = 'Nuevo';
+
+      if (item.pos_id == "") {
+        // Id de post cosecha
+        this.$swal("El lote[".concat(item.id_lote, "] aun no tiene una post cosecha."), 'Solo los lotes que tengan post cosecha pueden ser eliminados.', 'info');
+      } else {
+        this.$swal({
+          title: 'Quiere eliminar la post cosecha?',
+          text: "Se removera la post cosecha del lote ".concat(item.id_lote, "!"),
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, Eliminarlo!'
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            _this4.overlayLoading = true;
+            axios.post("/sajona/post-cosecha/delete", {
+              pos_id: item.pos_id
+            }).then(function (response) {
+              _this4.overlayLoading = false;
+
+              _this4.$swal(response.data.message, '', 'success');
+
+              _this4.buscarPostCosechas();
+            })["catch"](function (errors) {
+              var text = '';
+
+              if (errors.response.data.errors.pos_id === undefined) {
+                text = errors.response.data.errors;
+              } else {
+                text = errors.response.data.errors.pos_id;
+              }
+
+              _this4.$swal({
+                icon: 'error',
+                title: "".concat(errors.response.data.message),
+                text: "".concat(text)
+              });
+
+              _this4.overlayLoading = false;
+            });
+          }
+        });
+      }
+    },
+    getPorcentajeHumedad: function getPorcentajeHumedad() {
+      this.form.post_porcentaje_humedad = this.form.post_peso_flor_verde - this.form.post_peso_flor_seco;
+    },
+    getBiomasa: function getBiomasa() {
+      this.form.post_peso_biomasa = this.form.cos_peso_verde - this.form.post_peso_flor_verde;
+    },
+    guardarPostCosecha: function guardarPostCosecha() {
+      var _this5 = this;
+
+      axios.post("/sajona/post-cosecha", this.form).then(function (response) {
+        _this5.errors = "";
+
+        _this5.$swal(response.data.message, '', 'success');
+
+        _this5.buscarPostCosechas();
+
+        _this5.limpiarCampos();
+      })["catch"](function (errores) {
+        _this5.errors = errores.response.data.errors;
+      });
+    },
+    limpiarCampos: function limpiarCampos() {
+      this.form.pos_id = '';
+      this.form.cos_id = '', this.form.cos_fecha_cosecha = '', this.form.post_fecha_ini_secado = '', this.form.post_fecha_fin_secado = '', this.form.id_lote = '', this.form.cos_numero_plantas = '', this.$refs["cos_estado_cosecha"].reset();
+      this.form.cos_dias_floracion = '', this.form.cos_peso_verde = '', this.form.post_peso_flor_verde = '', this.form.post_peso_biomasa = '', this.form.post_peso_flor_seco = '', this.form.post_cbd = '', this.form.post_thc = '', this.form.post_porcentaje_humedad = '', this.form.post_observacion = '';
+    }
+  },
+  mounted: function mounted() {
+    window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
+  }
+});
 
 /***/ }),
 
@@ -26882,7 +27405,7 @@ var render = function () {
             [
               _c("v-card-title", { staticClass: "rounded-sm" }, [
                 _c("span", { staticClass: "text-h6 font-weight-bold" }, [
-                  _vm._v("Nuevo"),
+                  _vm._v(_vm._s(_vm.titleAccion)),
                 ]),
               ]),
               _vm._v(" "),
@@ -26908,6 +27431,7 @@ var render = function () {
                           dense: "",
                           "error-messages": _vm.errors.tp_fecha,
                           readonly: "",
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.tp_fecha,
@@ -26938,6 +27462,7 @@ var render = function () {
                           type: "date",
                           "error-messages": _vm.errors.cos_fecha_cosecha,
                           dense: "",
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.cos_fecha_cosecha,
@@ -26967,7 +27492,9 @@ var render = function () {
                         attrs: {
                           type: "number",
                           dense: "",
+                          readonly: "",
                           "error-messages": _vm.errors.id_lote,
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.id_lote,
@@ -26999,6 +27526,7 @@ var render = function () {
                           dense: "",
                           "error-messages": _vm.errors.cos_numero_plantas,
                           readonly: "",
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.cos_numero_plantas,
@@ -27029,6 +27557,7 @@ var render = function () {
                           items: ["Estado 1", "Estado 2"],
                           dense: "",
                           "error-messages": _vm.errors.cos_estado_cosecha,
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.cos_estado_cosecha,
@@ -27059,6 +27588,7 @@ var render = function () {
                           dense: "",
                           "error-messages": _vm.errors.cos_dias_floracion,
                           readonly: "",
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.cos_dias_floracion,
@@ -27090,6 +27620,7 @@ var render = function () {
                           readonly: "",
                           dense: "",
                           "error-messages": _vm.errors.tp_ubicacion,
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.tp_ubicacion,
@@ -27120,6 +27651,7 @@ var render = function () {
                           type: "number",
                           dense: "",
                           "error-messages": _vm.errors.cos_peso_verde,
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.cos_peso_verde,
@@ -27151,7 +27683,8 @@ var render = function () {
                           outlined: "",
                           dense: "",
                           "error-messages": _vm.errors.cos_observacion,
-                          rows: "1",
+                          rows: "2",
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.cos_observacion,
@@ -28079,16 +28612,660 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
+      _vm._v(" "),
+      _c("h4", [_vm._v("Post Cosecha")]),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c(
+            "v-card",
+            { attrs: { elevation: "2" } },
+            [
+              _c("v-card-title", { staticClass: "rounded-sm" }, [
+                _c("span", { staticClass: "text-h6 font-weight-bold" }, [
+                  _vm._v(_vm._s(_vm.titleAccion)),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-row",
+                { staticClass: "pl-4 pr-4" },
+                [
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Fecha cosecha")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "cos_fecha_cosecha",
+                        attrs: {
+                          type: "date",
+                          dense: "",
+                          "error-messages": _vm.errors.cos_fecha_cosecha,
+                          readonly: "",
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.cos_fecha_cosecha,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_fecha_cosecha", $$v)
+                          },
+                          expression: "form.cos_fecha_cosecha",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("F.I Secado")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_fecha_ini_secado",
+                        attrs: {
+                          type: "date",
+                          dense: "",
+                          "error-messages": _vm.errors.post_fecha_ini_secado,
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.post_fecha_ini_secado,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_fecha_ini_secado", $$v)
+                          },
+                          expression: "form.post_fecha_ini_secado",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("F.F Secado")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_fecha_fin_secado",
+                        attrs: {
+                          type: "date",
+                          "error-messages": _vm.errors.post_fecha_fin_secado,
+                          dense: "",
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.post_fecha_fin_secado,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_fecha_fin_secado", $$v)
+                          },
+                          expression: "form.post_fecha_fin_secado",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Id Lote")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "id_lote",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          readonly: "",
+                          "error-messages": _vm.errors.id_lote,
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.id_lote,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "id_lote", $$v)
+                          },
+                          expression: "form.id_lote",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("N° Plantas")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "cos_numero_plantas",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.cos_numero_plantas,
+                          disabled: "",
+                        },
+                        model: {
+                          value: _vm.form.cos_numero_plantas,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_numero_plantas", $$v)
+                          },
+                          expression: "form.cos_numero_plantas",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Estado de Cosecha")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-select", {
+                        ref: "cos_estado_cosecha",
+                        attrs: {
+                          items: ["Estado 1", "Estado 2"],
+                          dense: "",
+                          "error-messages": _vm.errors.cos_estado_cosecha,
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.cos_estado_cosecha,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_estado_cosecha", $$v)
+                          },
+                          expression: "form.cos_estado_cosecha",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Días de Floración")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "cos_dias_floracion",
+                        attrs: {
+                          dense: "",
+                          "error-messages": _vm.errors.cos_dias_floracion,
+                          readonly: "",
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.cos_dias_floracion,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_dias_floracion", $$v)
+                          },
+                          expression: "form.cos_dias_floracion",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Peso verde campo")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "cos_peso_verde",
+                        attrs: {
+                          type: "text",
+                          readonly: "",
+                          dense: "",
+                          "error-messages": _vm.errors.cos_peso_verde,
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.cos_peso_verde,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "cos_peso_verde", $$v)
+                          },
+                          expression: "form.cos_peso_verde",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Peso flor verde")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_peso_flor_verde",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.post_peso_flor_verde,
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        on: {
+                          keyup: function ($event) {
+                            _vm.getPorcentajeHumedad(), _vm.getBiomasa()
+                          },
+                        },
+                        model: {
+                          value: _vm.form.post_peso_flor_verde,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_peso_flor_verde", $$v)
+                          },
+                          expression: "form.post_peso_flor_verde",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Peso flor seco")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_peso_flor_seco",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.post_peso_flor_seco,
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        on: {
+                          keyup: function ($event) {
+                            return _vm.getPorcentajeHumedad()
+                          },
+                        },
+                        model: {
+                          value: _vm.form.post_peso_flor_seco,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_peso_flor_seco", $$v)
+                          },
+                          expression: "form.post_peso_flor_seco",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "pl-0 pb-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Biomasa")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "pl-0 pb-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_peso_biomasa",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.post_peso_biomasa,
+                          label: "Peso verde campo (Cosecha) - peso flor verde",
+                          disabled: _vm.titleAccion == "Nuevo",
+                          readonly: "",
+                        },
+                        model: {
+                          value: _vm.form.post_peso_biomasa,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_peso_biomasa", $$v)
+                          },
+                          expression: "form.post_peso_biomasa",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "pl-0 pb-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Porcentaje Humedad")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "pl-0 pb-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_porcentaje_humedad",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.post_porcentaje_humedad,
+                          rules: _vm.post_porcentaje_humedad,
+                          label: "Peso flor verde (Cosecha) - peso flor seco",
+                          disabled: _vm.titleAccion == "Nuevo",
+                          readonly: "",
+                        },
+                        model: {
+                          value: _vm.form.post_porcentaje_humedad,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_porcentaje_humedad", $$v)
+                          },
+                          expression: "form.post_porcentaje_humedad",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("% CBD")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_cbd",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.post_cbd,
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.post_cbd,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_cbd", $$v)
+                          },
+                          expression: "form.post_cbd",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("% THC")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_thc",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          "error-messages": _vm.errors.post_thc,
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.post_thc,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_thc", $$v)
+                          },
+                          expression: "form.post_thc",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Observaciones")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "6", sm: "10" } },
+                    [
+                      _c("v-textarea", {
+                        ref: "post_observacion",
+                        attrs: {
+                          label: "Observaciones",
+                          outlined: "",
+                          dense: "",
+                          "error-messages": _vm.errors.post_observacion,
+                          rows: "2",
+                          disabled: _vm.titleAccion == "Nuevo",
+                        },
+                        model: {
+                          value: _vm.form.post_observacion,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "post_observacion", $$v)
+                          },
+                          expression: "form.post_observacion",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _vm.form.id_lote != ""
+                    ? _c(
+                        "v-col",
+                        {
+                          staticClass: "d-flex justify-end",
+                          attrs: { cols: "12" },
+                        },
+                        [
+                          _c(
+                            "v-btn",
+                            {
+                              staticClass: "white--text text-none",
+                              attrs: {
+                                type: "submit",
+                                small: "",
+                                color: "success",
+                                tile: "",
+                              },
+                              on: { click: _vm.guardarPostCosecha },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" save ")]),
+                              _vm._v("Guardar\n                    "),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12" } },
+                    [
+                      _c(
+                        "v-card-title",
+                        [
+                          _c("v-text-field", {
+                            attrs: {
+                              type: "text",
+                              "append-icon": "mdi-magnify",
+                              label: "Buscar",
+                              "single-line": "",
+                              "hide-details": "",
+                            },
+                            on: { input: _vm.filterSearch },
+                            model: {
+                              value: _vm.buscar,
+                              callback: function ($$v) {
+                                _vm.buscar = $$v
+                              },
+                              expression: "buscar",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-data-table", {
+                        staticClass: "elevation-1",
+                        attrs: {
+                          page: _vm.page,
+                          headers: _vm.headers,
+                          items: _vm.dataSet,
+                          options: _vm.options,
+                          "server-items-length": _vm.totalRegistros,
+                          loading: _vm.loading,
+                          "items-per-page": 5,
+                          "item-key": "id_lote",
+                          "footer-props": {
+                            "items-per-page-options": [3, 5, 10, 15],
+                          },
+                          "sort-by": "id_lote",
+                          "sort-desc": true,
+                          "no-data-text": "Sin registros",
+                        },
+                        on: {
+                          "update:options": function ($event) {
+                            _vm.options = $event
+                          },
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "item.actions",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-icon",
+                                  {
+                                    staticClass: "mr-2",
+                                    attrs: { small: "" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.editPostCosecha(item)
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                            mdi-pencil\n                        "
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "v-icon",
+                                  {
+                                    attrs: { small: "" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.deletePostCosecha(item)
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                            mdi-delete\n                        "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                        ]),
+                      }),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("post cosecha")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
