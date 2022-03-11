@@ -2,20 +2,15 @@
 namespace App\Traits;
 
 use App\Models\Transplante;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 trait alertaTrait {
 
     /**
-     * Crea data paginada
-     *
-     * @param Request $request
-     * @param array $registros
-     * @param integer $length
-     * @return void
-     */
+      * Alerta estado de lotes.
+      *
+      * @param object $data
+      * @return array Estado de lote [0], color del estado [1]
+      */
     public function alerta($data)
     {
         $arrAlerta = [];
@@ -30,11 +25,16 @@ trait alertaTrait {
             ->where('tp_tipo', 'bolsa')
             ->get();
         if (count($transplante) == 0) {
-            if ($diasTranscurridos <= 21) {
-                $arrAlerta[0] = "Aun no Requiere Transplante a Bolsa.";
+            if ($diasTranscurridos <= 18) {
+
+                $arrAlerta[0] = "Fase inicial.";
+                $arrAlerta[1] = "#008F39";
+
+            }else if($diasTranscurridos > 18 && $diasTranscurridos <= 20){
+                $arrAlerta[0] = "Cercano transplante a bolsa.";
                 $arrAlerta[1] = "#ff8000";
-            }else{
-                $arrAlerta[0] = "Requiere Transplante a Bolsa.";
+            }else if($diasTranscurridos >= 21){
+                $arrAlerta[0] = "Transplantar a Bolsa.";
                 $arrAlerta[1] = "#FF0000";
             }
         }else{
@@ -44,17 +44,20 @@ trait alertaTrait {
                 ->where('tp_pm_id', optional($data->getPlantaMadre)->pm_id)
                 ->where('tp_tipo', 'campo')
                 ->get();
+
             if (count($transplante) == 0) {
-                if ($diasTranscurridos <= 150) {
-                    $arrAlerta[0] = "Aun No Requiere Transplante a Campo.";
+                if ($diasTranscurridos < 148) {
+                    $arrAlerta[0] = "En Bolsa.";
+                    $arrAlerta[1] = "#008F39";
+                }else if($diasTranscurridos >= 148 && $diasTranscurridos <= 149){
+                    $arrAlerta[0] = "Cercano Transplante a Campo.";
                     $arrAlerta[1] = "#ff8000";
-                }else{
-                    $arrAlerta[0] = "Requiere Transplante a Campo.";
+                }else if($diasTranscurridos > 149){
+                    $arrAlerta[0] = "Transplantar a Campo.";
                     $arrAlerta[1] = "#FF0000";
                 }
             }else{
-
-                $arrAlerta[0] = "Procesos del lote completados.";
+                $arrAlerta[0] = "En Campo.";
                 $arrAlerta[1] = "#008f39";
             }
 
