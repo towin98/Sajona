@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Transplante;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\TransplanteBuscarRequest;
-use App\Http\Requests\TransplanteCampoStoreRequest;
-use App\Http\Requests\TransplanteStoreRequest;
+use App\Traits\bajasTrait;
 use App\Models\PlantaMadre;
 use App\Models\Propagacion;
 use App\Models\Transplante;
+use App\Traits\alertaTrait;
 use Illuminate\Http\Request;
 use App\Traits\paginationTrait;
-use App\Http\Resources\ListarTransplanteBolsaCollection;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\TransplanteStoreRequest;
+use App\Http\Requests\TransplanteBuscarRequest;
+use App\Http\Requests\TransplanteCampoStoreRequest;
 use App\Http\Resources\ListarTransplanteCampoCollection;
-use App\Models\Baja;
-use App\Traits\bajasTrait;
 
 class TransplanteController extends Controller
 {
     use paginationTrait;
     use bajasTrait;
+    use alertaTrait;
 
     /**
      * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de transplantes a bolsa.
@@ -28,75 +29,100 @@ class TransplanteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function buscarTransplanteBolsa(TransplanteBuscarRequest $request) {
-        // Se válida si envian los parámetros length
-        if(!$request->filled('length')){
-            $length = 15;
-        }else{
+
+        // Se válida si envian los parámetros length y start.
+        if($request->has(['length', 'start'])){
             $length = $request->length;
+            $start  = $request->start;
+        }else{
+            $length = 50;
+            $start  = 0;
         }
 
-        $registros = Propagacion::select(['pro_id_lote', 'pro_fecha'])
-            ->with([
-                'getPlantaMadre' => function ($query) use ($request) {
-                    $query->select([
-                        'pm_id',
-                        'pm_pro_id_lote',
-                        'pm_fecha_esquejacion'
-                    ])
-                    ->with([
-                        'getTransplante' => function ($query) use ($request){
-                            $query->select([
-                                'tp_pm_id',
-                                'tp_fecha'
-                            ]);
-                        }]);
-                }
-            ]);
 
-        if ($request->filled('fecha_inicial') && $request->filled('fecha_final')) {
-
-            $registros = $registros->whereHas('getPlantaMadre', function ($query) use ($request) {
-                $query->whereBetween('pro_fecha',[$request->fecha_inicial.' 00:00:00', $request->fecha_final.' 23:59:59']);
+        $registros = DB::table('propagacion')
+            ->select(
+                        'planta_madre.pm_id',
+                        'propagacion.pro_id_lote',
+                        'propagacion.pro_fecha',
+                        'planta_madre.pm_fecha_esquejacion',
+                        'transplante.tp_fecha'
+                    )
+            ->join('planta_madre', 'planta_madre.pm_pro_id_lote', '=', 'propagacion.pro_id_lote')
+            ->leftJoin('transplante', function ($join) {
+                $join->on('transplante.tp_pm_id', '=', 'planta_madre.pm_id')
+                    ->where('transplante.tp_tipo', '=', 'bolsa');
             });
+
+        // Buscando por rango de fechas si digitan.
+        if ($request->filled('fecha_inicial') && $request->filled('fecha_final')) {
+            $registros = $registros->whereBetween('pro_fecha',[$request->fecha_inicial.' 00:00:00', $request->fecha_final.' 23:59:59']);
         }
 
-        $registros = $registros->BuscarTransplanteBolsa($request->buscar);
-
-        // Consultas
-        if ($request->filled('orderColumn') && $request->filled('order')) {
-
-            $existeColumna = false;
-            // Consulta Valor a buscar y ordenar registros ACS o DESC por una columna.
-            switch ($request->orderColumn) {
-                case 'id_lote':
-                    $existeColumna = true;
-                    $request->orderColumn = 'pro_id_lote';
-                break;
-                case 'fecha_propagacion':
-                    $existeColumna = true;
-                    $request->orderColumn = 'pro_fecha';
-                break;
-            }
-
-            if ($existeColumna == true) {
-                $registros = $registros->orderBy($request->orderColumn, $request->order);
-            }
+        //Busqueda por campos.
+        if ($request->filled('buscar')) {
+            $registros = $registros
+                ->where('propagacion.pro_id_lote', 'LIKE', "%$request->buscar%")
+                ->orWhere('propagacion.pro_fecha', 'LIKE', "%$request->buscar%")
+                ->orWhere('transplante.tp_fecha', 'LIKE', "%$request->buscar%");
         }
 
-        $registros = $registros->get()
-            ->whereNotNull('getPlantaMadre');
-        $registros = $registros->toArray();
+        $totalRegistros = $registros->count();
 
-        $registrosNuevos = ListarTransplanteBolsaCollection::collection($registros);
+        // Ordenamiento
+        switch ($request->orderColumn) {
+            case 'id_lote':
+                $registros = $registros->orderBy('propagacion.pro_id_lote', $request->order);
+            break;
+            case 'pro_fecha':
+                $registros = $registros->orderBy('propagacion.pro_fecha', $request->order);
+            break;
+            case 'tp_fecha':
+                $registros = $registros->orderBy('transplante.tp_fecha', $request->order);
+            break;
+        }
 
-        if ($request->orderColumn == 'fecha_transplante') {
-            $registrosNuevos = collect($registrosNuevos)->sortBy([
-                ['fecha_transplante', strtolower($request->order)]
+        $registros = $registros
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        $filtrados = $registros->count();
+
+        $registros = $registros->map(function ($value, $key){
+            // Se armana data como la requiere, tipo object.
+            $data = new Request([
+                'pro_fecha' => $value->pro_fecha,
+                'getPlantaMadre' => new Request([
+                    'pm_id' => $value->pm_id
+                ])
             ]);
-        }
 
-        $registros = $this->paginar($request,$registrosNuevos->all(), $length);
-        return response()->json($registros, 200);
+            $arrAlerta = $this->alerta($data);
+
+            $evento            = $arrAlerta[0];
+            $color             = $arrAlerta[1];
+            $diasTranscurridos = $arrAlerta[2];
+
+            return [
+                'pm_id'                    => $value->pm_id,
+                'id_lote'                  => $value->pro_id_lote,
+                'fecha_propagacion'        => $value->pro_fecha,
+                'pm_fecha_esquejacion'     => $value->pm_fecha_esquejacion,
+                'tp_fecha'                 => $value->tp_fecha,
+                'accion'                   => $value->tp_fecha == null || $value->tp_fecha == '0000-00-00 00:00:00' ? 'Pendiente' : 'Finalizado',
+                'estado_lote'              => $evento,
+                'dias_transcurridos'       => $diasTranscurridos,
+                'color'                    => $color
+            ];
+        });
+
+        return response()->json([
+            'data'      => $registros,
+            'filtrados' => $filtrados,
+            'total'     => $totalRegistros,
+        ], 200);
+
     }
 
     /**
@@ -146,7 +172,7 @@ class TransplanteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showTransplanteBolsa($id) {
-        $registro = PlantaMadre::select('planta_madre.pm_id',
+        $registro = DB::table('planta_madre')->select('planta_madre.pm_id',
                                         'planta_madre.pm_pro_id_lote',
                                         'planta_madre.pm_cantidad_semillas',
                                         'planta_madre.pm_cantidad_esquejes',
@@ -195,11 +221,14 @@ class TransplanteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function buscarTransplanteCampo(TransplanteBuscarRequest $request) {
-        // Se válida si envian los parámetros length
-        if(!$request->filled('length')){
-            $length = 15;
-        }else{
+
+        // Se válida si envian los parámetros length y start.
+        if($request->has(['length', 'start'])){
             $length = $request->length;
+            $start  = $request->start;
+        }else{
+            $length = 15;
+            $start  = 0;
         }
 
         $registros = Propagacion::select(['pro_id_lote', 'pro_fecha'])
@@ -219,9 +248,11 @@ class TransplanteController extends Controller
                                 'tp_fecha',
                                 'tp_tipo'
                             ]);
-                        }]);
+                        }
+                    ]);
                 }
-            ]);
+            ])
+            ->whereHas('getPlantaMadre');
 
         // Buscando por rango de fechas si digitan.
         if ($request->filled('fecha_inicial') && $request->filled('fecha_final')) {
@@ -231,18 +262,24 @@ class TransplanteController extends Controller
             });
         }
 
-        $registros = $registros->whereHas('getPlantaMadre', function ($query) {
-                $query->whereHas('getTransplantes', function ($query) {
+        $registros = $registros->whereHas('getPlantaMadre', function ($query) use ($request) {
+                $query->whereHas('getTransplantes', function ($query) use ($request) {
                     $query->where('tp_tipo', 'bolsa')
                         ->orWhere('tp_tipo', 'campo');
                 });
             })
-            ->BuscarTransplanteCampo($request->buscar)
+            ->BuscarTransplanteCampo($request->buscar);
+
+        // consulta para saber cuantos registros hay.
+        $totalRegistros = $registros->count();
+
+        $registros = $registros
+            ->skip($start)
+            ->take($length)
             ->get()
-            ->whereNotNull('getPlantaMadre')
             ->toArray();
 
-        $registrosNuevos = ListarTransplanteCampoCollection::collection($registros);
+        $registros = ListarTransplanteCampoCollection::collection($registros);
 
         // Ordenamiento
         if ($request->filled('orderColumn') && $request->filled('order')) {
@@ -251,15 +288,21 @@ class TransplanteController extends Controller
                 case 'fecha_transplante_Campo':
                 case 'fecha_transplante_bolsa':
                 case 'fecha_propagacion':
-                    $registrosNuevos = collect($registrosNuevos)->sortBy([
+                    $registros = collect($registros)->sortBy([
                         [$request->orderColumn, strtolower($request->order)]
                     ]);
                 break;
             }
         }
 
-        $registros = $this->paginar($request,$registrosNuevos->all(), $length);
-        return response()->json($registros, 200);
+        // $registros = $registros->slice($start,$length);
+        // $data      = $registros->values();
+
+        return response()->json([
+            'data'      => $registros,
+            'filtrados' => $registros->count(),
+            'total'     => $totalRegistros,
+        ], 200);
     }
 
     /**

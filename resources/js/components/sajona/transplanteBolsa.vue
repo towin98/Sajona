@@ -122,7 +122,7 @@
                             :items-per-page="5"
                             item-key="id_lote"
                             :footer-props="{
-                                'items-per-page-options': [3, 5, 10, 15],
+                                'items-per-page-options': [5,10,30,50],
                             }"
                             sort-by="id_lote"
                             :sort-desc="true"
@@ -311,13 +311,15 @@ export default {
             headers: [
                 { text: "Id Lote", align: "start", value: "id_lote" },
                 { text: "Fecha Propagación", value: "fecha_propagacion" },
-                { text: "Fecha Transplante a Bolsa", value: "fecha_transplante" },
+                { text: "Fecha Transplante a Bolsa", value: "tp_fecha" },
                 { text: "Estado", value: "estado_lote", sortable: false },
                 { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
                 { text: "Acción", value: "accion" },
                 { text: "Consultar", value: "consultar", sortable: false },
             ],
             dataSet: [],
+            start     : 0,
+            length    : 0,
             /* end variables Table. */
 
             /* Variables modal*/
@@ -350,6 +352,10 @@ export default {
             this.loading = true;
             let { page, itemsPerPage, sortBy, sortDesc } = this.options;
 
+            // Obteniendo rangos de consultado paginación.
+            this.start  = itemsPerPage * (page - 1);
+            this.length = itemsPerPage;
+
             if (sortDesc[0] == true) {
                 sortBy = sortBy[0];
                 sortDesc = "DESC";
@@ -363,7 +369,7 @@ export default {
 
             axios
                 .get(
-                    `/sajona/transplante-bolsa/buscar?fecha_inicial=${this.form.fecha_inicial}&fecha_final=${this.form.fecha_final}&page=${page}&length=${itemsPerPage}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${this.buscar}`
+                    `/sajona/transplante-bolsa/buscar?fecha_inicial=${this.form.fecha_inicial}&fecha_final=${this.form.fecha_final}&length=${this.length}&start=${this.start}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${this.buscar}`
                 )
                 .then((response) => {
                     this.loading = false;
