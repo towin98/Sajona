@@ -141,4 +141,33 @@ class Propagacion extends Model
         return $this->hasMany(Baja::class,'bj_pro_id_lote', 'pro_id_lote');
     }
 
+    /**
+     * Scope para ordenar una lista de transplante a bolsa por una columna determinada.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $columna Nombnre de la columna de la tabla
+     * @param mixed $orden Tipo de ordenamiento ASC|DESC
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOrdenamientoTransplanteBolsa($query, $columna, $orden){
+        if($columna && $orden){
+            switch ($columna) {
+                case 'id_lote':
+                    return $query->orderBy('pro_id_lote', $orden);
+                break;
+                case 'pro_fecha':
+                    return $query->orderBy('pro_fecha', $orden);
+                break;
+                // case 'fecha_transplante':
+                //     return  $query
+                //         ->whereHas('getPlantaMadre', function ($query) use ($orden) {
+                //             $query->orWhereHas('getTransplante', function ($query) use ($orden) {
+                //                 $query->orderBy('tp_fecha',  $orden);
+                //             });
+                //         });
+                // break;
+            }
+        }
+    }
+
 }

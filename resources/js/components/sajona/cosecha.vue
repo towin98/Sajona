@@ -250,7 +250,7 @@ export default {
                 { text: "Acciones", value: "actions" }
             ],
             dataSet: [],
-            startData : 0,
+            start     : 0,
             length    : 0
         };
     },
@@ -276,8 +276,8 @@ export default {
             let { page, itemsPerPage, sortBy, sortDesc } = this.options;
 
             // Obteniendo rangos de consultado paginación.
-            this.start = itemsPerPage * (page - 1);
-            this.length= this.start + itemsPerPage;
+            this.start  = itemsPerPage * (page - 1);
+            this.length = this.start + itemsPerPage;
 
             if (sortDesc[0] == true) {
                 sortBy = sortBy[0];

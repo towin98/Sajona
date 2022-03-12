@@ -3285,7 +3285,7 @@ __webpack_require__.r(__webpack_exports__);
         value: "actions"
       }],
       dataSet: [],
-      startData: 0,
+      start: 0,
       length: 0
     };
   },
@@ -5142,7 +5142,7 @@ __webpack_require__.r(__webpack_exports__);
         value: "fecha_propagacion"
       }, {
         text: "Fecha Transplante a Bolsa",
-        value: "fecha_transplante"
+        value: "tp_fecha"
       }, {
         text: "Estado",
         value: "estado_lote",
@@ -5160,6 +5160,8 @@ __webpack_require__.r(__webpack_exports__);
         sortable: false
       }],
       dataSet: [],
+      start: 0,
+      length: 0,
 
       /* end variables Table. */
 
@@ -5198,7 +5200,10 @@ __webpack_require__.r(__webpack_exports__);
           page = _this$options.page,
           itemsPerPage = _this$options.itemsPerPage,
           sortBy = _this$options.sortBy,
-          sortDesc = _this$options.sortDesc;
+          sortDesc = _this$options.sortDesc; // Obteniendo rangos de consultado paginación.
+
+      this.start = itemsPerPage * (page - 1);
+      this.length = itemsPerPage;
 
       if (sortDesc[0] == true) {
         sortBy = sortBy[0];
@@ -5211,7 +5216,7 @@ __webpack_require__.r(__webpack_exports__);
         sortDesc = "";
       }
 
-      axios.get("/sajona/transplante-bolsa/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&page=").concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
+      axios.get("/sajona/transplante-bolsa/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&length=").concat(this.length, "&start=").concat(this.start, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
         _this.loading = false;
         _this.dataSet = response.data.data;
         _this.totalRegistros = response.data.total;
@@ -5598,6 +5603,8 @@ __webpack_require__.r(__webpack_exports__);
         sortable: false
       }],
       dataSet: [],
+      start: 0,
+      length: 0,
 
       /* end variables Table. */
 
@@ -5631,7 +5638,10 @@ __webpack_require__.r(__webpack_exports__);
           page = _this$options.page,
           itemsPerPage = _this$options.itemsPerPage,
           sortBy = _this$options.sortBy,
-          sortDesc = _this$options.sortDesc;
+          sortDesc = _this$options.sortDesc; // Obteniendo rangos de consultado paginación.
+
+      this.start = itemsPerPage * (page - 1);
+      this.length = itemsPerPage;
 
       if (sortDesc[0] == true) {
         sortBy = sortBy[0];
@@ -5644,7 +5654,7 @@ __webpack_require__.r(__webpack_exports__);
         sortDesc = "";
       }
 
-      axios.get("/sajona/transplante-campo/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&page=").concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
+      axios.get("/sajona/transplante-campo/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&length=").concat(this.length, "&start=").concat(this.start, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
         _this.loading = false;
         _this.dataSet = response.data.data;
         _this.totalRegistros = response.data.total;
@@ -26961,7 +26971,7 @@ var render = function () {
             [
               _c("v-card-title", { staticClass: "rounded-sm py-2" }, [
                 _c("span", { staticClass: "text-h6 font-weight-bold" }, [
-                  _vm._v("Listando de Bajas de lotes"),
+                  _vm._v("Bajas lotes"),
                 ]),
               ]),
               _vm._v(" "),
@@ -30064,7 +30074,7 @@ var render = function () {
                           "items-per-page": 5,
                           "item-key": "id_lote",
                           "footer-props": {
-                            "items-per-page-options": [3, 5, 10, 15],
+                            "items-per-page-options": [5, 10, 30, 50],
                           },
                           "sort-by": "id_lote",
                           "sort-desc": true,
@@ -30815,7 +30825,7 @@ var render = function () {
                           "items-per-page": 5,
                           "item-key": "id_lote",
                           "footer-props": {
-                            "items-per-page-options": [3, 5, 10, 15],
+                            "items-per-page-options": [5, 10, 30, 50],
                           },
                           "sort-by": "id_lote",
                           "sort-desc": true,

@@ -5,7 +5,7 @@
         <v-container fluid>
             <v-card elevation="2">
                 <v-card-title class="rounded-sm py-2">
-                    <span class="text-h6 font-weight-bold">Listando de Bajas de lotes</span>
+                    <span class="text-h6 font-weight-bold">Bajas lotes</span>
                 </v-card-title>
                 <v-divider></v-divider>
 
