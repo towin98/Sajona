@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-app id="inspire">
-            <loadingGeneral v-bind:overlayLoading="overlayLoading"/>
+            <loadingGeneral v-bind:overlayLoading="overlayLoading" />
             <v-app-bar app dark class="grey darken-4" dense clipped-left>
                 <v-app-bar-nav-icon
                     dark
@@ -35,7 +35,10 @@
                 clipped
             >
                 <v-list dense dark temporary>
-                    <v-list-item :to="{ name: 'inicio' }" v-on:click="titleProceso = 'inicio'">
+                    <v-list-item
+                        :to="{ name: 'inicio' }"
+                        v-on:click="titleProceso = 'inicio'"
+                    >
                         <v-list-item-icon>
                             <v-icon>home</v-icon>
                         </v-list-item-icon>
@@ -113,9 +116,7 @@
                         </v-list-item-icon>
 
                         <v-list-item-content>
-                            <v-list-item-title
-                                >Cosecha</v-list-item-title
-                            >
+                            <v-list-item-title>Cosecha</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
 
@@ -160,6 +161,21 @@
                             <v-list-item-title>Reportes</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
+
+                    <!-- Modulo de parametros -->
+                    <v-list-item
+                        :to="{ name: 'parametros' }"
+                        v-on:click="titleProceso = 'Parametros'"
+                    >
+                        <v-list-item-icon>
+                            <v-icon>settings</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Parametros</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <!-- Fin Módulo de parametros -->
                 </v-list>
             </v-navigation-drawer>
             <v-main>
@@ -173,14 +189,14 @@
 </template>
 
 <script>
-import { misRol }       from "../../rolPermission/misRol.js";
-import mainHeader       from "./mainHeader.vue";
-import loadingGeneral   from '../loadingGeneral/loadingGeneral.vue';
+import { misRol } from "../../rolPermission/misRol.js";
+import mainHeader from "./mainHeader.vue";
+import loadingGeneral from "../loadingGeneral/loadingGeneral.vue";
 export default {
     name: "menuSajona",
-    components:{
+    components: {
         loadingGeneral,
-        mainHeader
+        mainHeader,
     },
     data() {
         return {
@@ -188,20 +204,20 @@ export default {
             token: localStorage.getItem("token"),
             date: "",
 
-            propagacion         : false,
-            plantaMadre         : false,
-            transplanteBolsa    : false,
-            transplanteCampo    : false,
-            cosecha             : false,
-            postCosecha         : false,
-            bajas               : false,
-            reportes            : false,
+            propagacion: false,
+            plantaMadre: false,
+            transplanteBolsa: false,
+            transplanteCampo: false,
+            cosecha: false,
+            postCosecha: false,
+            bajas: false,
+            reportes: false,
 
-            cRol                : '',
-            intervalId          : 0,
+            cRol: "",
+            intervalId: 0,
 
-            titleProceso        : '',
-            overlayLoading      : false
+            titleProceso: "",
+            overlayLoading: false,
         };
     },
     mixins: [misRol],
@@ -224,40 +240,42 @@ export default {
                 });
         },
     },
-    async created(){
+    async created() {
         // Obteniendo nombre de la ruta.
         if (this.$route.name) {
-            this.titleProceso = this.$route.name.replace('-',' ');
+            this.titleProceso = this.$route.name.replace("-", " ");
         }
 
         const fecha = new Date();
         const month = fecha.toLocaleString("es-CO", { month: "long" });
 
         this.date = `${month.substring(0, 3)}/${fecha.getFullYear()}`;
-        window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
+        window.axios.defaults.headers.common[
+            "Authorization"
+        ] = `Bearer ${this.token}`;
 
         /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
         this.overlayLoading = true;
         await this.buscaNombreRolUser();
         this.overlayLoading = false;
 
-        this.intervalId = setInterval( async() => {
+        this.intervalId = setInterval(async () => {
             await this.buscaNombreRolUser();
         }, 20000);
 
         switch (this.cRol) {
-            case 'Agronomo':
-                this.propagacion       = true;
-                this.plantaMadre       = true;
-                this.transplanteBolsa  = true;
-                this.transplanteCampo  = true;
-                this.cosecha           = true;
-                this.postCosecha       = true;
-                this.bajas             = true;
-                this.reportes          = true;
+            case "Agronomo":
+                this.propagacion = true;
+                this.plantaMadre = true;
+                this.transplanteBolsa = true;
+                this.transplanteCampo = true;
+                this.cosecha = true;
+                this.postCosecha = true;
+                this.bajas = true;
+                this.reportes = true;
                 break;
-            case 'Gerente':
-                this.propagacion       = true;
+            case "Gerente":
+                this.propagacion = true;
                 // this.plantaMadre       = true;
                 // this.transplanteBolsa  = true;
                 // this.transplanteCampo  = true;
@@ -266,20 +284,18 @@ export default {
                 // this.bajas             = true;
                 // this.reportes          = true;
                 break;
-            case 'Auxiliar':
-                this.propagacion       = true;
-                this.bajas             = true;
+            case "Auxiliar":
+                this.propagacion = true;
+                this.bajas = true;
                 break;
         }
     },
 
-    mounted() {
-
-    },
+    mounted() {},
 };
 </script>
 <style>
-    .v-list-item--active{
-        background: red;
-    }
+.v-list-item--active {
+    background: red;
+}
 </style>

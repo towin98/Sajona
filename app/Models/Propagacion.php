@@ -158,14 +158,6 @@ class Propagacion extends Model
                 case 'pro_fecha':
                     return $query->orderBy('pro_fecha', $orden);
                 break;
-                // case 'fecha_transplante':
-                //     return  $query
-                //         ->whereHas('getPlantaMadre', function ($query) use ($orden) {
-                //             $query->orWhereHas('getTransplante', function ($query) use ($orden) {
-                //                 $query->orderBy('tp_fecha',  $orden);
-                //             });
-                //         });
-                // break;
             }
         }
     }
