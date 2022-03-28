@@ -19,7 +19,7 @@ class CreateBajaTable extends Migration
             $table->dateTime("bj_fecha");
             $table->integer("bj_cantidad");
             $table->string("bj_fase_cultivo", 20);
-            $table->string("bj_observacion", 500);
+            $table->string("bj_observacion", 255);
             $table->boolean("bj_estado");
             $table->timestamps();
 

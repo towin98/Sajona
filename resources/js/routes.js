@@ -17,6 +17,8 @@ import cosecha from './components/sajona/cosecha.vue'
 import postCosecha from './components/sajona/postCosecha.vue'
 import bajas from './components/sajona/bajas.vue'
 import reportes from './components/sajona/reportes.vue'
+
+import parametros from './components/config/parametros.vue'
 /*Menu end*/
 
 import errors from './components/errors/404.vue'
@@ -81,8 +83,20 @@ const router = new VueRouter({
                     path: 'reportes',
                     component: reportes,
                     name: 'reportes',
-                },
-            ]
+                }
+            ],
+        },
+        {
+            path: '/config',
+            component: menuSajona,
+            meta: {requiresAuth: true},
+            children:[
+                {
+                    path: 'parametros',
+                    component: parametros,
+                    name: 'parametros',
+                }
+            ],
         },
         { path: '*', component: errors }
     ]

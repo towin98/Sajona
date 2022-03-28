@@ -184,7 +184,7 @@
                             dense
                             :error-messages="errors.post_porcentaje_humedad"
                             :rules="post_porcentaje_humedad"
-                            label="Peso flor verde (Cosecha) - peso flor seco"
+                            label="Peso flor verde - peso flor seco"
                             :disabled="titleAccion == 'Nuevo'"
                             readonly
                         ></v-text-field>

@@ -147,6 +147,7 @@
                             color="success"
                             class="white--text text-none"
                             tile
+                            title="Guardar Datos actuales de la cosecha."
                             v-if="form.id_lote != ''"
                             v-on:click="guardarCosecha"
                         >
@@ -187,12 +188,14 @@
                             <v-icon
                                 small
                                 class="mr-2"
+                                title="Agregar o Edita Datos de cosecha."
                                 @click="editCosecha(item)"
                             >
                                 mdi-pencil
                             </v-icon>
                             <v-icon
                                 small
+                                title="Eliminar Datos de la cosecha"
                                 @click="deleteCosecha(item)"
                             >
                                 mdi-delete
@@ -326,7 +329,7 @@ export default {
         },
         deleteCosecha(item){
             this.titleAccion = 'Nuevo';
-            console.log(item);
+            this.limpiarCampos();
             if (item.cos_fecha_cosecha == "") {
                 this.$swal(
                     `El lote[${item.id_lote}] aun no tiene una cosecha.`,

@@ -7,6 +7,7 @@ use App\Http\Controllers\Propagacion\PropagacionController;
 use App\Http\Controllers\Transplante\TransplanteController;
 use App\Http\Controllers\Baja\BajaController;
 use App\Http\Controllers\Cosecha\CosechaController;
+use App\Http\Controllers\Parametro\ParametroController;
 use App\Http\Controllers\PostCosecha\PostCosechaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -63,4 +64,11 @@ Route::group(['prefix' => 'baja'/* , 'middleware' => 'auth:sanctum' */] , functi
     Route::resource('/',  BajaController::class)->only(['store']);
     Route::get('/buscar', [BajaController::class, 'buscarLotes']);
     Route::get('/{id_lote}', [BajaController::class, 'show']);
+});
+
+Route::group(['prefix' => 'parametro'/* , 'middleware' => 'auth:sanctum' */] , function(){
+    Route::resource('/',  ParametroController::class)->only(['store']);
+    Route::put('/{id}', [ParametroController::class, 'update']);
+    Route::get('/buscar', [ParametroController::class, 'buscar']);
+    Route::get('/{parametrica}/{id}', [ParametroController::class, 'show']);
 });

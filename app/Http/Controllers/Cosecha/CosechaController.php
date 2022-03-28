@@ -34,6 +34,7 @@ class CosechaController extends Controller
         if ($transplanteCampo) {
 
             $cosecha = Cosecha::select(['cos_id'])
+                ->where('cos_estado', 1)
                 ->where('cos_tp_id', $request->tp_id);
 
             // Dias transcurridos desde la fecha de transplante campo hasta la fecha de cosecha.

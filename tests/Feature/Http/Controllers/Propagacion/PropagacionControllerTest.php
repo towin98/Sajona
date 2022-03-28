@@ -20,7 +20,7 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->post('/sajona/propagacion',[
+        $response = $this->post('/sajona/propagacion', [
             "pro_fecha"                     => date("Y-m-d"),
             "pro_tipo_propagacion"          => "Esqueje",
             "pro_variedad"                  => 2,
@@ -33,10 +33,9 @@ class PropagacionControllerTest extends TestCase
 
         // $response->assertUnprocessable();
         $response->assertStatus(201)
-                 ->assertExactJson([
-                    'message' => 'Datos Guardados',
-                 ]);
-        
+            ->assertExactJson([
+                'message' => 'Datos Guardados',
+            ]);
     }
 
     /**
@@ -48,7 +47,7 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->post('/sajona/propagacion',[
+        $response = $this->post('/sajona/propagacion', [
             "pro_fecha"                     => date("Y-m-d H:i:s"),
             "pro_tipo_propagacion"          => "Esqueje",
             "pro_variedad"                  => 2,
@@ -76,7 +75,7 @@ class PropagacionControllerTest extends TestCase
 
         $response->assertJsonStructure([
             'current_page',
-            'data'=> [
+            'data' => [
                 '*' => [
                     "pro_id_lote",
                     "pro_fecha",
