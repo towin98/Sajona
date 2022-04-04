@@ -4,7 +4,7 @@
         <h4>Parametros</h4>
         <v-card>
             <v-tabs v-model="tab" background-color="grey darken-4" dark right>
-                <v-tab v-for="(modulo, index) in parametros" v-bind:key="index" v-on:click="radioGroupParametros = null">
+                <v-tab v-for="(modulo, index) in parametros" v-bind:key="index" v-on:click="radioGroupParametros = null; dataSet = []">
                     {{ modulo.modulo }}
                 </v-tab>
             </v-tabs>
@@ -22,6 +22,7 @@
                                 v-bind:key="index"
                                 :label="campo.campo"
                                 :value="campo.value"
+                                v-on:click="fnBuscar(radioGroupParametros,buscar)"
                             ></v-radio>
                         </v-radio-group>
                         <v-btn
@@ -122,9 +123,12 @@
                             <v-select
                                 v-model="formModalParametros.estado"
                                 ref="estado"
-                                :items="['','ACTIVO', 'INACTIVO']"
+                                :items="['', 'ACTIVO', 'INACTIVO']"
                                 :error-messages="errors.estado"
                             ></v-select>
+                                <!-- :items="names"
+                                item-value="id"
+                                item-text="name" -->
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -148,12 +152,20 @@
 </template>
 <script>
 import loadingGeneral from "../loadingGeneral/loadingGeneral.vue";
+import parametros from "./parametrosJson.json";
 export default {
     components: {
         loadingGeneral,
     },
     data() {
         return {
+
+            // names: [
+            // { id: 1, name: 'Paul', age: 23 },
+            // { id: 2, name: 'Marcelo', age: 15 },
+            // { id: 3, name: 'Any', age: 30 },
+            // ],
+
             token: localStorage.getItem("token"),
             overlayLoading: false,
             titleAccion: "Parametros Módulos",
@@ -190,30 +202,7 @@ export default {
             dataSet: [],
             contador: 0,
             // fin variable data table.
-            parametros: [
-                {
-                    modulo: "Propagación",
-                    campos: [
-                        {
-                            campo: "Tipo de Propagación",
-                            value: "pr_tipo_propagacion",
-                        },
-                        {
-                            campo: "Variedad",
-                            value: "pr_variedad",
-                        },
-                    ],
-                },
-                {
-                    modulo: "Transplante Bolsa",
-                    campos: [
-                        {
-                            campo: "Tipo Lote",
-                            value: "pr_tipo_lote",
-                        },
-                    ],
-                },
-            ],
+            parametros: parametros,
         };
     },
 
@@ -389,8 +378,24 @@ export default {
                 case 'pr_variedad':
                     this.tituloCampoParametro = (accion == 'EDITAR') ? 'Editar Variedad' : 'Nueva Variedad';
                 break;
+                case 'pr_tipo_incorporacion':
+                    this.tituloCampoParametro = (accion == 'EDITAR') ? 'Editar Tipo de Incorporación' : 'Nueva Tipo de Incorporación';
+                break;
+
                 case 'pr_tipo_lote':
                     this.tituloCampoParametro = (accion == 'EDITAR') ? 'Editar Tipo de lote' : 'Nuevo Tipo de lote';
+                break;
+                case 'pr_ubicacion':
+                    this.tituloCampoParametro = (accion == 'EDITAR') ? 'Editar Ubicación' : 'Nuevo Ubicación';
+                break;
+                case 'pr_estado_cosecha':
+                    this.tituloCampoParametro = (accion == 'EDITAR') ? 'Editar Estado Cosecha' : 'Nuevo Estado Cosecha';
+                break;
+                case 'pr_fase_cultivo':
+                    this.tituloCampoParametro = (accion == 'EDITAR') ? 'Editar Fase de Cultivo' : 'Nueva Fase de Cultivo';
+                break;
+                case 'pr_motivo_perdida':
+                    this.tituloCampoParametro = (accion == 'EDITAR') ? 'Editar Motivo de Perdida' : 'Nuevo Motivo de Perdida';
                 break;
                 default:
                     this.tituloCampoParametro = (accion == 'EDITAR') ? 'Editar Por definir nombre' : 'Nuevo Por definir nombre';

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Parametro;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Parametros\TipoPropagacion;
 use App\Traits\Parametricas\ParametricaTrait;
 
 class ParametroController extends Controller
@@ -167,7 +166,7 @@ class ParametroController extends Controller
 
         try {
             $modelo::findOrfail($id)->update([
-                'descripcion' => $request->descripcion,
+                'descripcion' => strtoupper($request->descripcion),
                 'estado'      => $request->estado
             ]);
         } catch (\Exception $e) {
@@ -205,7 +204,7 @@ class ParametroController extends Controller
 
         if ($request != null && $accion != '') {
             // Validación conforme a reglas del modelo.
-            $objValidator = Validator::make($request->all(), $modelo::$rules, $modelo::$messages);
+            $objValidator = Validator::make($request->all(), ParametricaTrait::$rules, ParametricaTrait::$messages);
             if($objValidator->fails()){
                 $arrErrors = $objValidator->messages();
             }

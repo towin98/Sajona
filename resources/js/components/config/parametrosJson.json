@@ -1,0 +1,54 @@
+[
+    {
+        "modulo": "Propagación",
+        "campos": [
+            {
+                "campo": "Tipo de Propagación",
+                "value": "pr_tipo_propagacion"
+            },
+            {
+                "campo": "Variedad",
+                "value": "pr_variedad"
+            },
+            {
+                "campo": "Tipo de Incorporación",
+                "value": "pr_tipo_incorporacion"
+            }
+        ]
+    },
+    {
+        "modulo": "Transplante Bolsa",
+        "campos": [
+            {
+                "campo": "Tipo Lote",
+                "value": "pr_tipo_lote"
+            },
+            {
+                "campo": "Ubicación",
+                "value": "pr_ubicacion"
+            }
+        ]
+    },
+    {
+        "modulo": "Cosecha",
+        "campos": [
+            {
+                "campo": "Estado Cosecha",
+                "value": "pr_estado_cosecha"
+            }
+        ]
+    },
+    {
+        "modulo": "Bajas",
+        "campos": [
+            {
+                "campo": "Fases del Cultivo",
+                "value": "pr_fase_cultivo"
+            },
+            {
+                "campo": "Motivo perdida",
+                "value": "pr_motivo_perdida"
+            }
+        ]
+    }
+]

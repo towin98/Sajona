@@ -2,9 +2,28 @@
 
 namespace App\Traits\Parametricas;
 
+use App\Models\Parametros\EstadoCosecha;
+use App\Models\Parametros\FaseCultivo;
+use App\Models\Parametros\MotivoPerdida;
+use App\Models\Parametros\TipoIncorporacion;
+use App\Models\Parametros\TipoLote;
 use App\Models\parametros\TipoPropagacion;
+use App\Models\Parametros\Ubicacion;
+use App\Models\Parametros\Variedad;
 
 trait ParametricaTrait {
+
+    static $messages = [
+        'descripcion.required'          => 'La descripción es requerida.',
+        'descripcion.max'               => 'La descripcion no debe superar los 50 carácteres.',
+        'estado.required'               => 'El estado es requerido.',
+        'estado.in'                     => 'El estado debe ser ACTIVO o INACTIVO.',
+    ];
+
+    static $rules = [
+        'descripcion'             => 'required|string|max:50',
+        'estado'                  => 'required|string|in:ACTIVO,INACTIVO',
+    ];
 
     /**
      * Diccionario de datos para almacenar los Modelos de las paramétricas.
@@ -12,7 +31,22 @@ trait ParametricaTrait {
      * @var array
      */
     public $arrayModelos = [
-        'pr_tipo_propagacion'                          => TipoPropagacion::class
+
+        // Propagacion
+        'pr_tipo_propagacion'                    => TipoPropagacion::class,
+        'pr_variedad'                            => Variedad::class,
+        'pr_tipo_incorporacion'                  => TipoIncorporacion::class,
+
+        // Cosecha
+        'pr_estado_cosecha'                      => EstadoCosecha::class,
+
+        // Trans. Bolsa
+        'pr_tipo_lote'                           => TipoLote::class,
+        'pr_ubicacion'                           => Ubicacion::class,
+
+        // Bajas
+        'pr_fase_cultivo'                        => FaseCultivo::class,
+        'pr_motivo_perdida'                       => MotivoPerdida::class,
     ];
 
     /**
@@ -21,10 +55,22 @@ trait ParametricaTrait {
      * @var array
      */
     public $arrayCamposParametros = [
-        // Campos para el módulo de Propagación
-        'pr_tipo_propagacion'                          => 'Tipo de propagación'
 
-        // Campos para el módulo de .....
+        // Campos para el módulo de Propagación
+        'pr_tipo_propagacion'                    => 'Tipo de propagación',
+        'pr_variedad'                            => 'Variedad',
+        'pr_tipo_incorporacion'                  => 'Tipo de Incorporación',
+
+        // Cosecha
+        'pr_estado_cosecha'                      => 'Estado de Cosecha',
+
+        // Trans. Bolsa
+        'pr_tipo_lote'                           => 'Tipo de Lote',
+        'pr_ubicacion'                           => 'Ubicación',
+
+        // Bajas
+        'pr_fase_cultivo'                        => 'Fase del cultivo',
+        'pr_motivo_perdida'                       => 'Motivo perdida',
     ];
 
     /**
