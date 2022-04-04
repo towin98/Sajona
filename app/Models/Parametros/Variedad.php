@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Models\parametros;
+namespace App\Models\Parametros;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoPropagacion extends Model
+class Variedad extends Model
 {
     use HasFactory;
 
-    protected $table = 'pr_tipo_propagacion';
+    protected $table = 'pr_variedad';
     protected $primaryKey = 'id';
 
     /**
