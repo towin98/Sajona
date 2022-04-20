@@ -2182,7 +2182,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.overlayLoading = true;
       axios.post("sajona/login", this.formData).then(function (response) {
-        localStorage.setItem("token", response.data.access_token);
+        localStorage.setItem("TOKEN_SAJONA", response.data.access_token);
 
         _this.$router.push("/inicio/dashboard");
 
@@ -2393,7 +2393,7 @@ __webpack_require__.r(__webpack_exports__);
       // { id: 2, name: 'Marcelo', age: 15 },
       // { id: 3, name: 'Any', age: 30 },
       // ],
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       titleAccion: "Parametros Módulos",
       accion: "",
@@ -2780,7 +2780,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _rolPermission_misRol_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../rolPermission/misRol.js */ "./resources/js/rolPermission/misRol.js");
+/* harmony import */ var _rolPermission_Permissions_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../rolPermission/Permissions.vue */ "./resources/js/rolPermission/Permissions.vue");
 /* harmony import */ var _mainHeader_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mainHeader.vue */ "./resources/js/components/menu/mainHeader.vue");
 /* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
 
@@ -2979,7 +2979,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
+ // Creamos un Mixin Global para poder obtener los permisos desde cualquier vista.
 
+Vue.mixin(_rolPermission_Permissions_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2991,7 +2994,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       drawer: null,
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem("TOKEN_SAJONA"),
       date: "",
       propagacion: false,
       plantaMadre: false,
@@ -3001,13 +3004,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       postCosecha: false,
       bajas: false,
       reportes: false,
+
+      /* AQUI VAN VARIABLES CON RESPECTO A PERMISOS Y ROLES START*/
       cRol: "",
       intervalId: 0,
+
+      /* END VARIABLES */
       titleProceso: "",
       overlayLoading: false
     };
   },
-  mixins: [_rolPermission_misRol_js__WEBPACK_IMPORTED_MODULE_1__.misRol],
   methods: {
     logout: function logout() {
       var _this = this;
@@ -3015,14 +3021,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.overlayLoading = true;
       axios.post("/sajona/logout").then(function (response) {
         clearInterval(_this.intervalId);
-        localStorage.removeItem("token");
+        localStorage.removeItem("TOKEN_SAJONA");
 
         _this.$router.push("/");
 
         _this.overlayLoading = false;
       })["catch"](function (errors) {
         clearInterval(_this.intervalId);
-        localStorage.removeItem("token");
+        localStorage.removeItem("TOKEN_SAJONA");
 
         _this.$router.push("/");
 
@@ -3057,6 +3063,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return _this2.buscaNombreRolUser();
 
             case 8:
+              _context2.next = 10;
+              return _this2.$fnConsultaPermisosUsuario();
+
+            case 10:
               _this2.overlayLoading = false;
               _this2.intervalId = setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
                 return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -3074,10 +3084,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }, _callee);
               })), 20000);
               _context2.t0 = _this2.cRol;
-              _context2.next = _context2.t0 === "Agronomo" ? 13 : _context2.t0 === "Gerente" ? 22 : _context2.t0 === "Auxiliar" ? 24 : 27;
+              _context2.next = _context2.t0 === "Agronomo" ? 15 : _context2.t0 === "Gerente" ? 24 : _context2.t0 === "Auxiliar" ? 26 : 29;
               break;
 
-            case 13:
+            case 15:
               _this2.propagacion = true;
               _this2.plantaMadre = true;
               _this2.transplanteBolsa = true;
@@ -3086,9 +3096,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this2.postCosecha = true;
               _this2.bajas = true;
               _this2.reportes = true;
-              return _context2.abrupt("break", 27);
+              return _context2.abrupt("break", 29);
 
-            case 22:
+            case 24:
               _this2.propagacion = true; // this.plantaMadre       = true;
               // this.transplanteBolsa  = true;
               // this.transplanteCampo  = true;
@@ -3097,14 +3107,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               // this.bajas             = true;
               // this.reportes          = true;
 
-              return _context2.abrupt("break", 27);
+              return _context2.abrupt("break", 29);
 
-            case 24:
+            case 26:
               _this2.propagacion = true;
               _this2.bajas = true;
-              return _context2.abrupt("break", 27);
+              return _context2.abrupt("break", 29);
 
-            case 27:
+            case 29:
             case "end":
               return _context2.stop();
           }
@@ -3303,7 +3313,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
 
       /* start Variables Modal bajas*/
@@ -3700,7 +3710,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       titleAccion: 'Nuevo',
       form: {
@@ -4186,7 +4196,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       menuDateInicio: false,
       menuDateFin: false,
@@ -4680,7 +4690,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       titleAccion: 'Nuevo',
       post_porcentaje_humedad: [function (valor) {
@@ -4897,7 +4907,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+/* harmony import */ var _commons_commons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../commons/commons.js */ "./resources/js/commons/commons.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5078,13 +5137,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      token: localStorage.getItem("token"),
+      arrPermisos: [],
+      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       // Validaciones
       rulesFecha: [function (value) {
@@ -5106,6 +5167,7 @@ __webpack_require__.r(__webpack_exports__);
       rulesTipoIncorporacion: [function (value) {
         return !!value || "El campo tipo incorporacion es requerido.";
       }],
+      accion: 'Guardar',
       form: {
         pro_fecha: "",
         pro_cantidad_material: "",
@@ -5124,10 +5186,6 @@ __webpack_require__.r(__webpack_exports__);
         pro_variedad: "",
         pro_tipo_incorporacion: ""
       },
-      tiposPropagacion: ["Semilla", "Esquejes", "In vitro"],
-      tiposIncorporacion: ["Propia", "Comprada"],
-      tiposVariedad: [1, 2],
-      // POR DEFINIR
       menuDate: false,
       // Tabla filtro.
       debounce: null,
@@ -5143,7 +5201,7 @@ __webpack_require__.r(__webpack_exports__);
         align: "start",
         value: "pro_id_lote"
       }, {
-        text: "Fecha Siembra",
+        text: "Fecha Propagación",
         value: "pro_fecha"
       }, {
         text: "Tipo de Propagación",
@@ -5152,12 +5210,24 @@ __webpack_require__.r(__webpack_exports__);
         text: "Tipo Incorporación",
         value: "pro_tipo_incorporacion"
       }, {
-        text: "Cantidad Siembra",
+        text: "Cantidad Propagada",
         value: "pro_cantidad_material"
+      }, {
+        text: "Acciones",
+        value: "acciones",
+        sortable: false
       }],
-      dataSet: []
+      dataSet: [],
+
+      /* VARIABLES CAMPOS PARAMETROS START */
+      itemsTipoPropagacion: [],
+      itemsVariedad: [],
+      itemsTipoIncorporacion: []
+      /* END CAMPOS PARAMETROS */
+
     };
   },
+  mixins: [_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons],
   watch: {
     options: {
       handler: function handler() {
@@ -5167,6 +5237,13 @@ __webpack_require__.r(__webpack_exports__);
     deep: true
   },
   methods: {
+    fnAccion: function fnAccion() {
+      if (this.accion === "Guardar") {
+        this.agregarPropagacion();
+      } else {
+        this.actualizarPropagacion();
+      }
+    },
     filterSearch: function filterSearch() {
       var _this = this;
 
@@ -5205,17 +5282,23 @@ __webpack_require__.r(__webpack_exports__);
         _this2.totalRegistros = response.data.total;
         _this2.numberOfPages = response.data.totalPages;
         _this2.overlayLoading = false;
-      })["catch"](function (errors) {
+      })["catch"](function (errores) {
+        // this.fnResponseError(errores);
         _this2.loading = false;
-        _this2.overlayLoading = false; // console.log(errors.response.data);
+        _this2.overlayLoading = false;
       });
     },
     buscarIdLoteUltimo: function buscarIdLoteUltimo() {
       var _this3 = this;
 
+      this.overlayLoading = true;
       axios.get("/sajona/propagacion/id-lote").then(function (response) {
         _this3.form.pro_id_lote = response.data.idLote;
-      })["catch"](function (errors) {// console.log(errors.response.data);
+        _this3.overlayLoading = false;
+      })["catch"](function (errores) {
+        _this3.fnResponseError(errores);
+
+        _this3.overlayLoading = false;
       });
     },
     agregarPropagacion: function agregarPropagacion() {
@@ -5228,14 +5311,88 @@ __webpack_require__.r(__webpack_exports__);
 
         _this4.limpiarCampo();
 
-        _this4.buscarIdLoteUltimo();
-
         _this4.errors = '';
-      })["catch"](function (errors) {
-        _this4.errors = errors.response.data.errors;
+      })["catch"](function (errores) {
+        _this4.fnResponseError(errores);
+      });
+    },
+    consultarPropagacion: function consultarPropagacion(id_lote) {
+      var _this5 = this;
+
+      this.overlayLoading = true;
+      this.accion = "Actualizar";
+      axios.get("/sajona/propagacion/mostrar/".concat(id_lote)).then(function (response) {
+        var data = response.data.data;
+        _this5.form = {
+          pro_fecha: data.pro_fecha,
+          pro_cantidad_material: data.pro_cantidad_material,
+          pro_id_lote: data.pro_id_lote,
+          pro_cantidad_plantas_madres: data.pro_cantidad_plantas_madres,
+          pro_tipo_propagacion: data.pro_tipo_propagacion,
+          pro_variedad: data.pro_variedad,
+          pro_tipo_incorporacion: data.pro_tipo_incorporacion
+        };
+        _this5.errors = "";
+        _this5.overlayLoading = false;
+      })["catch"](function (errores) {
+        _this5.fnResponseError(errores);
+
+        _this5.overlayLoading = false;
+      });
+    },
+    fnDelete: function fnDelete(pro_id_lote) {
+      var _this6 = this;
+
+      this.accion = 'Guardar';
+      this.limpiarCampo();
+      this.$swal({
+        title: '¿Quiere eliminar la Propagación?',
+        text: "Se removera el lote[".concat(pro_id_lote, "]."),
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Eliminarlo!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          _this6.overlayLoading = true;
+          axios.post("/sajona/propagacion/delete/", {
+            pro_id_lote: pro_id_lote
+          }).then(function (response) {
+            _this6.overlayLoading = false;
+
+            _this6.$swal(response.data.message, '', 'success');
+
+            _this6.listar();
+          })["catch"](function (errores) {
+            _this6.overlayLoading = false;
+
+            _this6.fnResponseError(errores);
+          });
+        }
+      });
+    },
+    actualizarPropagacion: function actualizarPropagacion() {
+      var _this7 = this;
+
+      axios.put("/sajona/propagacion/actualizar/".concat(this.form.pro_id_lote), this.form).then(function (response) {
+        _this7.errors = "";
+
+        _this7.$swal(response.data.message, '', 'success');
+
+        _this7.listar();
+
+        _this7.limpiarCampo();
+      })["catch"](function (errores) {
+        _this7.fnResponseError(errores);
+
+        _this7.overlayLoading = false;
       });
     },
     limpiarCampo: function limpiarCampo() {
+      this.overlayLoading = true;
+      this.buscarIdLoteUltimo();
+      this.accion = "Guardar";
       this.$refs["pro_fecha"].reset();
       this.$refs["pro_cantidad_material"].reset();
       this.$refs["pro_id_lote"].reset();
@@ -5243,11 +5400,48 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs["pro_tipo_propagacion"].reset();
       this.$refs["pro_variedad"].reset();
       this.$refs["pro_tipo_incorporacion"].reset();
+      this.overlayLoading = false;
     }
+  },
+  created: function created() {
+    var _this8 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _this8.fnBuscarParametro('pr_tipo_propagacion');
+
+            case 2:
+              _this8.itemsTipoPropagacion = _context.sent;
+              _context.next = 5;
+              return _this8.fnBuscarParametro('pr_variedad');
+
+            case 5:
+              _this8.itemsVariedad = _context.sent;
+              _context.next = 8;
+              return _this8.fnBuscarParametro('pr_tipo_incorporacion');
+
+            case 8:
+              _this8.itemsTipoIncorporacion = _context.sent;
+              _context.next = 11;
+              return _this8.$fnPermisosUsuarios();
+
+            case 11:
+              _this8.arrPermisos = _context.sent;
+
+            case 12:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   },
   mounted: function mounted() {
     window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
-    this.listar();
     this.buscarIdLoteUltimo();
   }
 });
@@ -5570,7 +5764,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       menuDateInicial: false,
       menuDateFinal: false,
@@ -6010,7 +6204,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       menuDateInicial: false,
       menuDateFinal: false,
@@ -6188,6 +6382,132 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/rolPermission/Permissions.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/rolPermission/Permissions.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var arrPermisos = [];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  arrPermisos: arrPermisos,
+  methods: {
+    buscaNombreRolUser: function buscaNombreRolUser() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return axios.get("/sajona/busca-nombre-rol-user");
+
+              case 3:
+                response = _context.sent;
+                _this.cRol = response.data.data;
+                _context.next = 10;
+                break;
+
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
+
+                if (_context.t0.response.status == 401 || _context.t0.response.status == 500) {
+                  _this.logout();
+
+                  clearInterval(_this.intervalId);
+
+                  _this.$swal("La Sesión ha caducado.", "", "info");
+                }
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 7]]);
+      }))();
+    },
+    $can: function $can() {
+      var permissionName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var permissionsEncontrado = false;
+      permissionName.forEach(function (permiso) {
+        if (arrPermisos.indexOf(permiso) !== -1) {
+          permissionsEncontrado = true;
+        }
+      });
+      return permissionsEncontrado;
+    },
+    $fnPermisosUsuarios: function $fnPermisosUsuarios() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                return _context2.abrupt("return", arrPermisos);
+
+              case 1:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    $fnConsultaPermisosUsuario: function $fnConsultaPermisosUsuario() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
+                return axios.get("/sajona/permisos-usuario");
+
+              case 3:
+                response = _context3.sent;
+                arrPermisos = response.data.data;
+                _context3.next = 10;
+                break;
+
+              case 7:
+                _context3.prev = 7;
+                _context3.t0 = _context3["catch"](0);
+
+                _this2.$swal('Error consultando permisos de usuario.', '', 'error');
+
+              case 10:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[0, 7]]);
+      }))();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -6214,7 +6534,7 @@ window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js
 Vue.use((vue_sweetalert2__WEBPACK_IMPORTED_MODULE_1___default()));
 
 function loggedIn() {
-  return localStorage.getItem("token");
+  return localStorage.getItem("TOKEN_SAJONA");
 }
 
 _routes__WEBPACK_IMPORTED_MODULE_3__["default"].beforeEach(function (to, from, next) {
@@ -6252,6 +6572,9 @@ var app = new Vue({
   el: "#app",
   router: _routes__WEBPACK_IMPORTED_MODULE_3__["default"],
   vuetify: _vuetify__WEBPACK_IMPORTED_MODULE_0__["default"],
+  data: {
+    arrPermisos: []
+  },
   render: function render(h) {
     return h(_components_App__WEBPACK_IMPORTED_MODULE_4__["default"]);
   }
@@ -6290,16 +6613,16 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-/***/ "./resources/js/rolPermission/misRol.js":
-/*!**********************************************!*\
-  !*** ./resources/js/rolPermission/misRol.js ***!
-  \**********************************************/
+/***/ "./resources/js/commons/commons.js":
+/*!*****************************************!*\
+  !*** ./resources/js/commons/commons.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "misRol": () => (/* binding */ misRol)
+/* harmony export */   "commons": () => (/* binding */ commons)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -6309,9 +6632,9 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var misRol = {
+var commons = {
   methods: {
-    buscaNombreRolUser: function buscaNombreRolUser() {
+    fnBuscarParametro: function fnBuscarParametro(parametrica) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -6322,33 +6645,46 @@ var misRol = {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios.get("/sajona/busca-nombre-rol-user");
+                return axios.get("/sajona/parametro/buscar?parametrica=".concat(parametrica));
 
               case 3:
                 response = _context.sent;
-                _this.cRol = response.data.data;
-                _context.next = 10;
-                break;
+                return _context.abrupt("return", response.data.data);
 
               case 7:
                 _context.prev = 7;
                 _context.t0 = _context["catch"](0);
 
-                if (_context.t0.response.status == 401 || _context.t0.response.status == 500) {
-                  _this.logout();
+                _this.$swal('Error.', '', 'error');
 
-                  clearInterval(_this.intervalId);
+                return _context.abrupt("return", []);
 
-                  _this.$swal('La Sesión ha caducado.', '', 'info');
-                }
-
-              case 10:
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee, null, [[0, 7]]);
       }))();
+    },
+    fnResponseError: function fnResponseError(errores) {
+      if (errores.response.status == 500 || errores.response.status == 403 || errores.response.status == 409 || errores.response.status == 404) {
+        var mensaje = "El sistema a generado un Error.";
+
+        if (errores.response.data.message != undefined) {
+          mensaje = errores.response.data.message;
+        }
+
+        this.$swal({
+          icon: 'error',
+          title: "".concat(mensaje),
+          text: "".concat(errores.response.data.errors)
+        });
+      } else {
+        if (errores.response.status == 422) {
+          this.errors = errores.response.data.errors;
+        }
+      }
     }
   }
 };
@@ -6616,7 +6952,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6640,7 +6976,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: red;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: red;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26065,6 +26401,44 @@ component.options.__file = "resources/js/components/sajona/transplanteCampo.vue"
 
 /***/ }),
 
+/***/ "./resources/js/rolPermission/Permissions.vue":
+/*!****************************************************!*\
+  !*** ./resources/js/rolPermission/Permissions.vue ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Permissions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Permissions.vue?vue&type=script&lang=js& */ "./resources/js/rolPermission/Permissions.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+;
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _Permissions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/rolPermission/Permissions.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/auth/login.vue?vue&type=script&lang=js&":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/auth/login.vue?vue&type=script&lang=js& ***!
@@ -26302,6 +26676,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./transplanteCampo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteCampo.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/rolPermission/Permissions.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/rolPermission/Permissions.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Permissions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Permissions.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/rolPermission/Permissions.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Permissions_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -30445,7 +30835,9 @@ var render = function () {
                         ref: "pro_tipo_propagacion",
                         attrs: {
                           rules: _vm.rulesTipoPropagacion,
-                          items: _vm.tiposPropagacion,
+                          items: _vm.itemsTipoPropagacion,
+                          "item-value": "id",
+                          "item-text": "descripcion",
                           "error-messages": _vm.errors.pro_tipo_propagacion,
                           dense: "",
                         },
@@ -30507,7 +30899,9 @@ var render = function () {
                         ref: "pro_variedad",
                         attrs: {
                           rules: _vm.rulesVariedad,
-                          items: _vm.tiposVariedad,
+                          items: _vm.itemsVariedad,
+                          "item-value": "id",
+                          "item-text": "descripcion",
                           "error-messages": _vm.errors.pro_variedad,
                           dense: "",
                         },
@@ -30568,7 +30962,9 @@ var render = function () {
                         ref: "pro_tipo_incorporacion",
                         attrs: {
                           rules: _vm.rulesTipoIncorporacion,
-                          items: _vm.tiposIncorporacion,
+                          items: _vm.itemsTipoIncorporacion,
+                          "item-value": "id",
+                          "item-text": "descripcion",
                           "error-messages": _vm.errors.pro_tipo_incorporacion,
                           dense: "",
                         },
@@ -30630,18 +31026,38 @@ var render = function () {
                       _c(
                         "v-btn",
                         {
+                          staticClass: "white--text text-none mr-3",
+                          attrs: {
+                            type: "submit",
+                            small: "",
+                            color: "red darken-4",
+                            tile: "",
+                          },
+                          on: { click: _vm.limpiarCampo },
+                        },
+                        [
+                          _c("v-icon", [_vm._v(" format_clear ")]),
+                          _vm._v("Limpiar\n                    "),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
                           staticClass: "white--text text-none",
                           attrs: {
                             type: "submit",
                             small: "",
                             color: "success",
                             tile: "",
+                            disabled: !_vm.$can(["CREAR", "EDITAR"]),
                           },
-                          on: { click: _vm.agregarPropagacion },
+                          on: { click: _vm.fnAccion },
                         },
                         [
                           _c("v-icon", [_vm._v(" save ")]),
-                          _vm._v("Guardar\n                    "),
+                          _vm._v(_vm._s(_vm.accion) + "\n                    "),
                         ],
                         1
                       ),
@@ -30701,6 +31117,65 @@ var render = function () {
                             _vm.options = $event
                           },
                         },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "item.acciones",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _vm.$can(["VER", "EDITAR"])
+                                  ? _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "mr-2",
+                                        attrs: {
+                                          color: "primary",
+                                          title: "Editar Propagación",
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.consultarPropagacion(
+                                              item.pro_id_lote
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                mdi-pencil\n                            "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.$can(["ELIMINAR"])
+                                  ? _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "mr-2",
+                                        attrs: {
+                                          color: "red",
+                                          title: "Eliminar Propagación",
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.fnDelete(
+                                              item.pro_id_lote
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                delete\n                            "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                              ]
+                            },
+                          },
+                        ]),
                       }),
                     ],
                     1

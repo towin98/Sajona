@@ -58,9 +58,7 @@ class Handler extends ExceptionHandler
 
         if ($exception instanceof ModelNotFoundException) {
             $modelo = strtolower(class_basename($exception->getModel()));
-            return response()->json(['errors' => [
-                'No existe ninguna instancia de ' . $modelo . ' con el id expecificado'
-            ], 'code' => 404], 404);
+            return response()->json(['errors' => 'No existe ninguna instancia de ' . $modelo . ' con el id expecificado', 'code' => 404], 404);
         }
 
         if ($exception instanceof AuthorizationException) {

@@ -166,7 +166,7 @@ export default {
             // { id: 3, name: 'Any', age: 30 },
             // ],
 
-            token: localStorage.getItem("token"),
+            token: localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading: false,
             titleAccion: "Parametros Módulos",
 

@@ -10,21 +10,29 @@ use App\Http\Controllers\Cosecha\CosechaController;
 use App\Http\Controllers\Parametro\ParametroController;
 use App\Http\Controllers\PostCosecha\PostCosechaController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*Rutas de autenticacacion*/
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 /*Rutas Controlador PermissionController*/
 Route::get('/busca-nombre-rol-user/', [PermissionController::class, 'buscaNombreRolUser'])->middleware('auth:sanctum');
+Route::get('/permisos-usuario/', [PermissionController::class, 'buscaPermisosUsuario'])->middleware('auth:sanctum');
+
+Route::get('/permission/{permissionName}', [PermissionController::class, 'buscaPermisosUsuario'])->middleware('auth:sanctum');
 
 /*Rutas Sojana (MENU)*/
-Route::group(['prefix' => 'propagacion',/*  'middleware' => 'auth:sanctum' */] , function(){
+Route::group(['prefix' => 'propagacion', 'middleware' => 'auth:sanctum'] , function(){
+    Artisan::call('cache:clear');
     Route::get('/listar', [PropagacionController::class, 'listar']);
     Route::get('/id-lote', [PropagacionController::class, 'buscarUltimoIdLote']);
     Route::resource('/', PropagacionController::class)->only(['store']);
+    Route::put('/actualizar/{id}', [PropagacionController::class, 'update']);
+    Route::get('/mostrar/{id}', [PropagacionController::class, 'show']);
+    Route::post('/delete', [PropagacionController::class, 'delete']);
 });
 
 /*Planta Madre (MENU)*/

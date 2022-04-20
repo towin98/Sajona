@@ -305,7 +305,7 @@ export default {
     },
     data() {
         return {
-            token               : localStorage.getItem("token"),
+            token               : localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading      : false,
             titleAccion         : 'Nuevo',
 

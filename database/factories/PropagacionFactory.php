@@ -24,9 +24,9 @@ class PropagacionFactory extends Factory
         return [
             "pro_id_lote"                   => rand(1,10000),
             "pro_fecha"                     => date("Y-m-d H:i:s"),
-            "pro_tipo_propagacion"          => "Esqueje",
-            "pro_variedad"                  => rand(1,10),
-            "pro_tipo_incorporacion"        => "Comprada",
+            "pro_tipo_propagacion"          => rand(1,2),
+            "pro_variedad"                  => rand(1,2),
+            "pro_tipo_incorporacion"        => rand(1,2),
             "pro_cantidad_material"         => 200,
             "pro_cantidad_plantas_madres"   => rand(1,50),
             "pro_estado"                    => true,

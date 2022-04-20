@@ -11,7 +11,7 @@ import App from "./components/App";
 Vue.use(VueSweetalert2);
 
 function loggedIn() {
-    return localStorage.getItem("token");
+    return localStorage.getItem("TOKEN_SAJONA");
 }
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -41,6 +41,9 @@ const app = new Vue({
     el: "#app",
     router: router,
     vuetify,
+    data:{
+        arrPermisos: []
+    },
     render(h) {
         return h(App);
     },

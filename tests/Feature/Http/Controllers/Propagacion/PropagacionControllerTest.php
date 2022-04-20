@@ -4,12 +4,13 @@ namespace Tests\Feature\Http\Controllers\Propagacion;
 
 use App\Models\Propagacion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\Feature\Http\Controllers\Traits\AutenticacionTrait;
 
 class PropagacionControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use AutenticacionTrait;
 
     /**
      * Método que testea que se cree correctamente Propagación.
@@ -107,5 +108,19 @@ class PropagacionControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+    }
+
+    public function test_actualiza_un_registro_de_una_propagacion_correctamente(){
+        $this->withoutExceptionHandling();
+        // $this->Autenticacion("cristian@gmail.com", "admin123");
+        // Creamos un registro de Tipo de propagacion
+        $tipoPropagacion = Propagacion::factory(1)->create()->first();
+
+        // Hacemos la solicitud a la url
+        $response = $this->put("sajona/propagacion/actualizar/".$tipoPropagacion->pro_id_lote, [
+                "pro_fecha"                     => "2022-04-05",
+            ]
+        );
+        $response->assertStatus(201);
     }
 }
