@@ -6,6 +6,9 @@
             <v-card elevation="2">
                 <v-card-title class="rounded-sm">
                     <span class="text-h6 font-weight-bold">Agregar</span>
+
+                    <!-- <div v-if="$can('CREAR')">You can edit posts.</div> -->
+
                 </v-card-title>
                 <v-row class="pl-4 pr-4">
                     <v-col cols="6" sm="2" class="pa-0">
@@ -51,7 +54,9 @@
                             v-model="form.pro_tipo_propagacion"
                             ref="pro_tipo_propagacion"
                             :rules="rulesTipoPropagacion"
-                            :items="tiposPropagacion"
+                            :items="itemsTipoPropagacion"
+                            item-value="id"
+                            item-text="descripcion"
                             :error-messages="errors.pro_tipo_propagacion"
                             dense
                         ></v-select>
@@ -79,7 +84,9 @@
                             v-model="form.pro_variedad"
                             ref="pro_variedad"
                             :rules="rulesVariedad"
-                            :items="tiposVariedad"
+                            :items="itemsVariedad"
+                            item-value="id"
+                            item-text="descripcion"
                             :error-messages="errors.pro_variedad"
                             dense
                         ></v-select>
@@ -106,7 +113,9 @@
                             v-model="form.pro_tipo_incorporacion"
                             ref="pro_tipo_incorporacion"
                             :rules="rulesTipoIncorporacion"
-                            :items="tiposIncorporacion"
+                            :items="itemsTipoIncorporacion"
+                            item-value="id"
+                            item-text="descripcion"
                             :error-messages="errors.pro_tipo_incorporacion"
                             dense
                         ></v-select>
@@ -131,12 +140,23 @@
                         <v-btn
                             type="submit"
                             small
+                            color="red darken-4"
+                            class="white--text text-none mr-3"
+                            tile
+                            v-on:click="limpiarCampo"
+                        >
+                            <v-icon> format_clear </v-icon>Limpiar
+                        </v-btn>
+                        <v-btn
+                            type="submit"
+                            small
                             color="success"
                             class="white--text text-none"
                             tile
-                            v-on:click="agregarPropagacion"
+                            :disabled="!$can(['CREAR', 'EDITAR'])"
+                            v-on:click="fnAccion"
                         >
-                            <v-icon> save </v-icon>Guardar
+                            <v-icon> save </v-icon>{{ accion }}
                         </v-btn>
                     </v-col>
 
@@ -170,6 +190,26 @@
                             :sort-desc="true"
                             no-data-text="Sin registros"
                         >
+                            <template v-slot:item.acciones="{ item }">
+                                <v-icon
+                                    color="primary"
+                                    class="mr-2"
+                                    @click="consultarPropagacion(item.pro_id_lote)"
+                                    title="Editar Propagación"
+                                    v-if="$can(['VER', 'EDITAR'])"
+                                >
+                                    mdi-pencil
+                                </v-icon>
+                                <v-icon
+                                    color="red"
+                                    class="mr-2"
+                                    @click="fnDelete(item.pro_id_lote)"
+                                    title="Eliminar Propagación"
+                                    v-if="$can(['ELIMINAR'])"
+                                >
+                                    delete
+                                </v-icon>
+                            </template>
                         </v-data-table>
                     </v-col>
                 </v-row>
@@ -179,13 +219,16 @@
 </template>
 <script>
 import loadingGeneral   from '../loadingGeneral/loadingGeneral.vue';
+import { commons }  from '../../commons/commons.js';
+
 export default {
     components:{
         loadingGeneral
     },
     data() {
         return {
-            token               : localStorage.getItem("token"),
+            arrPermisos         : [],
+            token               : localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading      : false,
             // Validaciones
             rulesFecha: [
@@ -213,6 +256,7 @@ export default {
                 (value) =>
                     !!value || "El campo tipo incorporacion es requerido.",
             ],
+            accion : 'Guardar',
 
             form: {
                 pro_fecha: "",
@@ -233,9 +277,6 @@ export default {
                 pro_tipo_incorporacion: "",
             },
 
-            tiposPropagacion    : ["Semilla", "Esquejes", "In vitro"],
-            tiposIncorporacion  : ["Propia", "Comprada"],
-            tiposVariedad       : [1, 2], // POR DEFINIR
             menuDate: false,
 
             // Tabla filtro.
@@ -249,15 +290,22 @@ export default {
             options             : {},
             headers             : [
                 { text: "Id Lote", align: "start", value: "pro_id_lote" },
-                { text: "Fecha Siembra", value: "pro_fecha" },
+                { text: "Fecha Propagación", value: "pro_fecha" },
                 { text: "Tipo de Propagación", value: "pro_tipo_propagacion" },
                 { text: "Tipo Incorporación", value: "pro_tipo_incorporacion" },
-                { text: "Cantidad Siembra", value: "pro_cantidad_material" },
+                { text: "Cantidad Propagada", value: "pro_cantidad_material" },
+                { text: "Acciones", value: "acciones", sortable: false }
             ],
             dataSet: [],
+
+            /* VARIABLES CAMPOS PARAMETROS START */
+            itemsTipoPropagacion  : [],
+            itemsVariedad         : [],
+            itemsTipoIncorporacion: [],
+            /* END CAMPOS PARAMETROS */
         };
     },
-
+    mixins: [commons],
     watch: {
         options: {
             handler() {
@@ -267,6 +315,13 @@ export default {
         deep: true,
     },
     methods: {
+        fnAccion(){
+            if (this.accion === "Guardar") {
+                this.agregarPropagacion();
+            }else{
+                this.actualizarPropagacion();
+            }
+        },
         filterSearch(){
             this.loading = true;
             clearTimeout(this.debounce);
@@ -301,20 +356,23 @@ export default {
                     this.numberOfPages = response.data.totalPages;
                     this.overlayLoading = false;
                 })
-                .catch((errors) => {
+                .catch((errores) => {
+                    // this.fnResponseError(errores);
                     this.loading = false;
                     this.overlayLoading = false;
-                    // console.log(errors.response.data);
                 });
         },
         buscarIdLoteUltimo() {
+            this.overlayLoading = true;
             axios
                 .get(`/sajona/propagacion/id-lote`)
                 .then((response) => {
                     this.form.pro_id_lote = response.data.idLote;
+                    this.overlayLoading = false;
                 })
-                .catch((errors) => {
-                    // console.log(errors.response.data);
+                .catch((errores) => {
+                    this.fnResponseError(errores);
+                    this.overlayLoading = false;
                 });
         },
         agregarPropagacion() {
@@ -328,14 +386,94 @@ export default {
                     );
                     this.listar();
                     this.limpiarCampo();
-                    this.buscarIdLoteUltimo();
                     this.errors = '';
                 })
-                .catch((errors) => {
-                    this.errors = errors.response.data.errors;
+                .catch((errores) => {
+                    this.fnResponseError(errores);
+                });
+        },
+        consultarPropagacion(id_lote){
+            this.overlayLoading = true;
+            this.accion = "Actualizar";
+            axios
+                .get(`/sajona/propagacion/mostrar/${id_lote}`)
+                .then((response) => {
+                    let data = response.data.data;
+
+                    this.form = {
+                        pro_fecha                     : data.pro_fecha,
+                        pro_cantidad_material         : data.pro_cantidad_material,
+                        pro_id_lote                   : data.pro_id_lote,
+                        pro_cantidad_plantas_madres   : data.pro_cantidad_plantas_madres,
+                        pro_tipo_propagacion          : data.pro_tipo_propagacion,
+                        pro_variedad                  : data.pro_variedad,
+                        pro_tipo_incorporacion        : data.pro_tipo_incorporacion,
+                    };
+
+                    this.errors = "";
+                    this.overlayLoading = false;
+                })
+                .catch((errores) => {
+                    this.fnResponseError(errores);
+                    this.overlayLoading = false;
+                });
+        },
+        fnDelete(pro_id_lote){
+            this.accion = 'Guardar';
+            this.limpiarCampo();
+            this.$swal({
+                title: '¿Quiere eliminar la Propagación?',
+                text: `Se removera el lote[${pro_id_lote}].`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Eliminarlo!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        this.overlayLoading = true;
+                        axios
+                            .post(`/sajona/propagacion/delete/`,{pro_id_lote : pro_id_lote})
+                            .then((response) => {
+                                this.overlayLoading = false;
+                                this.$swal(
+                                    response.data.message,
+                                    '',
+                                    'success'
+                                );
+                                this.listar();
+                            })
+                            .catch((errores) => {
+                                this.overlayLoading = false;
+                                this.fnResponseError(errores);
+                            });
+                    }
+                });
+        },
+        actualizarPropagacion(){
+            axios
+                .put(`/sajona/propagacion/actualizar/${this.form.pro_id_lote}`, this.form)
+                .then((response) => {
+                    this.errors = "";
+                    this.$swal(
+                        response.data.message,
+                        '',
+                        'success'
+                    );
+                    this.listar();
+                    this.limpiarCampo();
+                })
+                .catch((errores) => {
+                    this.fnResponseError(errores);
+                    this.overlayLoading = false;
                 });
         },
         limpiarCampo() {
+            this.overlayLoading = true;
+            this.buscarIdLoteUltimo();
+            this.accion = "Guardar";
+
             this.$refs["pro_fecha"].reset();
             this.$refs["pro_cantidad_material"].reset();
             this.$refs["pro_id_lote"].reset();
@@ -343,13 +481,20 @@ export default {
             this.$refs["pro_tipo_propagacion"].reset();
             this.$refs["pro_variedad"].reset();
             this.$refs["pro_tipo_incorporacion"].reset();
+            this.overlayLoading = false;
         },
     },
+    async created(){
+        // Aqui se carga informacion de campos parametros.
+        this.itemsTipoPropagacion   = await this.fnBuscarParametro('pr_tipo_propagacion');
+        this.itemsVariedad          = await this.fnBuscarParametro('pr_variedad');
+        this.itemsTipoIncorporacion = await this.fnBuscarParametro('pr_tipo_incorporacion');
+
+        // Consultando permisos.
+        this.arrPermisos = await this.$fnPermisosUsuarios();
+    },
     mounted() {
-        window.axios.defaults.headers.common[
-            "Authorization"
-        ] = `Bearer ${this.token}`;
-        this.listar();
+        window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
         this.buscarIdLoteUltimo();
     },
 };

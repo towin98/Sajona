@@ -189,10 +189,14 @@
 </template>
 
 <script>
-import { misRol } from "../../rolPermission/misRol.js";
+window.Vue = require("vue").default;
+import permisos from "../../rolPermission/Permissions.vue";
+// Creamos un Mixin Global para poder obtener los permisos desde cualquier vista.
+Vue.mixin(permisos);
 import mainHeader from "./mainHeader.vue";
 import loadingGeneral from "../loadingGeneral/loadingGeneral.vue";
 export default {
+
     name: "menuSajona",
     components: {
         loadingGeneral,
@@ -200,8 +204,9 @@ export default {
     },
     data() {
         return {
+
             drawer: null,
-            token: localStorage.getItem("token"),
+            token: localStorage.getItem("TOKEN_SAJONA"),
             date: "",
 
             propagacion: false,
@@ -213,14 +218,15 @@ export default {
             bajas: false,
             reportes: false,
 
+            /* AQUI VAN VARIABLES CON RESPECTO A PERMISOS Y ROLES START*/
             cRol: "",
             intervalId: 0,
+            /* END VARIABLES */
 
             titleProceso: "",
             overlayLoading: false,
         };
     },
-    mixins: [misRol],
     methods: {
         logout() {
             this.overlayLoading = true;
@@ -228,13 +234,13 @@ export default {
                 .post("/sajona/logout")
                 .then((response) => {
                     clearInterval(this.intervalId);
-                    localStorage.removeItem("token");
+                    localStorage.removeItem("TOKEN_SAJONA");
                     this.$router.push("/");
                     this.overlayLoading = false;
                 })
                 .catch((errors) => {
                     clearInterval(this.intervalId);
-                    localStorage.removeItem("token");
+                    localStorage.removeItem("TOKEN_SAJONA");
                     this.$router.push("/");
                     this.overlayLoading = false;
                 });
@@ -257,6 +263,8 @@ export default {
         /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
         this.overlayLoading = true;
         await this.buscaNombreRolUser();
+
+        await this.$fnConsultaPermisosUsuario();
         this.overlayLoading = false;
 
         this.intervalId = setInterval(async () => {
@@ -290,7 +298,6 @@ export default {
                 break;
         }
     },
-
     mounted() {},
 };
 </script>

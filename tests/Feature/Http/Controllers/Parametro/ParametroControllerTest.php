@@ -54,10 +54,11 @@ class ParametroControllerTest extends TestCase
         $response = $this->put('sajona/parametro/'.$tipoPropagacion->id, [
                 "descripcion"      => 'valor a actualizar',
                 "estado"           => 'ACTIVO',
+                "parametrica"      => 'pr_tipo_propagacion' // nombre de la tabla parametrica en la cual se va a realizar la acción
             ]
         );
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }
 
     public function test_validar_datos_al_editar_un_registro_de_una_tabla_parametro() {

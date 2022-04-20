@@ -103,7 +103,7 @@ export default {
             axios
                 .post("sajona/login", this.formData)
                 .then((response) => {
-                    localStorage.setItem("token", response.data.access_token);
+                    localStorage.setItem("TOKEN_SAJONA", response.data.access_token);
                     this.$router.push("/inicio/dashboard");
                     this.overlayLoading = false;
                     this.$swal("Bienvenido");

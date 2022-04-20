@@ -50,8 +50,21 @@ class PermissionController extends Controller
             'data' => $cRol[0]
         ], 200);
     }
-}
 
+    /**
+     * Retorna los permisos del usuario autenticado.
+     *
+     * @return string
+     */
+    public function buscaPermisosUsuario(){
+        $users = User::findOrFail(Auth::user()->id);
+        $permisos = $users->getAllPermissions()->pluck('name');
+        return response()->json([
+            'message' => 'Lista de Permisos de usuario.',
+            'data' => $permisos
+        ], 200);
+    }
+}
 
 
         // $permisos = $users->getAllPermissions()->pluck('name');

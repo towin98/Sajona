@@ -1,22 +1,15 @@
 <?php
 
-namespace Database\Seeders;
+namespace Tests\Feature\Http\Controllers\Traits;
 
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class PermissionsSeeder extends Seeder
+trait AutenticacionTrait
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
+    public function CrearRolsPermisos(){
         $permisos = [];
         array_push($permisos, Permission::create(['name' => 'LISTAR']));   // tracking
         array_push($permisos, Permission::create(['name' => 'CREAR']));    // store
@@ -51,5 +44,16 @@ class PermissionsSeeder extends Seeder
             'password' => Hash::make('admin123'),
         ]);
         $user->assignRole('Auxiliar');
+    }
+
+    public function Autenticacion($email, $pass){
+
+        $this->CrearRolsPermisos();
+
+        $response = $this->post('/sajona/login', [
+            "email"             => $email,
+            "password"          => $pass
+        ]);
+        $response->assertStatus(200);
     }
 }

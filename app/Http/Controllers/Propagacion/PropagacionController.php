@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\Propagacion;
 
+use Exception;
+use App\Models\Propagacion;
+use App\Models\PlantaMadre;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PropationRequest;
-use App\Models\Propagacion;
-use Illuminate\Http\Request;
+use App\Http\Requests\PropationRequestUpdate;
 
 class PropagacionController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('role:Auxiliar');
-        // $this->middleware(['role:Auxiliar','permission:publish articles|edit articles']);
+        $this->middleware(['permission:LISTAR'])->only('listar');
+        $this->middleware(['permission:CREAR'])->only('store');
+        $this->middleware(['permission:EDITAR'])->only('update');
+        $this->middleware(['permission:ELIMINAR'])->only('delete');
+        $this->middleware(['permission:VER'])->only('show');
     }
 
     /**
@@ -30,11 +36,14 @@ class PropagacionController extends Controller
         }
 
         if ($request->filled('orderColumn') && $request->filled('order')) {
+
             $totalRegistros = Propagacion::Buscar($request->buscar)
                 ->orderBy($request->orderColumn, $request->order)
+                ->where('pro_estado',1)
                 ->paginate($length);
         }else{
             $totalRegistros = Propagacion::Buscar($request->buscar)
+                ->where('pro_estado',1)
                 ->paginate($length);
         }
 
@@ -94,5 +103,106 @@ class PropagacionController extends Controller
             'message' => 'Datos Guardados',
         ], 201);
 
+    }
+
+    /**
+     * Muestra informacion de una propagación creada.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $propagacion = Propagacion::findOrfail($id);
+
+        $propagacion->pro_fecha = substr($propagacion->pro_fecha,0,10);
+        return response()->json([
+            'data'      => $propagacion,
+        ], 200);
+    }
+
+    /**
+     * Actualiza propagación si esta no tiene aun procesos en los demás módulos.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id de propagación
+     * @return \Illuminate\Http\Response
+     */
+    public function update(PropationRequestUpdate $request, $id)
+    {
+        $propagacion = Propagacion::findOrfail($id);
+
+        if ($propagacion) {
+            $plantaMadre = PlantaMadre::select('pm_id')->where('pm_pro_id_lote', $propagacion->pro_id_lote)->first();
+            if ($plantaMadre) {
+                return response()->json([
+                    'message' => 'Error de Validación',
+                    'errors'  => "El lote[$propagacion->pro_id_lote] ya tiene procesos y no se puede editar."
+                ], 409);
+            }else{
+                try {
+                    $request->merge(['pro_fecha' => $request->pro_fecha." ".date("H:i:s")]);
+                    $propagacion->update($request->all());
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'message' => 'Error en el Sistema',
+                        'errors'  => "Error al actualizar propagación, por favor comuniquese con el area de Tecnología de Sajona, Gracias"
+                    ], 500);
+                }
+            }
+        }
+
+        return response()->json([
+            'message' => "Datos Actualizados con exito.",
+        ], 201);
+
+    }
+
+    /**
+     * Elimina un registro de cosecha (cambia a estado 0).
+     * El eliminado en propagación funciona cambiando de estado los registros a Estado 0.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        if(!$request->filled('pro_id_lote')){
+            return response()->json([
+                'message' => 'Error de Validación de Datos.',
+                'errors'  => "El Id del Lote es requerido."
+            ], 409);
+        }
+
+        $propagacion = Propagacion::where('pro_id_lote',$request->pro_id_lote)->where('pro_estado', 1)->first();
+        if (!$propagacion) {
+            return response()->json([
+                'message' => "Error de validación de datos.",
+                'errors' => "No se encontro la Propagación con Id de Lote[$request->pro_id_lote]",
+            ], 404);
+        }
+
+        $plantaMadre = PlantaMadre::select('pm_id')->where('pm_pro_id_lote', $propagacion->pro_id_lote)->first();
+        if ($plantaMadre) {
+            return response()->json([
+                'message' => 'Error de Validación',
+                'errors'  => "El lote[$propagacion->pro_id_lote] ya tiene procesos y no se Eliminar."
+            ], 409);
+        }
+
+        try {
+            $propagacion = $propagacion->update([
+                'pro_estado' => 0
+            ]);
+            return response()->json([
+                'message' => "Se elimino la Propagación con Id de lote[".$request->pro_id_lote."] correctamente.",
+            ], 200);
+
+        }catch (Exception $e) {
+            return response()->json([
+                'message' => "Error en el sistema Inesperado.",
+                'errors' => "Error al eliminar Propagación.".$e,
+            ], 500);
+        }
     }
 }
