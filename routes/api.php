@@ -23,10 +23,10 @@ Route::get('/busca-nombre-rol-user/', [PermissionController::class, 'buscaNombre
 Route::get('/permisos-usuario/', [PermissionController::class, 'buscaPermisosUsuario'])->middleware('auth:sanctum');
 
 Route::get('/permission/{permissionName}', [PermissionController::class, 'buscaPermisosUsuario'])->middleware('auth:sanctum');
+Artisan::call('cache:clear');
 
 /*Rutas Sojana (MENU)*/
 Route::group(['prefix' => 'propagacion', 'middleware' => 'auth:sanctum'] , function(){
-    Artisan::call('cache:clear');
     Route::get('/listar', [PropagacionController::class, 'listar']);
     Route::get('/id-lote', [PropagacionController::class, 'buscarUltimoIdLote']);
     Route::resource('/', PropagacionController::class)->only(['store']);
@@ -36,7 +36,7 @@ Route::group(['prefix' => 'propagacion', 'middleware' => 'auth:sanctum'] , funct
 });
 
 /*Planta Madre (MENU)*/
-Route::group(['prefix' => 'planta-madre', /* 'middleware' => 'auth:sanctum' */] , function(){
+Route::group(['prefix' => 'planta-madre', 'middleware' => 'auth:sanctum'] , function(){
     Route::resource('/', PlantaMadreController::class)->only(['store']);
     Route::get('/buscar-lotes', [PlantaMadreController::class, 'buscarLotes']);
     Route::get('/{Propagacion}', [PlantaMadreController::class, 'show']);

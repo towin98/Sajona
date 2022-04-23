@@ -2781,8 +2781,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _rolPermission_Permissions_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../rolPermission/Permissions.vue */ "./resources/js/rolPermission/Permissions.vue");
-/* harmony import */ var _mainHeader_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mainHeader.vue */ "./resources/js/components/menu/mainHeader.vue");
-/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+/* harmony import */ var _commons_commons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../commons/commons.js */ "./resources/js/commons/commons.js");
+/* harmony import */ var _mainHeader_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mainHeader.vue */ "./resources/js/components/menu/mainHeader.vue");
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2980,16 +2981,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
+
  // Creamos un Mixin Global para poder obtener los permisos desde cualquier vista.
 
 Vue.mixin(_rolPermission_Permissions_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "menuSajona",
   components: {
-    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    mainHeader: _mainHeader_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    mainHeader: _mainHeader_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -4189,6 +4192,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4196,7 +4213,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       menuDateInicio: false,
       menuDateFin: false,
@@ -4305,11 +4321,11 @@ __webpack_require__.r(__webpack_exports__);
         };
         _this.errors = errors;
         _this.overlayLoading = false;
-      })["catch"](function (errors) {
+      })["catch"](function (errores) {
         _this.overlayLoading = false;
         _this.loading = false;
         _this.dataSet = [];
-        _this.errors = errors.response.data.errors;
+        _this.errors = _this.fnResponseError(errores);
       });
     },
     filterSearch: function filterSearch() {
@@ -4321,7 +4337,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.buscarLotes(_this2.buscar);
       }, 800);
     },
-    esquejesSemilla: function esquejesSemilla(item) {
+    fnShowEsquejesSemilla: function fnShowEsquejesSemilla(item) {
       var _this3 = this;
 
       this.modalErrors = '';
@@ -4340,7 +4356,8 @@ __webpack_require__.r(__webpack_exports__);
         _this3.modalInfo.pm_cantidad_semillas = response.data.data.pm_cantidad_semillas;
         _this3.modalInfo.pm_cantidad_esquejes = response.data.data.pm_cantidad_esquejes;
         _this3.overlayLoading = false;
-      })["catch"](function (errors) {
+      })["catch"](function (errores) {
+        _this3.modalErrors = _this3.fnResponseError(errores);
         _this3.overlayLoading = false;
       });
     },
@@ -4356,10 +4373,14 @@ __webpack_require__.r(__webpack_exports__);
         _this4.modalErrors = '';
 
         _this4.buscarLotes();
-      })["catch"](function (errors) {
-        _this4.modalErrors = errors.response.data.errors;
+      })["catch"](function (errores) {
+        _this4.modalErrors = _this4.fnResponseError(errores);
         _this4.overlayLoading = false;
       });
+    },
+    fnLimpiarFechaIniFin: function fnLimpiarFechaIniFin() {
+      this.form.fecha_inicio = "";
+      this.form.fecha_fin = "";
     }
   }
 });
@@ -4910,7 +4931,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
-/* harmony import */ var _commons_commons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../commons/commons.js */ "./resources/js/commons/commons.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -5136,7 +5156,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5144,8 +5164,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      arrPermisos: [],
-      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       // Validaciones
       rulesFecha: [function (value) {
@@ -5227,7 +5245,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     };
   },
-  mixins: [_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons],
   watch: {
     options: {
       handler: function handler() {
@@ -5283,7 +5300,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this2.numberOfPages = response.data.totalPages;
         _this2.overlayLoading = false;
       })["catch"](function (errores) {
-        // this.fnResponseError(errores);
         _this2.loading = false;
         _this2.overlayLoading = false;
       });
@@ -5296,8 +5312,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this3.form.pro_id_lote = response.data.idLote;
         _this3.overlayLoading = false;
       })["catch"](function (errores) {
-        _this3.fnResponseError(errores);
-
         _this3.overlayLoading = false;
       });
     },
@@ -5313,7 +5327,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         _this4.errors = '';
       })["catch"](function (errores) {
-        _this4.fnResponseError(errores);
+        _this4.errors = _this4.fnResponseError(errores);
       });
     },
     consultarPropagacion: function consultarPropagacion(id_lote) {
@@ -5335,8 +5349,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this5.errors = "";
         _this5.overlayLoading = false;
       })["catch"](function (errores) {
-        _this5.fnResponseError(errores);
-
+        _this5.errors = _this5.fnResponseError(errores);
         _this5.overlayLoading = false;
       });
     },
@@ -5366,8 +5379,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _this6.listar();
           })["catch"](function (errores) {
             _this6.overlayLoading = false;
-
-            _this6.fnResponseError(errores);
+            _this6.errors = _this6.fnResponseError(errores);
           });
         }
       });
@@ -5384,8 +5396,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         _this7.limpiarCampo();
       })["catch"](function (errores) {
-        _this7.fnResponseError(errores);
-
+        _this7.errors = _this7.fnResponseError(errores);
         _this7.overlayLoading = false;
       });
     },
@@ -5426,13 +5437,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 8:
               _this8.itemsTipoIncorporacion = _context.sent;
-              _context.next = 11;
-              return _this8.$fnPermisosUsuarios();
 
-            case 11:
-              _this8.arrPermisos = _context.sent;
-
-            case 12:
+            case 9:
             case "end":
               return _context.stop();
           }
@@ -5441,7 +5447,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }))();
   },
   mounted: function mounted() {
-    window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
     this.buscarIdLoteUltimo();
   }
 });
@@ -6471,8 +6476,6 @@ var arrPermisos = [];
       }))();
     },
     $fnConsultaPermisosUsuario: function $fnConsultaPermisosUsuario() {
-      var _this2 = this;
-
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
@@ -6486,16 +6489,14 @@ var arrPermisos = [];
               case 3:
                 response = _context3.sent;
                 arrPermisos = response.data.data;
-                _context3.next = 10;
+                _context3.next = 9;
                 break;
 
               case 7:
                 _context3.prev = 7;
                 _context3.t0 = _context3["catch"](0);
 
-                _this2.$swal('Error consultando permisos de usuario.', '', 'error');
-
-              case 10:
+              case 9:
               case "end":
                 return _context3.stop();
             }
@@ -6680,9 +6681,10 @@ var commons = {
           title: "".concat(mensaje),
           text: "".concat(errores.response.data.errors)
         });
+        return '';
       } else {
         if (errores.response.status == 422) {
-          this.errors = errores.response.data.errors;
+          return errores.response.data.errors;
         }
       }
     }
@@ -6952,7 +6954,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -29548,12 +29550,32 @@ var render = function () {
                           _c(
                             "v-btn",
                             {
+                              staticClass: "white--text text-none mr-2",
+                              attrs: {
+                                type: "button",
+                                small: "",
+                                color: "red",
+                                tile: "",
+                              },
+                              on: { click: _vm.fnLimpiarFechaIniFin },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" clear ")]),
+                              _vm._v("Limpiar\n                        "),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
                               staticClass: "white--text text-none",
                               attrs: {
                                 type: "submit",
                                 small: "",
                                 color: "#00bcd4",
                                 tile: "",
+                                disabled: !_vm.$can(["LISTAR"]),
                               },
                             },
                             [
@@ -29589,6 +29611,7 @@ var render = function () {
                               label: "Buscar",
                               "single-line": "",
                               "hide-details": "",
+                              disabled: !_vm.$can(["LISTAR"]),
                             },
                             on: { input: _vm.filterSearch },
                             model: {
@@ -29676,7 +29699,7 @@ var render = function () {
                                   {
                                     on: {
                                       click: function ($event) {
-                                        return _vm.esquejesSemilla(item)
+                                        return _vm.fnShowEsquejesSemilla(item)
                                       },
                                     },
                                   },
@@ -29971,6 +29994,7 @@ var render = function () {
                                 small: "",
                                 color: "success",
                                 tile: "",
+                                disabled: !_vm.$can(["CREAR", "EDITAR"]),
                               },
                               on: { click: _vm.guardarPlantaMadre },
                             },
@@ -31079,6 +31103,7 @@ var render = function () {
                               label: "Buscar",
                               "single-line": "",
                               "hide-details": "",
+                              disabled: !_vm.$can(["LISTAR"]),
                             },
                             on: { input: _vm.filterSearch },
                             model: {

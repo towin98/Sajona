@@ -35,11 +35,11 @@ export default {
                 let response = await axios.get("/sajona/permisos-usuario");
                 arrPermisos = response.data.data;
             } catch (errors) {
-                this.$swal(
-                    'Error consultando permisos de usuario.',
-                    '',
-                    'error'
-                );
+                // this.$swal(
+                //     'Error consultando permisos de usuario.',
+                //     '',
+                //     'error'
+                // );
             }
         }
     },

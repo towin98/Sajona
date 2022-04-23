@@ -169,6 +169,7 @@
                                 single-line
                                 hide-details
                                 v-model="buscar"
+                                :disabled="!$can(['LISTAR'])"
                                 @input="filterSearch"
                             ></v-text-field>
                         </v-card-title>
@@ -219,7 +220,6 @@
 </template>
 <script>
 import loadingGeneral   from '../loadingGeneral/loadingGeneral.vue';
-import { commons }  from '../../commons/commons.js';
 
 export default {
     components:{
@@ -227,8 +227,6 @@ export default {
     },
     data() {
         return {
-            arrPermisos         : [],
-            token               : localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading      : false,
             // Validaciones
             rulesFecha: [
@@ -305,7 +303,6 @@ export default {
             /* END CAMPOS PARAMETROS */
         };
     },
-    mixins: [commons],
     watch: {
         options: {
             handler() {
@@ -357,7 +354,6 @@ export default {
                     this.overlayLoading = false;
                 })
                 .catch((errores) => {
-                    // this.fnResponseError(errores);
                     this.loading = false;
                     this.overlayLoading = false;
                 });
@@ -371,7 +367,6 @@ export default {
                     this.overlayLoading = false;
                 })
                 .catch((errores) => {
-                    this.fnResponseError(errores);
                     this.overlayLoading = false;
                 });
         },
@@ -389,7 +384,7 @@ export default {
                     this.errors = '';
                 })
                 .catch((errores) => {
-                    this.fnResponseError(errores);
+                    this.errors = this.fnResponseError(errores);
                 });
         },
         consultarPropagacion(id_lote){
@@ -414,7 +409,7 @@ export default {
                     this.overlayLoading = false;
                 })
                 .catch((errores) => {
-                    this.fnResponseError(errores);
+                    this.errors = this.fnResponseError(errores);
                     this.overlayLoading = false;
                 });
         },
@@ -446,7 +441,7 @@ export default {
                             })
                             .catch((errores) => {
                                 this.overlayLoading = false;
-                                this.fnResponseError(errores);
+                                this.errors = this.fnResponseError(errores);
                             });
                     }
                 });
@@ -465,7 +460,7 @@ export default {
                     this.limpiarCampo();
                 })
                 .catch((errores) => {
-                    this.fnResponseError(errores);
+                    this.errors = this.fnResponseError(errores);
                     this.overlayLoading = false;
                 });
         },
@@ -489,12 +484,8 @@ export default {
         this.itemsTipoPropagacion   = await this.fnBuscarParametro('pr_tipo_propagacion');
         this.itemsVariedad          = await this.fnBuscarParametro('pr_variedad');
         this.itemsTipoIncorporacion = await this.fnBuscarParametro('pr_tipo_incorporacion');
-
-        // Consultando permisos.
-        this.arrPermisos = await this.$fnPermisosUsuarios();
     },
     mounted() {
-        window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
         this.buscarIdLoteUltimo();
     },
 };

@@ -84,11 +84,23 @@
                         </v-col>
                         <v-col cols="12" class="d-flex justify-center">
                             <v-btn
+                                type="button"
+                                small
+                                color="red"
+                                class="white--text text-none mr-2"
+                                tile
+                                v-on:click="fnLimpiarFechaIniFin"
+
+                            >
+                                <v-icon> clear </v-icon>Limpiar
+                            </v-btn>
+                            <v-btn
                                 type="submit"
                                 small
                                 color="#00bcd4"
                                 class="white--text text-none"
                                 tile
+                                :disabled="!$can(['LISTAR'])"
                             >
                                 <v-icon> search </v-icon>Buscar
                             </v-btn>
@@ -105,6 +117,7 @@
                                 label="Buscar"
                                 single-line
                                 hide-details
+                                :disabled="!$can(['LISTAR'])"
                                 v-model="buscar"
                                 @input="filterSearch"
                             ></v-text-field>
@@ -144,7 +157,7 @@
                                 </v-chip>
                             </template>
                             <template v-slot:item.esquejes_semilla="{ item }">
-                                <a @click="esquejesSemilla(item)">Clic</a>
+                                <a @click="fnShowEsquejesSemilla(item)">Clic</a>
                             </template>
 
                         </v-data-table>
@@ -242,6 +255,7 @@
                                 color="success"
                                 class="white--text text-none"
                                 tile
+                                :disabled="!$can(['CREAR', 'EDITAR'])"
                                 v-on:click="guardarPlantaMadre"
                             >
                                 <v-icon> save </v-icon>Guardar
@@ -262,7 +276,6 @@ export default {
     },
     data() {
         return {
-            token: localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading  : false,
             menuDateInicio  : false,
             menuDateFin     : false,
@@ -355,11 +368,11 @@ export default {
                     this.errors = errors;
                     this.overlayLoading = false;
                 })
-                .catch((errors) => {
+                .catch((errores) => {
                     this.overlayLoading = false;
                     this.loading = false;
                     this.dataSet = [];
-                    this.errors = errors.response.data.errors;
+                    this.errors = this.fnResponseError(errores);
                 });
         },
         filterSearch() {
@@ -369,7 +382,7 @@ export default {
                 this.buscarLotes(this.buscar);
             }, 800);
         },
-        esquejesSemilla(item) {
+        fnShowEsquejesSemilla(item) {
             this.modalErrors = '';
             this.overlayLoading = true;
             axios
@@ -389,7 +402,8 @@ export default {
                     this.modalInfo.pm_cantidad_esquejes = response.data.data.pm_cantidad_esquejes;
                     this.overlayLoading = false;
                 })
-                .catch((errors) => {
+                .catch((errores) => {
+                    this.modalErrors = this.fnResponseError(errores);
                     this.overlayLoading = false;
                 });
         },
@@ -408,11 +422,15 @@ export default {
                     this.modalErrors = '';
                     this.buscarLotes();
                 })
-                .catch((errors) => {
-                    this.modalErrors = errors.response.data.errors;
+                .catch((errores) => {
+                    this.modalErrors = this.fnResponseError(errores);
                     this.overlayLoading = false;
                 });
+        },
+        fnLimpiarFechaIniFin() {
+            this.form.fecha_inicio = "";
+            this.form.fecha_fin = "";
         }
-    },
+    }
 };
 </script>
