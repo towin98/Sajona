@@ -92,7 +92,7 @@ class ParametroController extends Controller
                     'errors' => [
                         "descripcion" => "La descripción ya existe."
                     ],
-                ], 409);
+                ], 422);
             }
 
             $modelo::create([

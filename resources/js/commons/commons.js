@@ -28,9 +28,10 @@ export const commons = {
                     title: `${mensaje}`,
                     text: `${errores.response.data.errors}`,
                 })
+                return '';
             }else{
                 if (errores.response.status == 422) {
-                    this.errors = errores.response.data.errors;
+                    return errores.response.data.errors;
                 }
             }
         }

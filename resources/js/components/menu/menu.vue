@@ -191,8 +191,10 @@
 <script>
 window.Vue = require("vue").default;
 import permisos from "../../rolPermission/Permissions.vue";
+import { commons }  from '../../commons/commons.js';
 // Creamos un Mixin Global para poder obtener los permisos desde cualquier vista.
 Vue.mixin(permisos);
+Vue.mixin(commons);
 import mainHeader from "./mainHeader.vue";
 import loadingGeneral from "../loadingGeneral/loadingGeneral.vue";
 export default {
@@ -256,9 +258,7 @@ export default {
         const month = fecha.toLocaleString("es-CO", { month: "long" });
 
         this.date = `${month.substring(0, 3)}/${fecha.getFullYear()}`;
-        window.axios.defaults.headers.common[
-            "Authorization"
-        ] = `Bearer ${this.token}`;
+        window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
 
         /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
         this.overlayLoading = true;

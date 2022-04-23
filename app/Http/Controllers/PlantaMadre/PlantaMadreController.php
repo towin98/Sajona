@@ -2,17 +2,30 @@
 
 namespace App\Http\Controllers\PlantaMadre;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PlantaMadreBuscarRequest;
-use App\Http\Requests\PlantaMadreStoreRequest;
+use Throwable;
+use Illuminate\Auth\Access\AuthorizationException;
+
 use App\Models\PlantaMadre;
 use App\Models\Propagacion;
 use App\Traits\alertaTrait;
+use App\Traits\commonsTrait;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PlantaMadreBuscarRequest;
+use App\Http\Requests\PlantaMadreStoreRequest;
+use App\Models\Transplante;
 
 class PlantaMadreController extends Controller
 {
-
     use alertaTrait;
+    use commonsTrait;
+
+    public function __construct()
+    {
+        $this->middleware(['permission:LISTAR'])->only('buscarLotes');
+        $this->middleware(['permission:CREAR|EDITAR'])->only('store');
+        $this->middleware(['permission:VER'])->only('show');
+    }
+
     /**
      * Método que busca lotes de propagación por un rango de fechas.
      *
@@ -75,16 +88,24 @@ class PlantaMadreController extends Controller
     }
 
     /**
-     * Método que busca por id del lote plantas madres y actualiza registro.
+     * Método que Guarda o Actualiza si ya existe registro de plantas madres.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(PlantaMadreStoreRequest $request)
     {
-        $plantaMadre = PlantaMadre::where('pm_pro_id_lote', $request->pm_pro_id_lote);
+        $plantaMadre = PlantaMadre::where([
+                'pm_pro_id_lote' => $request->pm_pro_id_lote,
+                'pm_estado'      => 1
+            ]);
 
         if (count($plantaMadre->get()) == 0) {
+
+            if (!$this->fnVerificaPermisoUsuario('CREAR')) {
+                throw new AuthorizationException;
+            }
+
             $plantaMadre->create([
                 'pm_pro_id_lote'        => $request->pm_pro_id_lote,
                 'pm_fecha_esquejacion'  => $request->pm_fecha_esquejacion." ".date('H:i:s'),
@@ -93,6 +114,28 @@ class PlantaMadreController extends Controller
                 'pm_estado'             => true,
             ]);
         }else{
+
+            if (!$this->fnVerificaPermisoUsuario('EDITAR')) {
+                throw new AuthorizationException;
+            }
+
+            $plantaMadreConsulta = $plantaMadre->first();
+
+            // consultando si el lote ya tiene procesos en linea como transplante a bolsa.
+            // Si tiene transplante a bolsa se restringe que no pueda actualizar el registro,
+            // de lo contrario si no tiene procesos si puede editar.
+            $transplantebolsa = Transplante::select(['tp_id', 'tp_pm_id'])->where([
+                    'tp_pm_id'  => $plantaMadreConsulta->pm_id,
+                    'tp_tipo'   => "campo",
+                    'tp_estado' => 1,
+                ])->first();
+            if ($transplantebolsa) {
+                return response()->json([
+                    'message' => 'Validación de Datos',
+                    'errors' => "El Lote[$plantaMadreConsulta->pm_pro_id_lote] ya tiene Transplante a Bolsa, no se puede editar si ya tiene procesos en Curso.",
+                ], 409);
+            }
+
             $plantaMadre->update([
                 'pm_pro_id_lote'        => $request->pm_pro_id_lote,
                 'pm_fecha_esquejacion'  => $request->pm_fecha_esquejacion." ".date('H:i:s'),
