@@ -55,7 +55,7 @@ class Baja extends Model
         'bj_fecha'             => 'required|date_format:Y-m-d',
         'bj_cantidad'          => 'required|integer',
         'bj_fase_cultivo'      => 'required',
-        'bj_observacion'       => 'max:255',
+        'bj_observacion'       => 'nullable|max:255',
     ];
 
     /**
