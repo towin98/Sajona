@@ -8,6 +8,7 @@ use App\Models\Propagacion;
 use App\Models\Transplante;
 use App\Traits\alertaTrait;
 use Illuminate\Http\Request;
+use App\Traits\commonsTrait;
 use App\Traits\paginationTrait;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -15,12 +16,21 @@ use App\Http\Requests\TransplanteStoreRequest;
 use App\Http\Requests\TransplanteBuscarRequest;
 use App\Http\Requests\TransplanteCampoStoreRequest;
 use App\Http\Resources\ListarTransplanteCampoCollection;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class TransplanteController extends Controller
 {
     use paginationTrait;
     use bajasTrait;
     use alertaTrait;
+    use commonsTrait;
+
+    public function __construct()
+    {
+        $this->middleware(['permission:LISTAR'])->only(['buscarTransplanteBolsa', 'buscarTransplanteCampo']);
+        $this->middleware(['permission:CREAR|EDITAR'])->only(['storeTransplanteBolsa', 'storeTransplanteCampo']);
+        $this->middleware(['permission:VER'])->only(['showTransplanteBolsa', 'showTransplanteCampo']);
+    }
 
     /**
      * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de transplantes a bolsa.
@@ -126,7 +136,7 @@ class TransplanteController extends Controller
     }
 
     /**
-     * Guarda transplante a bolsa o transplante a campo dependiendo del módulo.
+     * Guarda o Actualiza transplante a Bolsa.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -142,13 +152,28 @@ class TransplanteController extends Controller
 
         if (empty($plantaMadre)) {
             return response()->json([
-                'error' => 'No existen resultados con el id especificado.',
+                'errors' => 'No existen resultados con el id especificado.',
                 'code' => 404
             ], 404);
         }
 
+        $transplanteBolsa = Transplante::where([
+                'tp_pm_id' => $plantaMadre->pm_id,
+                'tp_tipo'  => 'bolsa'
+        ]);
+
+        if ($transplanteBolsa->first()) {
+            if (!$this->fnVerificaPermisoUsuario('EDITAR')) {
+                throw new AuthorizationException;
+            }
+        }else{
+            if (!$this->fnVerificaPermisoUsuario('CREAR')) {
+                throw new AuthorizationException;
+            }
+        }
+
         // Se Eliminan registro en caso de que exista en planta madre, para simular un update.
-        Transplante::where('tp_pm_id', $plantaMadre->pm_id)->delete();
+        $transplanteBolsa->delete();
 
         Transplante::create([
             'tp_pm_id'          => $plantaMadre->pm_id,
@@ -398,7 +423,7 @@ class TransplanteController extends Controller
             }
         }else{
             return response()->json([
-                'error' => "No existen resultados con el id del lote[$request->id_lote] especificado.",
+                'errors' => "No existen resultados con el id del lote[$request->id_lote] especificado.",
                 'code' => 404
             ], 404);
         }

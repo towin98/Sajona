@@ -31,12 +31,12 @@
                                     <v-text-field
                                         v-model="form.fecha_inicial"
                                         append-icon="mdi-calendar"
-                                        readonly
                                         v-bind="attrs"
                                         v-on="on"
                                         ref="fecha_inicial"
                                         :error-messages="errors.fecha_inicial"
                                         dense
+                                        :disabled="!$can(['LISTAR'])"
                                     >
                                     </v-text-field>
                                 </template>
@@ -71,6 +71,7 @@
                                         ref="fecha_final"
                                         :error-messages="errors.fecha_final"
                                         dense
+                                        :disabled="!$can(['LISTAR'])"
                                     >
                                     </v-text-field>
                                 </template>
@@ -89,6 +90,7 @@
                                 color="#00bcd4"
                                 class="white--text text-none"
                                 tile
+                                :disabled="!$can(['LISTAR'])"
                             >
                                 <v-icon> search </v-icon>Buscar
                             </v-btn>
@@ -144,7 +146,7 @@
                                     {{ item.dias_transcurridos }}
                                 </v-chip>
                             </template>
-                            <template v-slot:item.consultar="{ item }">
+                            <template v-slot:item.consultar="{ item }" v-if="$can(['VER'])">
                                 <a @click="consultarTransplante(item)">Clic</a>
                             </template>
                         </v-data-table>
@@ -158,7 +160,7 @@
         <v-dialog v-model="modal" persistent width="800px">
             <v-card>
                 <v-card-title class="text-h5 py-2">
-                    Nuevo
+                    {{ title_modal }}
                     <v-spacer></v-spacer>
                     <v-btn color="black" icon @click="modal = false">
                         <v-icon dark>
@@ -223,9 +225,12 @@
                             <v-select
                                 v-model="modalInfo.tp_tipo_lote"
                                 ref="tp_tipo_lote"
-                                :items="['Planta Madre', 'Planta Comercial']"
+                                :items="itemsTipoLote"
+                                item-value="id"
+                                item-text="descripcion"
                                 :error-messages="modalErrors.tp_tipo_lote"
                                 dense
+                                no-data-text="Sin Datos"
                             ></v-select>
                         </v-col>
 
@@ -249,9 +254,12 @@
                             <v-select
                                 v-model="modalInfo.tp_ubicacion"
                                 ref="tp_ubicacion"
-                                :items="['Casa Malla','Planta Madre']"
+                                :items="itemsUbicacion"
+                                item-value="id"
+                                item-text="descripcion"
                                 :error-messages="modalErrors.tp_ubicacion"
                                 dense
+                                no-data-text="Sin Datos"
                             ></v-select>
                         </v-col>
 
@@ -263,6 +271,7 @@
                                 class="white--text text-none"
                                 tile
                                 v-on:click="guardarTransplante"
+                                :disabled="!$can(['CREAR', 'EDITAR'])"
                             >
                                 <v-icon> save </v-icon>Guardar
                             </v-btn>
@@ -283,7 +292,6 @@ export default {
     },
     data() {
         return {
-            token: localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading   : false,
             menuDateInicial  : false,
             menuDateFinal    : false,
@@ -336,6 +344,10 @@ export default {
             },
             modalErrors : '',
             /* fin Variables modal */
+
+            itemsUbicacion : [],
+            itemsTipoLote  : [],
+            title_modal    : ''
         };
     },
     watch: {
@@ -407,11 +419,8 @@ export default {
                 .then((response) => {
                     this.modal = true;
 
-                    if (response.data.data.tp_fecha != '') {
-                        this.modalInfo.tp_fecha = response.data.data.tp_fecha;
-                    }else{
-                        this.modalInfo.tp_fecha = '';
-                    }
+                    this.modalInfo.tp_fecha = (response.data.data.tp_fecha != '') ? response.data.data.tp_fecha : '' ;
+                    this.title_modal = (item.accion == "Finalizado" ? "Actualizar" : "Nuevo");
 
                     // Cargando Data.
                     this.modalInfo.tp_pm_id = response.data.data.tp_pm_id;
@@ -422,8 +431,9 @@ export default {
 
                     this.overlayLoading = false;
                 })
-                .catch((errors) => {
+                .catch((errores) => {
                     this.overlayLoading = false;
+                    this.fnResponseError(errores);
                 });
         },
         guardarTransplante(){
@@ -441,11 +451,16 @@ export default {
                     this.modalErrors = '';
                     this.buscarTransplantes();
                 })
-                .catch((errors) => {
-                    this.modalErrors = errors.response.data.errors;
+                .catch((errores) => {
                     this.overlayLoading = false;
+                    this.modalErrors = this.fnResponseError(errores);
                 });
         }
+    },
+    async created(){
+        // Aqui se carga informacion de campos parametros.
+        this.itemsUbicacion   = await this.fnBuscarParametro('pr_ubicacion');
+        this.itemsTipoLote    = await this.fnBuscarParametro('pr_tipo_lote');
     },
 };
 </script>

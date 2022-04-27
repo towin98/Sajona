@@ -4325,7 +4325,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.overlayLoading = false;
         _this.loading = false;
         _this.dataSet = [];
-        _this.errors = _this.fnResponseError(errores);
       });
     },
     filterSearch: function filterSearch() {
@@ -5484,7 +5483,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5765,11 +5781,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       menuDateInicial: false,
       menuDateFinal: false,
@@ -5837,9 +5852,12 @@ __webpack_require__.r(__webpack_exports__);
         tp_ubicacion: '',
         tp_cantidad_area: ''
       },
-      modalErrors: ''
-      /* fin Variables modal */
+      modalErrors: '',
 
+      /* fin Variables modal */
+      itemsUbicacion: [],
+      itemsTipoLote: [],
+      title_modal: ''
     };
   },
   watch: {
@@ -5911,13 +5929,8 @@ __webpack_require__.r(__webpack_exports__);
       this.overlayLoading = true;
       axios.get("/sajona/transplante-bolsa/".concat(item.pm_id)).then(function (response) {
         _this3.modal = true;
-
-        if (response.data.data.tp_fecha != '') {
-          _this3.modalInfo.tp_fecha = response.data.data.tp_fecha;
-        } else {
-          _this3.modalInfo.tp_fecha = '';
-        } // Cargando Data.
-
+        _this3.modalInfo.tp_fecha = response.data.data.tp_fecha != '' ? response.data.data.tp_fecha : '';
+        _this3.title_modal = item.accion == "Finalizado" ? "Actualizar" : "Nuevo"; // Cargando Data.
 
         _this3.modalInfo.tp_pm_id = response.data.data.tp_pm_id;
         _this3.modalInfo.cantidad_transplante_bolsa = response.data.data.cantidad_transplante_bolsa; // label
@@ -5926,8 +5939,10 @@ __webpack_require__.r(__webpack_exports__);
         _this3.modalInfo.tp_ubicacion = response.data.data.tp_ubicacion;
         _this3.modalInfo.tp_cantidad_area = response.data.data.tp_cantidad_area;
         _this3.overlayLoading = false;
-      })["catch"](function (errors) {
+      })["catch"](function (errores) {
         _this3.overlayLoading = false;
+
+        _this3.fnResponseError(errores);
       });
     },
     guardarTransplante: function guardarTransplante() {
@@ -5942,11 +5957,38 @@ __webpack_require__.r(__webpack_exports__);
         _this4.modalErrors = '';
 
         _this4.buscarTransplantes();
-      })["catch"](function (errors) {
-        _this4.modalErrors = errors.response.data.errors;
+      })["catch"](function (errores) {
         _this4.overlayLoading = false;
+        _this4.modalErrors = _this4.fnResponseError(errores);
       });
     }
+  },
+  created: function created() {
+    var _this5 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _this5.fnBuscarParametro('pr_ubicacion');
+
+            case 2:
+              _this5.itemsUbicacion = _context.sent;
+              _context.next = 5;
+              return _this5.fnBuscarParametro('pr_tipo_lote');
+
+            case 5:
+              _this5.itemsTipoLote = _context.sent;
+
+            case 6:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   }
 });
 
@@ -6636,10 +6678,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var commons = {
   methods: {
     fnBuscarParametro: function fnBuscarParametro(parametrica) {
-      var _this = this;
-
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var response;
+        var response, data, i;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -6650,22 +6690,27 @@ var commons = {
 
               case 3:
                 response = _context.sent;
-                return _context.abrupt("return", response.data.data);
+                data = response.data.data;
 
-              case 7:
-                _context.prev = 7;
+                for (i = 0; i < data.length; i++) {
+                  if (data[i].estado != "ACTIVO") {
+                    data[i].disabled = true;
+                  }
+                }
+
+                return _context.abrupt("return", data);
+
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context["catch"](0);
-
-                _this.$swal('Error.', '', 'error');
-
                 return _context.abrupt("return", []);
 
-              case 11:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7]]);
+        }, _callee, null, [[0, 9]]);
       }))();
     },
     fnResponseError: function fnResponseError(errores) {
@@ -6978,7 +7023,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: red;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31349,10 +31394,10 @@ var render = function () {
                                               ref: "fecha_inicial",
                                               attrs: {
                                                 "append-icon": "mdi-calendar",
-                                                readonly: "",
                                                 "error-messages":
                                                   _vm.errors.fecha_inicial,
                                                 dense: "",
+                                                disabled: !_vm.$can(["LISTAR"]),
                                               },
                                               model: {
                                                 value: _vm.form.fecha_inicial,
@@ -31450,6 +31495,7 @@ var render = function () {
                                                 "error-messages":
                                                   _vm.errors.fecha_final,
                                                 dense: "",
+                                                disabled: !_vm.$can(["LISTAR"]),
                                               },
                                               model: {
                                                 value: _vm.form.fecha_final,
@@ -31522,6 +31568,7 @@ var render = function () {
                                 small: "",
                                 color: "#00bcd4",
                                 tile: "",
+                                disabled: !_vm.$can(["LISTAR"]),
                               },
                             },
                             [
@@ -31595,65 +31642,73 @@ var render = function () {
                             _vm.options = $event
                           },
                         },
-                        scopedSlots: _vm._u([
-                          {
-                            key: "item.fecha_propagacion",
-                            fn: function (ref) {
-                              var item = ref.item
-                              return [
-                                _c(
-                                  "v-chip",
-                                  { attrs: { color: item.color, dark: "" } },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(item.fecha_propagacion) +
-                                        "\n                            "
-                                    ),
-                                  ]
-                                ),
-                              ]
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "item.fecha_propagacion",
+                              fn: function (ref) {
+                                var item = ref.item
+                                return [
+                                  _c(
+                                    "v-chip",
+                                    { attrs: { color: item.color, dark: "" } },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(item.fecha_propagacion) +
+                                          "\n                            "
+                                      ),
+                                    ]
+                                  ),
+                                ]
+                              },
                             },
-                          },
-                          {
-                            key: "item.dias_transcurridos",
-                            fn: function (ref) {
-                              var item = ref.item
-                              return [
-                                _c(
-                                  "v-chip",
-                                  { attrs: { color: item.color, dark: "" } },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(item.dias_transcurridos) +
-                                        "\n                            "
-                                    ),
-                                  ]
-                                ),
-                              ]
+                            {
+                              key: "item.dias_transcurridos",
+                              fn: function (ref) {
+                                var item = ref.item
+                                return [
+                                  _c(
+                                    "v-chip",
+                                    { attrs: { color: item.color, dark: "" } },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(item.dias_transcurridos) +
+                                          "\n                            "
+                                      ),
+                                    ]
+                                  ),
+                                ]
+                              },
                             },
-                          },
-                          {
-                            key: "item.consultar",
-                            fn: function (ref) {
-                              var item = ref.item
-                              return [
-                                _c(
-                                  "a",
-                                  {
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.consultarTransplante(item)
-                                      },
-                                    },
+                            _vm.$can(["VER"])
+                              ? {
+                                  key: "item.consultar",
+                                  fn: function (ref) {
+                                    var item = ref.item
+                                    return [
+                                      _c(
+                                        "a",
+                                        {
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.consultarTransplante(
+                                                item
+                                              )
+                                            },
+                                          },
+                                        },
+                                        [_vm._v("Clic")]
+                                      ),
+                                    ]
                                   },
-                                  [_vm._v("Clic")]
-                                ),
-                              ]
-                            },
-                          },
-                        ]),
+                                }
+                              : null,
+                          ],
+                          null,
+                          true
+                        ),
                       }),
                     ],
                     1
@@ -31688,7 +31743,11 @@ var render = function () {
                 "v-card-title",
                 { staticClass: "text-h5 py-2" },
                 [
-                  _vm._v("\n                Nuevo\n                "),
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(_vm.title_modal) +
+                      "\n                "
+                  ),
                   _c("v-spacer"),
                   _vm._v(" "),
                   _c(
@@ -31880,9 +31939,12 @@ var render = function () {
                           _c("v-select", {
                             ref: "tp_tipo_lote",
                             attrs: {
-                              items: ["Planta Madre", "Planta Comercial"],
+                              items: _vm.itemsTipoLote,
+                              "item-value": "id",
+                              "item-text": "descripcion",
                               "error-messages": _vm.modalErrors.tp_tipo_lote,
                               dense: "",
+                              "no-data-text": "Sin Datos",
                             },
                             model: {
                               value: _vm.modalInfo.tp_tipo_lote,
@@ -31941,9 +32003,12 @@ var render = function () {
                           _c("v-select", {
                             ref: "tp_ubicacion",
                             attrs: {
-                              items: ["Casa Malla", "Planta Madre"],
+                              items: _vm.itemsUbicacion,
+                              "item-value": "id",
+                              "item-text": "descripcion",
                               "error-messages": _vm.modalErrors.tp_ubicacion,
                               dense: "",
+                              "no-data-text": "Sin Datos",
                             },
                             model: {
                               value: _vm.modalInfo.tp_ubicacion,
@@ -31973,6 +32038,7 @@ var render = function () {
                                 small: "",
                                 color: "success",
                                 tile: "",
+                                disabled: !_vm.$can(["CREAR", "EDITAR"]),
                               },
                               on: { click: _vm.guardarTransplante },
                             },

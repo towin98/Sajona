@@ -42,7 +42,7 @@ Route::group(['prefix' => 'planta-madre', 'middleware' => 'auth:sanctum'] , func
     Route::get('/{Propagacion}', [PlantaMadreController::class, 'show']);
 });
 
-Route::group(['prefix' => 'transplante-bolsa', /* 'middleware' => 'auth:sanctum' */] , function(){
+Route::group(['prefix' => 'transplante-bolsa', 'middleware' => 'auth:sanctum'] , function(){
     Route::post('/',  [TransplanteController::class,'storeTransplanteBolsa']);
     Route::get('/buscar', [TransplanteController::class, 'buscarTransplanteBolsa']);
     Route::get('/{id}', [TransplanteController::class, 'showTransplanteBolsa']);

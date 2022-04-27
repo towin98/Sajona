@@ -372,7 +372,6 @@ export default {
                     this.overlayLoading = false;
                     this.loading = false;
                     this.dataSet = [];
-                    this.errors = this.fnResponseError(errores);
                 });
         },
         filterSearch() {

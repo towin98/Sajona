@@ -3,13 +3,19 @@ export const commons = {
         async fnBuscarParametro(parametrica){
             try {
                 let response = await axios.get(`/sajona/parametro/buscar?parametrica=${parametrica}`);
-                return response.data.data;
+                let data = response.data.data;
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].estado != "ACTIVO") {
+                        data[i].disabled = true;
+                    }
+                }
+                return data;
             } catch (errors) {
-                this.$swal(
-                    'Error.',
-                    '',
-                    'error'
-                );
+                // this.$swal(
+                //     'Error.',
+                //     '',
+                //     'error'
+                // );
                 return [];
             }
         },
