@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Transplante;
 
+use Exception;
 use App\Traits\bajasTrait;
 use App\Models\PlantaMadre;
 use App\Models\Propagacion;
@@ -171,9 +172,16 @@ class TransplanteController extends Controller
                 throw new AuthorizationException;
             }
         }
+        try {
+            // Se Eliminan registro en caso de que exista en planta madre, para simular un update.
+            $transplanteBolsa->delete();
 
-        // Se Eliminan registro en caso de que exista en planta madre, para simular un update.
-        $transplanteBolsa->delete();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Acción no permitida',
+                'errors'  => "El registro no puede modificarse porque ya tiene registrado procesos."
+            ], 500);
+        }
 
         Transplante::create([
             'tp_pm_id'          => $plantaMadre->pm_id,
@@ -331,7 +339,7 @@ class TransplanteController extends Controller
     }
 
     /**
-     * Muestra fecha transplante a campo y cantidad transplante bolsa, (valor automatico)
+     * Muestra fecha transplante a campo y cantidad transplante campo, (valor automatico)
      *
      * @param integer $tp_pm_id id de planta madre
      * @return \Illuminate\Http\Response
@@ -375,7 +383,7 @@ class TransplanteController extends Controller
     }
 
     /**
-     * Se crea transplante a campo si no existe, de lo contrario se actualiza solo la fecha de trasnplante.
+     * Método que guarda transplante a campo si no existe, de lo contrario se actualiza, fecha de transplante.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -387,6 +395,7 @@ class TransplanteController extends Controller
             ])
             ->where('pm_pro_id_lote', $request->id_lote)
             ->first();
+
         if ($plantaMadre) {
 
             $transplanteCampo = Transplante::select(['tp_id'])
@@ -406,6 +415,11 @@ class TransplanteController extends Controller
 
             // Si no existe transplante a campo se crea
             if (count($transplanteCampo->get()) == 0) {
+
+                if (!$this->fnVerificaPermisoUsuario('CREAR')) {
+                    throw new AuthorizationException;
+                }
+
                 $transplanteCampo->create([
                     'tp_pm_id'          => $plantaMadre->pm_id,
                     'tp_tipo'           => 'campo',
@@ -416,6 +430,11 @@ class TransplanteController extends Controller
                     'tp_estado'         => true
                 ]);
             }else{
+
+                if (!$this->fnVerificaPermisoUsuario('EDITAR')) {
+                    throw new AuthorizationException;
+                }
+
                 // Se actualiza transplante a campo.
                 $transplanteCampo->update([
                     'tp_fecha'          => $request->tp_fecha." ".date('H:i:s'),

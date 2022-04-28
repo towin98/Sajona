@@ -249,22 +249,22 @@ export default {
         },
     },
     async created() {
+        window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
+
         // Obteniendo nombre de la ruta.
         if (this.$route.name) {
             this.titleProceso = this.$route.name.replace("-", " ");
         }
+        this.overlayLoading = true;
+        await this.$fnConsultaPermisosUsuario();
 
         const fecha = new Date();
         const month = fecha.toLocaleString("es-CO", { month: "long" });
 
         this.date = `${month.substring(0, 3)}/${fecha.getFullYear()}`;
-        window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
 
         /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
-        this.overlayLoading = true;
         await this.buscaNombreRolUser();
-
-        await this.$fnConsultaPermisosUsuario();
         this.overlayLoading = false;
 
         this.intervalId = setInterval(async () => {

@@ -3048,26 +3048,26 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              // Obteniendo nombre de la ruta.
+              window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(_this2.token); // Obteniendo nombre de la ruta.
+
               if (_this2.$route.name) {
                 _this2.titleProceso = _this2.$route.name.replace("-", " ");
               }
 
+              _this2.overlayLoading = true;
+              _context2.next = 5;
+              return _this2.$fnConsultaPermisosUsuario();
+
+            case 5:
               fecha = new Date();
               month = fecha.toLocaleString("es-CO", {
                 month: "long"
               });
               _this2.date = "".concat(month.substring(0, 3), "/").concat(fecha.getFullYear());
-              window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(_this2.token);
               /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
 
-              _this2.overlayLoading = true;
-              _context2.next = 8;
-              return _this2.buscaNombreRolUser();
-
-            case 8:
               _context2.next = 10;
-              return _this2.$fnConsultaPermisosUsuario();
+              return _this2.buscaNombreRolUser();
 
             case 10:
               _this2.overlayLoading = false;
@@ -6244,6 +6244,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6403,7 +6405,8 @@ __webpack_require__.r(__webpack_exports__);
         _this3.modalInfo.cantidad_transplante_campo = response.data.data.cantidad_transplante_campo; // label
 
         _this3.overlayLoading = false;
-      })["catch"](function (errors) {
+      })["catch"](function (errores) {
+        _this3.modalErrors = _this3.fnResponseError(errores);
         _this3.overlayLoading = false;
       });
     },
@@ -6419,8 +6422,8 @@ __webpack_require__.r(__webpack_exports__);
         _this4.modalErrors = '';
 
         _this4.buscarTransplantes();
-      })["catch"](function (errors) {
-        _this4.modalErrors = errors.response.data.errors;
+      })["catch"](function (errores) {
+        _this4.modalErrors = _this4.fnResponseError(errores);
         _this4.overlayLoading = false;
       });
     }
@@ -6475,12 +6478,18 @@ var arrPermisos = [];
                 _context.prev = 7;
                 _context.t0 = _context["catch"](0);
 
-                if (_context.t0.response.status == 401 || _context.t0.response.status == 500) {
+                if (_context.t0.response != undefined) {
+                  if (_context.t0.response.status == 401 || _context.t0.response.status == 500) {
+                    _this.logout();
+
+                    clearInterval(_this.intervalId);
+
+                    _this.$swal("La Sesión ha caducado.", "", "info");
+                  }
+                } else {
                   _this.logout();
 
                   clearInterval(_this.intervalId);
-
-                  _this.$swal("La Sesión ha caducado.", "", "info");
                 }
 
               case 10:
@@ -7023,7 +7032,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: red;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: red;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -32166,10 +32175,10 @@ var render = function () {
                                               ref: "fecha_inicial",
                                               attrs: {
                                                 "append-icon": "mdi-calendar",
-                                                readonly: "",
                                                 "error-messages":
                                                   _vm.errors.fecha_inicial,
                                                 dense: "",
+                                                disabled: !_vm.$can(["LISTAR"]),
                                               },
                                               model: {
                                                 value: _vm.form.fecha_inicial,
@@ -32263,10 +32272,10 @@ var render = function () {
                                               ref: "fecha_final",
                                               attrs: {
                                                 "append-icon": "mdi-calendar",
-                                                readonly: "",
                                                 "error-messages":
                                                   _vm.errors.fecha_final,
                                                 dense: "",
+                                                disabled: !_vm.$can(["LISTAR"]),
                                               },
                                               model: {
                                                 value: _vm.form.fecha_final,
@@ -32339,6 +32348,7 @@ var render = function () {
                                 small: "",
                                 color: "#00bcd4",
                                 tile: "",
+                                disabled: !_vm.$can(["LISTAR"]),
                               },
                             },
                             [
@@ -32412,65 +32422,73 @@ var render = function () {
                             _vm.options = $event
                           },
                         },
-                        scopedSlots: _vm._u([
-                          {
-                            key: "item.fecha_propagacion",
-                            fn: function (ref) {
-                              var item = ref.item
-                              return [
-                                _c(
-                                  "v-chip",
-                                  { attrs: { color: item.color, dark: "" } },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(item.fecha_propagacion) +
-                                        "\n                            "
-                                    ),
-                                  ]
-                                ),
-                              ]
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "item.fecha_propagacion",
+                              fn: function (ref) {
+                                var item = ref.item
+                                return [
+                                  _c(
+                                    "v-chip",
+                                    { attrs: { color: item.color, dark: "" } },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(item.fecha_propagacion) +
+                                          "\n                            "
+                                      ),
+                                    ]
+                                  ),
+                                ]
+                              },
                             },
-                          },
-                          {
-                            key: "item.dias_transcurridos",
-                            fn: function (ref) {
-                              var item = ref.item
-                              return [
-                                _c(
-                                  "v-chip",
-                                  { attrs: { color: item.color, dark: "" } },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(item.dias_transcurridos) +
-                                        "\n                            "
-                                    ),
-                                  ]
-                                ),
-                              ]
+                            {
+                              key: "item.dias_transcurridos",
+                              fn: function (ref) {
+                                var item = ref.item
+                                return [
+                                  _c(
+                                    "v-chip",
+                                    { attrs: { color: item.color, dark: "" } },
+                                    [
+                                      _vm._v(
+                                        "\n                                " +
+                                          _vm._s(item.dias_transcurridos) +
+                                          "\n                            "
+                                      ),
+                                    ]
+                                  ),
+                                ]
+                              },
                             },
-                          },
-                          {
-                            key: "item.transplante_campo_accion",
-                            fn: function (ref) {
-                              var item = ref.item
-                              return [
-                                _c(
-                                  "a",
-                                  {
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.consultarTransplante(item)
-                                      },
-                                    },
+                            _vm.$can(["VER"])
+                              ? {
+                                  key: "item.transplante_campo_accion",
+                                  fn: function (ref) {
+                                    var item = ref.item
+                                    return [
+                                      _c(
+                                        "a",
+                                        {
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.consultarTransplante(
+                                                item
+                                              )
+                                            },
+                                          },
+                                        },
+                                        [_vm._v("Clic")]
+                                      ),
+                                    ]
                                   },
-                                  [_vm._v("Clic")]
-                                ),
-                              ]
-                            },
-                          },
-                        ]),
+                                }
+                              : null,
+                          ],
+                          null,
+                          true
+                        ),
                       }),
                     ],
                     1
@@ -32703,6 +32721,7 @@ var render = function () {
                                 small: "",
                                 color: "success",
                                 tile: "",
+                                disabled: !_vm.$can(["CREAR", "EDITAR"]),
                               },
                               on: { click: _vm.guardarTransplante },
                             },

@@ -31,12 +31,12 @@
                                     <v-text-field
                                         v-model="form.fecha_inicial"
                                         append-icon="mdi-calendar"
-                                        readonly
                                         v-bind="attrs"
                                         v-on="on"
                                         ref="fecha_inicial"
                                         :error-messages="errors.fecha_inicial"
                                         dense
+                                        :disabled="!$can(['LISTAR'])"
                                     >
                                     </v-text-field>
                                 </template>
@@ -65,12 +65,12 @@
                                     <v-text-field
                                         v-model="form.fecha_final"
                                         append-icon="mdi-calendar"
-                                        readonly
                                         v-bind="attrs"
                                         v-on="on"
                                         ref="fecha_final"
                                         :error-messages="errors.fecha_final"
                                         dense
+                                        :disabled="!$can(['LISTAR'])"
                                     >
                                     </v-text-field>
                                 </template>
@@ -89,6 +89,7 @@
                                 color="#00bcd4"
                                 class="white--text text-none"
                                 tile
+                                :disabled="!$can(['LISTAR'])"
                             >
                                 <v-icon> search </v-icon>Buscar
                             </v-btn>
@@ -144,7 +145,7 @@
                                     {{ item.dias_transcurridos }}
                                 </v-chip>
                             </template>
-                            <template v-slot:item.transplante_campo_accion="{ item }">
+                            <template v-slot:item.transplante_campo_accion="{ item }" v-if="$can(['VER'])">
                                 <a @click="consultarTransplante(item)">Clic</a>
                             </template>
                         </v-data-table>
@@ -224,6 +225,7 @@
                                 class="white--text text-none"
                                 tile
                                 v-on:click="guardarTransplante"
+                                :disabled="!$can(['CREAR', 'EDITAR'])"
                             >
                                 <v-icon> save </v-icon>Guardar
                             </v-btn>
@@ -376,7 +378,8 @@ export default {
 
                     this.overlayLoading = false;
                 })
-                .catch((errors) => {
+                .catch((errores) => {
+                    this.modalErrors = this.fnResponseError(errores);
                     this.overlayLoading = false;
                 });
         },
@@ -395,8 +398,8 @@ export default {
                     this.modalErrors = '';
                     this.buscarTransplantes();
                 })
-                .catch((errors) => {
-                    this.modalErrors = errors.response.data.errors;
+                .catch((errores) => {
+                    this.modalErrors = this.fnResponseError(errores);
                     this.overlayLoading = false;
                 });
         }
