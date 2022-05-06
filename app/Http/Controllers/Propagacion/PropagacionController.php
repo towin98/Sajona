@@ -186,7 +186,7 @@ class PropagacionController extends Controller
         if ($plantaMadre) {
             return response()->json([
                 'message' => 'Error de Validación',
-                'errors'  => "El lote[$propagacion->pro_id_lote] ya tiene procesos y no se Eliminar."
+                'errors'  => "El lote $propagacion->pro_id_lote ya tiene procesos y NO se puede eliminar."
             ], 409);
         }
 
@@ -195,7 +195,7 @@ class PropagacionController extends Controller
                 'pro_estado' => 0
             ]);
             return response()->json([
-                'message' => "Se elimino la Propagación con Id de lote[".$request->pro_id_lote."] correctamente.",
+                'message' => "Se elimino el lote ".$request->pro_id_lote." correctamente.",
             ], 200);
 
         }catch (Exception $e) {

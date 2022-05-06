@@ -54,7 +54,7 @@ Route::group(['prefix' => 'transplante-campo', 'middleware' => 'auth:sanctum'] ,
     Route::get('/{id}', [TransplanteController::class, 'showTransplanteCampo']);
 });
 
-Route::group(['prefix' => 'cosecha'/* , 'middleware' => 'auth:sanctum' */] , function(){
+Route::group(['prefix' => 'cosecha', 'middleware' => 'auth:sanctum'] , function(){
     Route::post('/',  [CosechaController::class, 'storeCosecha']);
     Route::get('/buscar', [CosechaController::class, 'buscarCosechas']);
     Route::get('/{id_transplante}', [CosechaController::class, 'showCosecha']);

@@ -2388,11 +2388,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      // names: [
-      // { id: 1, name: 'Paul', age: 23 },
-      // { id: 2, name: 'Marcelo', age: 15 },
-      // { id: 3, name: 'Any', age: 30 },
-      // ],
       token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       titleAccion: "Parametros Módulos",
@@ -3495,7 +3490,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3709,7 +3723,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -3726,9 +3740,10 @@ __webpack_require__.r(__webpack_exports__);
         cos_dias_floracion: '',
         tp_ubicacion: '',
         cos_peso_verde: '',
-        cos_observacion: '',
-        hoy: new Date().toLocaleDateString()
+        cos_observacion: ''
       },
+      itemsEstadoCosecha: [],
+      itemsUbicacion: [],
       errors: {},
       // Tabla filtro.
       debounce: null,
@@ -3814,7 +3829,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.overlayLoading = false;
       })["catch"](function (errors) {
         _this2.loading = false;
-        _this2.overlayLoading = false; // console.log(errors.response.data);
+        _this2.overlayLoading = false;
       });
     },
     editCosecha: function editCosecha(item) {
@@ -3824,13 +3839,23 @@ __webpack_require__.r(__webpack_exports__);
       this.overlayLoading = true;
       axios.get("/sajona/cosecha/".concat(item.tp_id)).then(function (response) {
         var data = response.data.data;
-        _this3.form = data;
-        _this3.form.id_lote = data.id_lote;
+        _this3.form = {
+          tp_fecha: data.tp_fecha,
+          cos_fecha_cosecha: data.cos_fecha_cosecha,
+          id_lote: data.id_lote,
+          cos_numero_plantas: data.cos_numero_plantas,
+          cos_estado_cosecha: data.cos_estado_cosecha,
+          cos_dias_floracion: data.cos_dias_floracion,
+          tp_ubicacion: data.tp_ubicacion,
+          cos_peso_verde: data.cos_peso_verde,
+          cos_observacion: data.cos_observacion
+        };
         _this3.form.tp_id = item.tp_id; // Importante
 
         _this3.overlayLoading = false;
-      })["catch"](function (errors) {
+      })["catch"](function (errores) {
         _this3.overlayLoading = false;
+        _this3.errors = _this3.fnResponseError(errores);
       });
     },
     deleteCosecha: function deleteCosecha(item) {
@@ -3840,11 +3865,11 @@ __webpack_require__.r(__webpack_exports__);
       this.limpiarCampos();
 
       if (item.cos_fecha_cosecha == "") {
-        this.$swal("El lote[".concat(item.id_lote, "] aun no tiene una cosecha."), 'Solo los lotes que tengan cosecha pueden ser eliminados.', 'info');
+        this.$swal("El lote ".concat(item.id_lote, " a\xFAn no tiene una cosecha."), 'Solo los lotes que tengan cosecha pueden ser eliminados.', 'info');
       } else {
         this.$swal({
-          title: 'Quiere eliminar la cosecha?',
-          text: "Se removera la cosecha del lote ".concat(item.id_lote, "!"),
+          title: '¿Quiere eliminar la cosecha?',
+          text: "Se va a eliminar la cosecha del lote ".concat(item.id_lote, ", \xBFest\xE1 seguro?."),
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -3861,8 +3886,10 @@ __webpack_require__.r(__webpack_exports__);
               _this4.$swal(response.data.message, '', 'success');
 
               _this4.buscarCosechas();
-            })["catch"](function (errors) {
+            })["catch"](function (errores) {
               _this4.overlayLoading = false;
+
+              _this4.fnResponseError(errores);
             });
           }
         });
@@ -3871,7 +3898,9 @@ __webpack_require__.r(__webpack_exports__);
     guardarCosecha: function guardarCosecha() {
       var _this5 = this;
 
+      this.overlayLoading = true;
       axios.post("/sajona/cosecha", this.form).then(function (response) {
+        _this5.overlayLoading = false;
         _this5.errors = "";
 
         _this5.$swal(response.data.message, '', 'success');
@@ -3880,8 +3909,19 @@ __webpack_require__.r(__webpack_exports__);
 
         _this5.limpiarCampos();
       })["catch"](function (errores) {
-        _this5.errors = errores.response.data.errors;
+        _this5.overlayLoading = false;
+        _this5.errors = _this5.fnResponseError(errores);
       });
+    },
+
+    /* Método que calcula la diferencia de días entre dos fechas */
+    fnDiasDeFloracionCalculo: function fnDiasDeFloracionCalculo() {
+      if (this.form.cos_fecha_cosecha != "") {
+        var fechaCosecha = new Date(this.form.cos_fecha_cosecha);
+        var fechaTransTerreno = new Date(this.form.tp_fecha);
+        var diff = Math.abs(fechaCosecha - fechaTransTerreno);
+        this.form.cos_dias_floracion = diff / (1000 * 3600 * 24);
+      }
     },
     limpiarCampos: function limpiarCampos() {
       this.form.tp_id = '';
@@ -3899,6 +3939,33 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
+  },
+  created: function created() {
+    var _this6 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _this6.fnBuscarParametro('pr_estado_cosecha');
+
+            case 2:
+              _this6.itemsEstadoCosecha = _context.sent;
+              _context.next = 5;
+              return _this6.fnBuscarParametro('pr_ubicacion');
+
+            case 5:
+              _this6.itemsUbicacion = _context.sent;
+
+            case 6:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   }
 });
 
@@ -5153,9 +5220,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5359,7 +5423,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.limpiarCampo();
       this.$swal({
         title: '¿Quiere eliminar la Propagación?',
-        text: "Se removera el lote[".concat(pro_id_lote, "]."),
+        text: "Se va a eliminar el lote ".concat(pro_id_lote, ", \xBFest\xE1 seguro?."),
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -7032,7 +7096,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: red;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -28922,6 +28986,7 @@ var render = function () {
                           dense: "",
                           disabled: _vm.titleAccion == "Nuevo",
                         },
+                        on: { input: _vm.fnDiasDeFloracionCalculo },
                         model: {
                           value: _vm.form.cos_fecha_cosecha,
                           callback: function ($$v) {
@@ -29012,7 +29077,9 @@ var render = function () {
                       _c("v-select", {
                         ref: "cos_estado_cosecha",
                         attrs: {
-                          items: ["Estado 1", "Estado 2"],
+                          items: _vm.itemsEstadoCosecha,
+                          "item-value": "id",
+                          "item-text": "descripcion",
                           dense: "",
                           "error-messages": _vm.errors.cos_estado_cosecha,
                           disabled: _vm.titleAccion == "Nuevo",
@@ -29043,6 +29110,7 @@ var render = function () {
                       _c("v-text-field", {
                         ref: "cos_dias_floracion",
                         attrs: {
+                          label: "(Fecha Trans. Terreno - Fecha Cosecha)",
                           dense: "",
                           "error-messages": _vm.errors.cos_dias_floracion,
                           readonly: "",
@@ -29071,14 +29139,16 @@ var render = function () {
                     "v-col",
                     { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
                     [
-                      _c("v-text-field", {
+                      _c("v-select", {
                         ref: "tp_ubicacion",
                         attrs: {
-                          type: "text",
+                          items: _vm.itemsUbicacion,
+                          "item-value": "id",
+                          "item-text": "descripcion",
                           readonly: "",
                           dense: "",
                           "error-messages": _vm.errors.tp_ubicacion,
-                          disabled: _vm.titleAccion == "Nuevo",
+                          disabled: true,
                         },
                         model: {
                           value: _vm.form.tp_ubicacion,
@@ -29174,6 +29244,7 @@ var render = function () {
                                 color: "success",
                                 tile: "",
                                 title: "Guardar Datos actuales de la cosecha.",
+                                disabled: !_vm.$can(["CREAR", "EDITAR"]),
                               },
                               on: { click: _vm.guardarCosecha },
                             },
@@ -29202,6 +29273,7 @@ var render = function () {
                               label: "Buscar",
                               "single-line": "",
                               "hide-details": "",
+                              disabled: !_vm.$can(["LISTAR"]),
                             },
                             on: { input: _vm.filterSearch },
                             model: {
@@ -29233,6 +29305,7 @@ var render = function () {
                           "sort-by": "id_lote",
                           "sort-desc": true,
                           "no-data-text": "Sin registros",
+                          "disable-sort": !_vm.$can(["LISTAR"]),
                         },
                         on: {
                           "update:options": function ($event) {
@@ -29245,47 +29318,51 @@ var render = function () {
                             fn: function (ref) {
                               var item = ref.item
                               return [
-                                _c(
-                                  "v-icon",
-                                  {
-                                    staticClass: "mr-2",
-                                    attrs: {
-                                      small: "",
-                                      title:
-                                        "Agregar o Edita Datos de cosecha.",
-                                    },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.editCosecha(item)
+                                _vm.$can(["VER", "EDITAR"])
+                                  ? _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "mr-2",
+                                        attrs: {
+                                          small: "",
+                                          title:
+                                            "Agregar o Edita Datos de cosecha.",
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.editCosecha(item)
+                                          },
+                                        },
                                       },
-                                    },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                            mdi-pencil\n                        "
-                                    ),
-                                  ]
-                                ),
+                                      [
+                                        _vm._v(
+                                          "\n                            mdi-pencil\n                        "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
                                 _vm._v(" "),
-                                _c(
-                                  "v-icon",
-                                  {
-                                    attrs: {
-                                      small: "",
-                                      title: "Eliminar Datos de la cosecha",
-                                    },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.deleteCosecha(item)
+                                _vm.$can(["ELIMINAR"])
+                                  ? _c(
+                                      "v-icon",
+                                      {
+                                        attrs: {
+                                          small: "",
+                                          title: "Eliminar Datos de la cosecha",
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.deleteCosecha(item)
+                                          },
+                                        },
                                       },
-                                    },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                            mdi-delete\n                        "
-                                    ),
-                                  ]
-                                ),
+                                      [
+                                        _vm._v(
+                                          "\n                            mdi-delete\n                        "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
                               ]
                             },
                           },

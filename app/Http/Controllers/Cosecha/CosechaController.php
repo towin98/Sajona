@@ -3,20 +3,31 @@
 namespace App\Http\Controllers\Cosecha;
 
 use Exception;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\cosechaDeleteRequest;
-use App\Http\Requests\cosechaRequest;
-use App\Http\Resources\listarCosechaCollection;
 use App\Models\Cosecha;
 use App\Models\Transplante;
 use App\Traits\bajasTrait;
-use App\Traits\paginationTrait;
 use Illuminate\Http\Request;
+use App\Traits\commonsTrait;
+use App\Traits\paginationTrait;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\cosechaRequest;
+use App\Http\Requests\cosechaDeleteRequest;
+use App\Http\Resources\listarCosechaCollection;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CosechaController extends Controller
 {
     use paginationTrait;
     use bajasTrait;
+    use commonsTrait;
+
+    public function __construct()
+    {
+        $this->middleware(['permission:LISTAR'])->only('buscarCosechas');
+        $this->middleware(['permission:CREAR|EDITAR'])->only('storeCosecha');
+        $this->middleware(['permission:VER'])->only('showCosecha');
+        $this->middleware(['permission:ELIMINAR'])->only('deleteCosecha');
+    }
 
     /**
      * Se crea cosecha si no existe, de lo contrario se actualiza.
@@ -24,7 +35,8 @@ class CosechaController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function storeCosecha(cosechaRequest $request){
+    public function storeCosecha(cosechaRequest $request)
+    {
 
         $transplanteCampo = Transplante::select(['tp_id', 'tp_fecha'])
             ->where('tp_id', $request->tp_id)
@@ -41,37 +53,55 @@ class CosechaController extends Controller
             $fechaCosecha = date_create($request->cos_fecha_cosecha ." ".date('H:i:s'));
             $diasTranscurridosFloracion = date_diff(date_create($transplanteCampo->tp_fecha),$fechaCosecha)->format('%a');
 
-            // Si no existe se crea
-            if (count($cosecha->get()) == 0) {
-                $cosecha->create([
-                    "cos_tp_id"             => $request->tp_id,
-                    "cos_fecha_suelo"       => $transplanteCampo->tp_fecha,
-                    "cos_fecha_cosecha"     => $request->cos_fecha_cosecha ." ".date('H:i:s'),
-                    "cos_numero_plantas"    => $request->cos_numero_plantas,
-                    "cos_estado_cosecha"    => $request->cos_estado_cosecha,
-                    "cos_dias_floracion"    => $diasTranscurridosFloracion,
-                    "cos_peso_verde"        => $request->cos_peso_verde,
-                    "cos_observacion"       => $request->cos_observacion,
-                    "cos_estado"            => true
-                ]);
-            }else{
-                // Se actualiza.
-                $cosecha->update([
-                    "cos_tp_id"             => $request->tp_id,
-                    "cos_fecha_suelo"       => $request->tp_fecha,
-                    "cos_fecha_cosecha"     => $request->cos_fecha_cosecha ." ".date('H:i:s'),
-                    "cos_numero_plantas"    => $request->cos_numero_plantas,
-                    "cos_estado_cosecha"    => $request->cos_estado_cosecha,
-                    "cos_dias_floracion"    => $diasTranscurridosFloracion,
-                    "cos_peso_verde"        => $request->cos_peso_verde,
-                    "cos_observacion"       => $request->cos_observacion
-                ]);
+            try {
+
+                if (!$this->fnVerificaPermisoUsuario('CREAR')) {
+                    throw new AuthorizationException;
+                }
+
+                // Si no existe se crea
+                if (count($cosecha->get()) == 0) {
+                    $cosecha->create([
+                        "cos_tp_id"             => $request->tp_id,
+                        "cos_fecha_suelo"       => $transplanteCampo->tp_fecha,
+                        "cos_fecha_cosecha"     => $request->cos_fecha_cosecha ." ".date('H:i:s'),
+                        "cos_numero_plantas"    => $request->cos_numero_plantas,
+                        "cos_estado_cosecha"    => $request->cos_estado_cosecha,
+                        "cos_dias_floracion"    => $diasTranscurridosFloracion,
+                        "cos_peso_verde"        => $request->cos_peso_verde,
+                        "cos_observacion"       => $request->cos_observacion,
+                        "cos_estado"            => true
+                    ]);
+                }else{
+
+                    if (!$this->fnVerificaPermisoUsuario('EDITAR')) {
+                        throw new AuthorizationException;
+                    }
+
+                    // Se actualiza.
+                    $cosecha->update([
+                        "cos_tp_id"             => $request->tp_id,
+                        "cos_fecha_suelo"       => $request->tp_fecha,
+                        "cos_fecha_cosecha"     => $request->cos_fecha_cosecha ." ".date('H:i:s'),
+                        "cos_numero_plantas"    => $request->cos_numero_plantas,
+                        "cos_estado_cosecha"    => $request->cos_estado_cosecha,
+                        "cos_dias_floracion"    => $diasTranscurridosFloracion,
+                        "cos_peso_verde"        => $request->cos_peso_verde,
+                        "cos_observacion"       => $request->cos_observacion
+                    ]);
+                }
+            }catch (Exception $e) {
+                return response()->json([
+                    'message' => "Error Inesperado.",
+                    'errors' => "El sistema no pudo realizar la acción solicitada.",
+                ], 500);
             }
+
         }else{
             return response()->json([
-                'error' => "Para poder crear cosecha debe primero haber tenido transplante a Campo el lote, Verifique.",
+                'errors' => "Para poder crear cosecha debe primero haber tenido transplante a Campo el lote, Verifique.",
                 'code' => 422
-            ], 422);
+            ], 409);
         }
 
         return response()->json([
@@ -85,7 +115,8 @@ class CosechaController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function buscarCosechas(Request $request){
+    public function buscarCosechas(Request $request)
+    {
 
         // Se válida si envian los parámetros length y start.
         if($request->has(['length', 'start'])){
@@ -167,6 +198,7 @@ class CosechaController extends Controller
      */
     public function showCosecha($id_transplante)
     {
+
         $cosecha = Transplante::select(['tp_id','tp_pm_id','tp_fecha', 'tp_ubicacion'])
             ->where('tp_id', $id_transplante)
             ->where('tp_tipo', 'campo')
@@ -214,7 +246,7 @@ class CosechaController extends Controller
                 "id_lote"            => optional($value->getPlantaMadre)->pm_pro_id_lote,
                 "cos_numero_plantas" => $cos_numero_plantas,
                 "cos_estado_cosecha" => optional($value->getCosecha)->cos_estado_cosecha,
-                "cos_dias_floracion" => (optional($value->getCosecha)->cos_dias_floracion == 0) ? $diasTranscurridos : $value->getCosecha->cos_dias_floracion, // fecha campo - fecha cosecha
+                "cos_dias_floracion" => (optional($value->getCosecha)->cos_dias_floracion == null) ? $diasTranscurridos : $value->getCosecha->cos_dias_floracion, // fecha campo - fecha cosecha
                 "tp_ubicacion"       => $value->tp_ubicacion,
                 "cos_peso_verde"     => optional($value->getCosecha)->cos_peso_verde,
                 "cos_observacion"    => optional($value->getCosecha)->cos_observacion
@@ -269,7 +301,7 @@ class CosechaController extends Controller
                 ], 404);
             }else{
                 return response()->json([
-                    'message' => "Se elimino cosecha para el lote[".$transplante->getPlantaMadre->pm_pro_id_lote."].",
+                    'message' => "Se elimino cosecha para el lote ".$transplante->getPlantaMadre->pm_pro_id_lote.".",
                 ], 200);
             }
         }catch (Exception $e) {

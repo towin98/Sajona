@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
                 'pm_estado'             => true,
             ]);
         }
-        // \App\Models\User::factory(10)->create();
+        $this->call(ParametrosEstadosCosechaSeeder::class);
+        \App\Models\User::factory(10)->create();
     }
 }
