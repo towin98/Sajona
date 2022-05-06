@@ -458,7 +458,7 @@ export default {
         }
     },
     async created(){
-        // Aqui se carga informacion de campos parametros.
+        // Se carga informacion de campos parametros.
         this.itemsUbicacion   = await this.fnBuscarParametro('pr_ubicacion');
         this.itemsTipoLote    = await this.fnBuscarParametro('pr_tipo_lote');
     },

@@ -33,6 +33,7 @@
                             :error-messages="errors.cos_fecha_cosecha"
                             dense
                             :disabled="titleAccion == 'Nuevo'"
+                            @input="fnDiasDeFloracionCalculo"
                         ></v-text-field>
                     </v-col>
 
@@ -74,7 +75,9 @@
                         <v-select
                             v-model="form.cos_estado_cosecha"
                             ref="cos_estado_cosecha"
-                            :items="['Estado 1', 'Estado 2']"
+                            :items="itemsEstadoCosecha"
+                            item-value="id"
+                            item-text="descripcion"
                             dense
                             :error-messages="errors.cos_estado_cosecha"
                             :disabled="titleAccion == 'Nuevo'"
@@ -88,6 +91,7 @@
                     <v-col cols="6" sm="4" class="py-0 pl-0">
                         <v-text-field
                             v-model="form.cos_dias_floracion"
+                            label="(Fecha Trans. Terreno - Fecha Cosecha)"
                             ref="cos_dias_floracion"
                             dense
                             :error-messages="errors.cos_dias_floracion"
@@ -100,15 +104,17 @@
                         <v-subheader>Ubicación</v-subheader>
                     </v-col>
                     <v-col cols="6" sm="4" class="py-0 pl-0">
-                        <v-text-field
-                            type="text"
+                        <v-select
                             v-model="form.tp_ubicacion"
                             ref="tp_ubicacion"
+                            :items="itemsUbicacion"
+                            item-value="id"
+                            item-text="descripcion"
                             readonly
                             dense
                             :error-messages="errors.tp_ubicacion"
-                            :disabled="titleAccion == 'Nuevo'"
-                        ></v-text-field>
+                            :disabled="true"
+                        ></v-select>
                     </v-col>
 
                     <v-col cols="6" sm="2" class="py-0 pl-0">
@@ -150,6 +156,7 @@
                             title="Guardar Datos actuales de la cosecha."
                             v-if="form.id_lote != ''"
                             v-on:click="guardarCosecha"
+                            :disabled="!$can(['CREAR', 'EDITAR'])"
                         >
                             <v-icon> save </v-icon>Guardar
                         </v-btn>
@@ -165,6 +172,7 @@
                                 hide-details
                                 v-model="buscar"
                                 @input="filterSearch"
+                                :disabled="!$can(['LISTAR'])"
                             ></v-text-field>
                         </v-card-title>
                         <v-data-table
@@ -183,6 +191,7 @@
                             sort-by="id_lote"
                             :sort-desc="true"
                             no-data-text="Sin registros"
+                            :disable-sort="!$can(['LISTAR'])"
                         >
                         <template v-slot:item.actions="{ item }">
                             <v-icon
@@ -190,6 +199,7 @@
                                 class="mr-2"
                                 title="Agregar o Edita Datos de cosecha."
                                 @click="editCosecha(item)"
+                                v-if="$can(['VER', 'EDITAR'])"
                             >
                                 mdi-pencil
                             </v-icon>
@@ -197,6 +207,7 @@
                                 small
                                 title="Eliminar Datos de la cosecha"
                                 @click="deleteCosecha(item)"
+                                v-if="$can(['ELIMINAR'])"
                             >
                                 mdi-delete
                             </v-icon>
@@ -230,9 +241,10 @@ export default {
                 cos_dias_floracion : '',
                 tp_ubicacion       : '',
                 cos_peso_verde     : '',
-                cos_observacion    : '',
-                hoy                : new Date().toLocaleDateString()
+                cos_observacion    : ''
             },
+            itemsEstadoCosecha : [],
+            itemsUbicacion     : [],
             errors: {
             },
 
@@ -307,7 +319,6 @@ export default {
                 .catch((errors) => {
                     this.loading = false;
                     this.overlayLoading = false;
-                    // console.log(errors.response.data);
                 });
         },
         editCosecha(item){
@@ -317,13 +328,25 @@ export default {
                 .get(`/sajona/cosecha/${item.tp_id}`)
                 .then((response) => {
                     let data = response.data.data;
-                    this.form = data;
-                    this.form.id_lote       = data.id_lote;
+
+                    this.form = {
+                        tp_fecha           : data.tp_fecha,
+                        cos_fecha_cosecha  : data.cos_fecha_cosecha,
+                        id_lote            : data.id_lote,
+                        cos_numero_plantas : data.cos_numero_plantas,
+                        cos_estado_cosecha : data.cos_estado_cosecha,
+                        cos_dias_floracion : data.cos_dias_floracion,
+                        tp_ubicacion       : data.tp_ubicacion,
+                        cos_peso_verde     : data.cos_peso_verde,
+                        cos_observacion    : data.cos_observacion
+                    };
+
                     this.form.tp_id = item.tp_id; // Importante
                     this.overlayLoading = false;
                 })
-                .catch((errors) => {
+                .catch((errores) => {
                     this.overlayLoading = false;
+                    this.errors = this.fnResponseError(errores);
                 });
 
         },
@@ -332,14 +355,14 @@ export default {
             this.limpiarCampos();
             if (item.cos_fecha_cosecha == "") {
                 this.$swal(
-                    `El lote[${item.id_lote}] aun no tiene una cosecha.`,
+                    `El lote ${item.id_lote} aún no tiene una cosecha.`,
                     'Solo los lotes que tengan cosecha pueden ser eliminados.',
                     'info'
                 );
             }else{
                 this.$swal({
-                title: 'Quiere eliminar la cosecha?',
-                text: `Se removera la cosecha del lote ${item.id_lote}!`,
+                title: '¿Quiere eliminar la cosecha?',
+                text: `Se va a eliminar la cosecha del lote ${item.id_lote}, ¿está seguro?.`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -360,17 +383,20 @@ export default {
                                 );
                                 this.buscarCosechas();
                             })
-                            .catch((errors) => {
+                            .catch((errores) => {
                                 this.overlayLoading = false;
+                                this.fnResponseError(errores);
                             });
                     }
                 });
             }
         },
         guardarCosecha() {
+            this.overlayLoading = true;
             axios
                 .post(`/sajona/cosecha`, this.form)
                 .then((response) => {
+                    this.overlayLoading = false;
                     this.errors = "";
                     this.$swal(
                         response.data.message,
@@ -381,8 +407,19 @@ export default {
                     this.limpiarCampos();
                 })
                 .catch((errores) => {
-                    this.errors = errores.response.data.errors;
+                    this.overlayLoading = false;
+                    this.errors = this.fnResponseError(errores);
                 });
+        },
+        /* Método que calcula la diferencia de días entre dos fechas */
+        fnDiasDeFloracionCalculo(){
+            if (this.form.cos_fecha_cosecha != "") {
+                let fechaCosecha        = new Date(this.form.cos_fecha_cosecha);
+                let fechaTransTerreno   = new Date(this.form.tp_fecha);
+
+                const diff = Math.abs(fechaCosecha-fechaTransTerreno);
+                this.form.cos_dias_floracion = diff/(1000 * 3600 * 24)
+            }
         },
         limpiarCampos() {
             this.form.tp_id = '';
@@ -397,11 +434,15 @@ export default {
             this.$refs["cos_peso_verde"].reset();
             this.$refs["cos_observacion"].reset();
         },
+
     },
     mounted() {
-        window.axios.defaults.headers.common[
-            "Authorization"
-        ] = `Bearer ${this.token}`;
+        window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
     },
+    async created(){
+        // Se carga informacion de campos parametros.
+        this.itemsEstadoCosecha = await this.fnBuscarParametro('pr_estado_cosecha');
+        this.itemsUbicacion     = await this.fnBuscarParametro('pr_ubicacion');
+    }
 };
 </script>

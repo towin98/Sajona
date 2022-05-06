@@ -6,9 +6,6 @@
             <v-card elevation="2">
                 <v-card-title class="rounded-sm">
                     <span class="text-h6 font-weight-bold">Agregar</span>
-
-                    <!-- <div v-if="$can('CREAR')">You can edit posts.</div> -->
-
                 </v-card-title>
                 <v-row class="pl-4 pr-4">
                     <v-col cols="6" sm="2" class="pa-0">
@@ -418,7 +415,7 @@ export default {
             this.limpiarCampo();
             this.$swal({
                 title: '¿Quiere eliminar la Propagación?',
-                text: `Se removera el lote[${pro_id_lote}].`,
+                text: `Se va a eliminar el lote ${pro_id_lote}, ¿está seguro?.`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

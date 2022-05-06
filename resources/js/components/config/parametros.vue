@@ -160,12 +160,6 @@ export default {
     data() {
         return {
 
-            // names: [
-            // { id: 1, name: 'Paul', age: 23 },
-            // { id: 2, name: 'Marcelo', age: 15 },
-            // { id: 3, name: 'Any', age: 30 },
-            // ],
-
             token: localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading: false,
             titleAccion: "Parametros Módulos",
