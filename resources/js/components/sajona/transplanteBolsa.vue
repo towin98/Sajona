@@ -227,7 +227,7 @@
                                 ref="tp_tipo_lote"
                                 :items="itemsTipoLote"
                                 item-value="id"
-                                item-text="descripcion"
+                                item-text="nombre"
                                 :error-messages="modalErrors.tp_tipo_lote"
                                 dense
                                 no-data-text="Sin Datos"
@@ -256,7 +256,7 @@
                                 ref="tp_ubicacion"
                                 :items="itemsUbicacion"
                                 item-value="id"
-                                item-text="descripcion"
+                                item-text="nombre"
                                 :error-messages="modalErrors.tp_ubicacion"
                                 dense
                                 no-data-text="Sin Datos"

@@ -53,7 +53,7 @@
                             :rules="rulesTipoPropagacion"
                             :items="itemsTipoPropagacion"
                             item-value="id"
-                            item-text="descripcion"
+                            item-text="nombre"
                             :error-messages="errors.pro_tipo_propagacion"
                             dense
                         ></v-select>
@@ -83,7 +83,7 @@
                             :rules="rulesVariedad"
                             :items="itemsVariedad"
                             item-value="id"
-                            item-text="descripcion"
+                            item-text="nombre"
                             :error-messages="errors.pro_variedad"
                             dense
                         ></v-select>
@@ -112,7 +112,7 @@
                             :rules="rulesTipoIncorporacion"
                             :items="itemsTipoIncorporacion"
                             item-value="id"
-                            item-text="descripcion"
+                            item-text="nombre"
                             :error-messages="errors.pro_tipo_incorporacion"
                             dense
                         ></v-select>

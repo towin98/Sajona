@@ -77,7 +77,8 @@
                             ref="cos_estado_cosecha"
                             :items="itemsEstadoCosecha"
                             item-value="id"
-                            item-text="descripcion"
+                            item-text="nombre"
+                            no-data-text="'Sin Datos'"
                             dense
                             :error-messages="errors.cos_estado_cosecha"
                             :disabled="titleAccion == 'Nuevo'"
@@ -109,7 +110,8 @@
                             ref="tp_ubicacion"
                             :items="itemsUbicacion"
                             item-value="id"
-                            item-text="descripcion"
+                            item-text="nombre"
+                            no-data-text="'Sin Datos'"
                             readonly
                             dense
                             :error-messages="errors.tp_ubicacion"

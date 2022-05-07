@@ -76,11 +76,12 @@
                             ref="cos_numero_plantas"
                             dense
                             :error-messages="errors.cos_numero_plantas"
-                            disabled
+                            readonly
+                            :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
 
-                    <!-- POR DEFINIR ESTADO, ESTE VALOR ES TRAIDO DE COSECHA -->
+                    <!-- ESTE VALOR ES TRAIDO DE COSECHA -->
                     <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-subheader>Estado de Cosecha</v-subheader>
                     </v-col>
@@ -88,9 +89,13 @@
                         <v-select
                             v-model="form.cos_estado_cosecha"
                             ref="cos_estado_cosecha"
-                            :items="['Estado 1', 'Estado 2']"
+                            :items="itemsEstadoCosecha"
                             dense
+                            item-value="id"
+                            item-text="nombre"
+                            no-data-text="'Sin Datos'"
                             :error-messages="errors.cos_estado_cosecha"
+                            readonly
                             :disabled="titleAccion == 'Nuevo'"
                         ></v-select>
                     </v-col>
@@ -134,13 +139,12 @@
                             type="number"
                             v-model="form.post_peso_flor_verde"
                             ref="post_peso_flor_verde"
-                            v-on:keyup="getPorcentajeHumedad(),getBiomasa()"
+                            v-on:keyup="getPorcentajeRendimiento(),getBiomasa()"
                             dense
                             :error-messages="errors.post_peso_flor_verde"
                             :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
                     </v-col>
-
 
                     <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-subheader>Peso flor seco</v-subheader>
@@ -151,7 +155,7 @@
                             v-model="form.post_peso_flor_seco"
                             ref="post_peso_flor_seco"
                             dense
-                            v-on:keyup="getPorcentajeHumedad()"
+                            v-on:keyup="getPorcentajeRendimiento()"
                             :error-messages="errors.post_peso_flor_seco"
                             :disabled="titleAccion == 'Nuevo'"
                         ></v-text-field>
@@ -173,26 +177,41 @@
                         ></v-text-field>
                     </v-col>
 
-                    <v-col cols="6" sm="2" class="pl-0 pb-0">
-                        <v-subheader>Porcentaje Humedad</v-subheader>
+                    <v-col cols="6" sm="3" class="pl-0 pb-0">
+                        <v-subheader>Porcentaje Rendimiento %</v-subheader>
                     </v-col>
-                    <v-col cols="6" sm="4" class="pl-0 pb-0">
+                    <v-col cols="6" sm="3" class="pl-0 pb-0">
+                        <v-text-field
+                            v-model="form.post_porcentaje_rendimiento"
+                            ref="post_porcentaje_rendimiento"
+                            dense
+                            :error-messages="errors.post_porcentaje_rendimiento"
+                            :rules="post_porcentaje_rendimiento"
+                            label="(Peso flor seco / Peso flor verde)*100"
+                            :disabled="titleAccion == 'Nuevo'"
+                            suffix="%"
+                            readonly
+                        ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="6" sm="2" class="py-0 pl-0">
+                        <v-subheader>Porcentaje Humedad %</v-subheader>
+                    </v-col>
+                    <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-text-field
                             type="number"
                             v-model="form.post_porcentaje_humedad"
                             ref="post_porcentaje_humedad"
                             dense
                             :error-messages="errors.post_porcentaje_humedad"
-                            :rules="post_porcentaje_humedad"
-                            label="Peso flor verde - peso flor seco"
                             :disabled="titleAccion == 'Nuevo'"
-                            readonly
+                            suffix="%"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-subheader>% CBD</v-subheader>
                     </v-col>
-                    <v-col cols="6" sm="4" class="py-0 pl-0">
+                    <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-text-field
                             type="number"
                             v-model="form.post_cbd"
@@ -200,13 +219,14 @@
                             dense
                             :error-messages="errors.post_cbd"
                             :disabled="titleAccion == 'Nuevo'"
+                            suffix="%"
                         ></v-text-field>
                     </v-col>
 
                     <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-subheader>% THC</v-subheader>
                     </v-col>
-                    <v-col cols="6" sm="4" class="py-0 pl-0">
+                    <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-text-field
                             type="number"
                             v-model="form.post_thc"
@@ -214,6 +234,7 @@
                             dense
                             :error-messages="errors.post_thc"
                             :disabled="titleAccion == 'Nuevo'"
+                            suffix="%"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="2" class="py-0 pl-0">
@@ -223,7 +244,7 @@
                         <v-textarea
                             v-model="form.post_observacion"
                             ref="post_observacion"
-                            label="Observaciones"
+                            label="Escriba aquí por favor si quiere agregar alguna observación a la Post Cosecha."
                             outlined
                             dense
                             :error-messages="errors.post_observacion"
@@ -240,6 +261,7 @@
                             class="white--text text-none"
                             tile
                             v-on:click="guardarPostCosecha"
+                            :disabled="!$can(['CREAR', 'EDITAR'])"
                         >
                             <v-icon> save </v-icon>Guardar
                         </v-btn>
@@ -256,6 +278,7 @@
                                 hide-details
                                 v-model="buscar"
                                 @input="filterSearch"
+                                :disabled="!$can(['LISTAR'])"
                             ></v-text-field>
                         </v-card-title>
                         <v-data-table
@@ -274,18 +297,21 @@
                             sort-by="id_lote"
                             :sort-desc="true"
                             no-data-text="Sin registros"
+                            :disable-sort="!$can(['LISTAR'])"
                         >
                         <template v-slot:item.actions="{ item }">
                             <v-icon
                                 small
                                 class="mr-2"
                                 @click="editPostCosecha(item)"
+                                v-if="$can(['VER', 'EDITAR'])"
                             >
                                 mdi-pencil
                             </v-icon>
                             <v-icon
                                 small
                                 @click="deletePostCosecha(item)"
+                                v-if="$can(['ELIMINAR'])"
                             >
                                 mdi-delete
                             </v-icon>
@@ -309,8 +335,8 @@ export default {
             overlayLoading      : false,
             titleAccion         : 'Nuevo',
 
-            post_porcentaje_humedad: [
-                valor => valor > 0  || "El valor porcentaje humedad debe ser positivo.",
+            post_porcentaje_rendimiento: [
+                valor => valor >= 0  || "El valor porcentaje Rendimiento no puede ser negativo negativo.",
             ],
 
             form: {
@@ -329,9 +355,10 @@ export default {
                 post_peso_flor_seco     : '',
                 post_cbd                : '',
                 post_thc                : '',
-                post_porcentaje_humedad : '',
+                post_porcentaje_rendimiento : '',
                 post_observacion        : ''
             },
+            itemsEstadoCosecha: [],
             errors: {
             },
 
@@ -409,6 +436,8 @@ export default {
                 });
         },
         editPostCosecha(item){
+            // Vaciando variable de errores
+            this.errors = {};
             this.titleAccion = 'Editar';
             this.overlayLoading = true;
             axios
@@ -458,6 +487,7 @@ export default {
                                 this.buscarPostCosechas();
                             })
                             .catch((errors) => {
+                                // Se personaliza error.
                                 let text = '';
                                 if (errors.response.data.errors.pos_id === undefined) {
                                     text = errors.response.data.errors;
@@ -475,13 +505,14 @@ export default {
                 });
             }
         },
-        getPorcentajeHumedad(){
-            this.form.post_porcentaje_humedad = this.form.post_peso_flor_verde - this.form.post_peso_flor_seco;
+        getPorcentajeRendimiento(){
+            this.form.post_porcentaje_rendimiento = ((this.form.post_peso_flor_seco / this.form.post_peso_flor_verde)*100).toFixed(2);
         },
         getBiomasa(){
             this.form.post_peso_biomasa = this.form.cos_peso_verde - this.form.post_peso_flor_verde;
         },
         guardarPostCosecha() {
+            this.overlayLoading = true;
             axios
                 .post(`/sajona/post-cosecha`, this.form)
                 .then((response) => {
@@ -493,29 +524,32 @@ export default {
                     );
                     this.buscarPostCosechas();
                     this.limpiarCampos();
+                    this.overlayLoading = false;
                 })
                 .catch((errores) => {
-                    this.errors = errores.response.data.errors;
+                    this.errors = this.fnResponseError(errores);
+                    this.overlayLoading = false;
                 });
         },
         limpiarCampos() {
-            this.form.pos_id                  = '';
-            this.form.cos_id                  =  '',
-            this.form.cos_fecha_cosecha       =  '',
-            this.form.post_fecha_ini_secado   =  '',
-            this.form.post_fecha_fin_secado   =  '',
-            this.form.id_lote                 =  '',
-            this.form.cos_numero_plantas      =  '',
+            this.form.pos_id                      = '';
+            this.form.cos_id                      =  '',
+            this.form.cos_fecha_cosecha           =  '',
+            this.form.post_fecha_ini_secado       =  '',
+            this.form.post_fecha_fin_secado       =  '',
+            this.form.id_lote                     =  '',
+            this.form.cos_numero_plantas          =  '',
             this.$refs["cos_estado_cosecha"].reset();
-            this.form.cos_dias_floracion      =  '',
-            this.form.cos_peso_verde          =  '',
-            this.form.post_peso_flor_verde    =  '',
-            this.form.post_peso_biomasa       =  '',
-            this.form.post_peso_flor_seco     =  '',
-            this.form.post_cbd                =  '',
-            this.form.post_thc                =  '',
-            this.form.post_porcentaje_humedad =  '',
-            this.form.post_observacion        =  ''
+            this.form.cos_dias_floracion          =  '',
+            this.form.cos_peso_verde              =  '',
+            this.form.post_peso_flor_verde        =  '',
+            this.form.post_peso_biomasa           =  '',
+            this.form.post_peso_flor_seco         =  '',
+            this.form.post_cbd                    =  '',
+            this.form.post_thc                    =  '',
+            this.form.post_porcentaje_rendimiento =  '',
+            this.form.post_porcentaje_humedad     = ""
+            this.form.post_observacion            =  ''
         },
     },
     mounted() {
@@ -523,6 +557,10 @@ export default {
             "Authorization"
         ] = `Bearer ${this.token}`;
     },
+    async created(){
+        // Se carga informacion de campos parametros.
+        this.itemsEstadoCosecha = await this.fnBuscarParametro('pr_estado_cosecha');
+    }
 };
 </script>
 

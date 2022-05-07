@@ -61,7 +61,7 @@ Route::group(['prefix' => 'cosecha', 'middleware' => 'auth:sanctum'] , function(
     Route::post('/delete', [CosechaController::class, 'deleteCosecha']);
 });
 
-Route::group(['prefix' => 'post-cosecha'/* , 'middleware' => 'auth:sanctum' */] , function(){
+Route::group(['prefix' => 'post-cosecha' , 'middleware' => 'auth:sanctum'] , function(){
     Route::post('/',  [PostCosechaController::class, 'storePostCosecha']);
     Route::get('/buscar', [PostCosechaController::class, 'buscarPostCosechas']);
     Route::get('/{id_cosecha}', [PostCosechaController::class, 'showPosCosecha']);

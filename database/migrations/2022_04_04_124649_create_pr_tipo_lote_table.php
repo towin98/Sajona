@@ -15,8 +15,9 @@ class CreatePrTipoLoteTable extends Migration
     {
         Schema::create('pr_tipo_lote', function (Blueprint $table) {
             $table->id("id");
-            $table->string("descripcion", 50)->comment('Descripcion de tipo de lote');
-            $table->string("estado",10)      ->comment('Estado de tipo de lote');
+            $table->string("nombre", 50)->unique()          ->comment('Nombre de tipo de lote');
+            $table->string("descripcion", 50)->nullable()   ->comment('Descripcion de tipo de lote');
+            $table->string("estado",10)                     ->comment('Estado de tipo de lote');
             $table->timestamps();
         });
     }

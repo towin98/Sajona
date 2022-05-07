@@ -26,7 +26,14 @@ class DatabaseSeeder extends Seeder
                 'pm_estado'             => true,
             ]);
         }
-        $this->call(ParametrosEstadosCosechaSeeder::class);
-        \App\Models\User::factory(10)->create();
+        $this->call(PrEstadosCosechaSeeder::class);
+        $this->call(PrFaseCultivoSeeder::class);
+        $this->call(PrMotivoPerdidaSeeder::class);
+        $this->call(PrTipoIncorporacionSeeder::class);
+        $this->call(PrTipoLoteSeeder::class);
+        $this->call(PrTipoPropagacionSeeder::class);
+        $this->call(PrUbicacionSeeder::class);
+        $this->call(PrVariedadSeeder::class);
+        // \App\Models\User::factory(10)->create();
     }
 }

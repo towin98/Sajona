@@ -18,6 +18,7 @@ class Variedad extends Model
      * @var string[]
      */
     protected $fillable = [
+        "nombre",
         "descripcion",
         "estado"
     ];
@@ -29,6 +30,7 @@ class Variedad extends Model
      */
     protected $visible = [
         "id",
+        "nombre",
         "descripcion",
         "estado"
     ];
@@ -44,6 +46,7 @@ class Variedad extends Model
         if($buscar) {
             return $query
                 ->where('id', 'LIKE', "%$buscar%")
+                ->orWhere('nombre', 'LIKE', "%$buscar%")
                 ->orWhere('descripcion', 'LIKE', "%$buscar%")
                 ->orWhere('estado', 'LIKE', "%$buscar%");
         }
@@ -63,6 +66,9 @@ class Variedad extends Model
                 case 'id':
                     return $query->orderBy('id', $orden);
                 break;
+                case 'nombre':
+                    return $query->orderBy('nombre', $orden);
+                break;
                 case 'descripcion':
                     return $query->orderBy('descripcion', $orden);
                 break;
@@ -76,3 +82,4 @@ class Variedad extends Model
         }
     }
 }
+

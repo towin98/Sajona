@@ -15,8 +15,9 @@ class CreatePrTipoIncorporacionTable extends Migration
     {
         Schema::create('pr_tipo_incorporacion', function (Blueprint $table) {
             $table->id("id");
-            $table->string("descripcion", 50)->comment('Descripcion de tipo de incorporacion');
-            $table->string("estado",10)      ->comment('Estado de tipo de incorporacion');
+            $table->string("nombre", 50)->unique()          ->comment('Nombre de tipo de incorporacion');
+            $table->string("descripcion", 50)->nullable()   ->comment('Descripcion de tipo de incorporacion');
+            $table->string("estado",10)                     ->comment('Estado de tipo de incorporacion');
             $table->timestamps();
         });
     }
