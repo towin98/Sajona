@@ -85,17 +85,18 @@ class ParametroController extends Controller
                 ], 422);
             }
 
-            $registro = $modelo::where('descripcion', strtoupper($request->descripcion))->first();
+            $registro = $modelo::where('nombre', strtoupper($request->nombre))->first();
             if ($registro) {
                 return response()->json([
                     'message' => 'Error de Validación de Datos',
                     'errors' => [
-                        "descripcion" => "La descripción ya existe."
+                        "nombre" => "La Nombre para el parámetro ya existe."
                     ],
                 ], 422);
             }
 
             $modelo::create([
+                'nombre'      => strtoupper($request->nombre),
                 'descripcion' => strtoupper($request->descripcion),
                 'estado'      => $request->estado,
             ]);
@@ -103,7 +104,7 @@ class ParametroController extends Controller
             $nombreCampoParametro  = $this->getCampoParametro($request->parametrica);
 
             return response()->json([
-                'message' => "Datos Guardados, para el campo parámetro[$nombreCampoParametro].",
+                'message' => "Datos Guardados, para el campo parámetro $nombreCampoParametro.",
             ], 201);
 
         } catch (\Exception $e) {
@@ -166,6 +167,7 @@ class ParametroController extends Controller
 
         try {
             $modelo::findOrfail($id)->update([
+                'nombre'      => strtoupper($request->nombre),
                 'descripcion' => strtoupper($request->descripcion),
                 'estado'      => $request->estado
             ]);

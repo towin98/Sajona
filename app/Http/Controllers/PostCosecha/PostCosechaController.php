@@ -10,9 +10,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCosechasDeleteRequest;
 use App\Http\Requests\PostCosechasStoreRequest;
 use App\Http\Resources\ListarPostCosechaCollection;
+use App\Traits\commonsTrait;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class PostCosechaController extends Controller
 {
+    use commonsTrait;
+
+    public function __construct()
+    {
+        $this->middleware(['permission:LISTAR'])->only('buscarPostCosechas');
+        $this->middleware(['permission:CREAR|EDITAR'])->only('storePostCosecha');
+        $this->middleware(['permission:ELIMINAR'])->only('deletePostCosecha');
+        $this->middleware(['permission:VER'])->only('showPosCosecha');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -111,10 +123,8 @@ class PostCosechaController extends Controller
             ->first();
         if (!$cosecha) {
             return response()->json([
-                'errors' => [
-                    "No existe una cosecha con el Id[$request->cos_id] digitado, debe tener una una cosecha para poder crear post cosecha."
-                ],
-            ], 422);
+                'errors' => "No existe una cosecha con el Id[$request->cos_id] digitado, debe tener una una cosecha para poder crear post cosecha.",
+            ], 409);
         }else{
             // Consultar si existe post cosecha para actualizar o crear.
             $postCosecha = PostCosecha::select('pos_id')
@@ -125,35 +135,47 @@ class PostCosechaController extends Controller
             $biomasa = ($request->cos_peso_verde - $request->post_peso_flor_verde);
 
             if (count($postCosecha->get()) == 0) {
+
+                if (!$this->fnVerificaPermisoUsuario('CREAR')) {
+                    throw new AuthorizationException;
+                }
+
                 $accion = "Guardados";
                 // Si no existe se crea
                 $postCosecha->create([
-                    "post_cos_id"           => $request->cos_id,
-                    "post_fecha_ini_secado" => $request->post_fecha_ini_secado ." ".date('H:i:s'),
-                    "post_fecha_fin_secado" => $request->post_fecha_fin_secado." ".date('H:i:s'),
-                    "post_peso_flor_verde"  => $request->post_peso_flor_verde,
-                    "post_peso_biomasa"     => $biomasa,
-                    "post_peso_flor_seco"   => $request->post_peso_flor_seco,
-                    "post_cbd"              => $request->post_cbd,
-                    "post_thc"              => $request->post_thc,
-                    "post_observacion"      => $request->post_observacion,
-                    "post_estado"           => 1,
+                    "post_cos_id"               => $request->cos_id,
+                    "post_fecha_ini_secado"     => $request->post_fecha_ini_secado." ".date('H:i:s'),
+                    "post_fecha_fin_secado"     => $request->post_fecha_fin_secado." ".date('H:i:s'),
+                    "post_peso_flor_verde"      => $request->post_peso_flor_verde,
+                    "post_peso_biomasa"         => $biomasa,
+                    "post_peso_flor_seco"       => $request->post_peso_flor_seco,
+                    "post_porcentaje_humedad"   => $request->post_porcentaje_humedad,
+                    "post_cbd"                  => $request->post_cbd,
+                    "post_thc"                  => $request->post_thc,
+                    "post_observacion"          => $request->post_observacion,
+                    "post_estado"               => 1,
                 ]);
 
             }else{
+
+                if (!$this->fnVerificaPermisoUsuario('EDITAR')) {
+                    throw new AuthorizationException;
+                }
+
                 // Se actualiza.
                 $accion = "Actualizados";
                 $postCosecha->update([
-                    "post_cos_id"           => $request->cos_id,
-                    "post_fecha_ini_secado" => $request->post_fecha_ini_secado." ".date('H:i:s'),
-                    "post_fecha_fin_secado" => $request->post_fecha_fin_secado." ".date('H:i:s'),
-                    "post_peso_flor_verde"  => $request->post_peso_flor_verde,
-                    "post_peso_biomasa"     => $biomasa,
-                    "post_peso_flor_seco"   => $request->post_peso_flor_seco,
-                    "post_cbd"              => $request->post_cbd,
-                    "post_thc"              => $request->post_thc,
-                    "post_observacion"      => $request->post_observacion,
-                    "post_estado"           => 1,
+                    "post_cos_id"               => $request->cos_id,
+                    "post_fecha_ini_secado"     => $request->post_fecha_ini_secado." ".date('H:i:s'),
+                    "post_fecha_fin_secado"     => $request->post_fecha_fin_secado." ".date('H:i:s'),
+                    "post_peso_flor_verde"      => $request->post_peso_flor_verde,
+                    "post_peso_biomasa"         => $biomasa,
+                    "post_peso_flor_seco"       => $request->post_peso_flor_seco,
+                    "post_porcentaje_humedad"   => $request->post_porcentaje_humedad,
+                    "post_cbd"                  => $request->post_cbd,
+                    "post_thc"                  => $request->post_thc,
+                    "post_observacion"          => $request->post_observacion,
+                    "post_estado"               => 1,
                 ]);
             }
         }
@@ -221,6 +243,7 @@ class PostCosechaController extends Controller
                         'post_fecha_fin_secado',
                         'post_peso_flor_verde',
                         'post_peso_flor_seco',
+                        'post_porcentaje_humedad',
                         'post_cbd',
                         'post_thc',
                         'post_observacion'
@@ -237,25 +260,30 @@ class PostCosechaController extends Controller
                 // Biomasa  =  peso verde campo - peso flor verde.
                 $biomasa = ($value->cos_peso_verde - $value->getPostCosecha?->post_peso_flor_verde);
 
-                // Porcentaje humedad = Peso flor verde - peso flor seco.
-                $porcentajeHumedad = ($value->getPostCosecha?->post_peso_flor_verde - $value->getPostCosecha?->post_peso_flor_seco);
+                if ($value->getPostCosecha?->post_peso_flor_verde > 0) {
+                    // Porcentaje humedad = (Peso flor verde / peso flor seco)*100 %.
+                    $porcentajeRendimiento = round(($value->getPostCosecha?->post_peso_flor_seco / $value->getPostCosecha?->post_peso_flor_verde)*100,2);
+                }else{
+                    $porcentajeRendimiento = 0;
+                }
                 return [
-                    'id_lote'                  => $value->getTransplanteCampo?->getPlantaMadre?->pm_pro_id_lote,
-                    'cos_id'                   => $value->cos_id,
-                    'cos_numero_plantas'       => $value->cos_numero_plantas,
-                    'cos_estado_cosecha'       => $value->cos_estado_cosecha,
-                    'cos_fecha_cosecha'        => substr($value->cos_fecha_cosecha,0,10),
-                    'cos_dias_floracion'       => $value->cos_dias_floracion,
-                    'cos_peso_verde'           => $value->cos_peso_verde,
-                    'post_fecha_ini_secado'    => substr($value->getPostCosecha?->post_fecha_ini_secado,0,10),
-                    'post_fecha_fin_secado'    => substr($value->getPostCosecha?->post_fecha_fin_secado,0,10),
-                    'post_peso_flor_verde'     => $value->getPostCosecha?->post_peso_flor_verde,
-                    'post_peso_biomasa'        => $biomasa,
-                    'post_peso_flor_seco'      => $value->getPostCosecha?->post_peso_flor_seco,
-                    'post_cbd'                 => $value->getPostCosecha?->post_cbd,
-                    'post_thc'                 => $value->getPostCosecha?->post_thc,
-                    'post_porcentaje_humedad'  => $porcentajeHumedad,
-                    'post_observacion'         => $value->getPostCosecha?->post_observacion
+                    'id_lote'                       => $value->getTransplanteCampo?->getPlantaMadre?->pm_pro_id_lote,
+                    'cos_id'                        => $value->cos_id,
+                    'cos_numero_plantas'            => $value->cos_numero_plantas,
+                    'cos_estado_cosecha'            => $value->cos_estado_cosecha,
+                    'cos_fecha_cosecha'             => substr($value->cos_fecha_cosecha,0,10),
+                    'cos_dias_floracion'            => $value->cos_dias_floracion,
+                    'cos_peso_verde'                => $value->cos_peso_verde,
+                    'post_fecha_ini_secado'         => substr($value->getPostCosecha?->post_fecha_ini_secado,0,10),
+                    'post_fecha_fin_secado'         => substr($value->getPostCosecha?->post_fecha_fin_secado,0,10),
+                    'post_peso_flor_verde'          => $value->getPostCosecha?->post_peso_flor_verde,
+                    'post_peso_biomasa'             => $biomasa,
+                    'post_peso_flor_seco'           => $value->getPostCosecha?->post_peso_flor_seco,
+                    'post_porcentaje_humedad'       => $value->getPostCosecha?->post_porcentaje_humedad,
+                    'post_cbd'                      => $value->getPostCosecha?->post_cbd,
+                    'post_thc'                      => $value->getPostCosecha?->post_thc,
+                    'post_porcentaje_rendimiento'   => $porcentajeRendimiento,
+                    'post_observacion'              => $value->getPostCosecha?->post_observacion
                 ];
             });
 
@@ -315,7 +343,7 @@ class PostCosechaController extends Controller
                 ->first();
 
                 return response()->json([
-                    'message' => "Se elimino post cosecha para el lote[".$id_lote->getTransplanteCampo->getPlantaMadre->pm_pro_id_lote."].",
+                    'message' => "Se elimino la Post Cosecha para el lote ".$id_lote->getTransplanteCampo->getPlantaMadre->pm_pro_id_lote.".",
                 ], 200);
             }
 

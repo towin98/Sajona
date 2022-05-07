@@ -15,8 +15,9 @@ class CreatePrMotivoPerdidaTable extends Migration
     {
         Schema::create('pr_motivo_perdida', function (Blueprint $table) {
             $table->id("id");
-            $table->string("descripcion", 50)->comment('Descripcion de motivo de perdida');
-            $table->string("estado",10)      ->comment('Estado de motivo de perdida');
+            $table->string("nombre", 50)->unique()          ->comment('Nombre de motivo de perdida');
+            $table->string("descripcion", 50)->nullable()   ->comment('Descripcion de motivo de perdida');
+            $table->string("estado",10)                     ->comment('Estado de motivo de perdida');
             $table->timestamps();
         });
     }

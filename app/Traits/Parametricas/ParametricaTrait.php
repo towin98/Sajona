@@ -14,14 +14,17 @@ use App\Models\Parametros\Variedad;
 trait ParametricaTrait {
 
     static $messages = [
-        'descripcion.required'          => 'La descripción es requerida.',
-        'descripcion.max'               => 'La descripcion no debe superar los 50 carácteres.',
-        'estado.required'               => 'El estado es requerido.',
-        'estado.in'                     => 'El estado debe ser ACTIVO o INACTIVO.',
+        'nombre.required'               => 'El Nombre a mostrar como parametro es requerido.',
+        'nombre.max'                    => 'El Nombre no debe superar los 50 carácteres.',
+        // 'descripcion.required'          => 'La Descripción es requerida.',
+        'descripcion.max'               => 'La Descripcion no debe superar los 50 carácteres.',
+        'estado.required'               => 'El Estado es requerido.',
+        'estado.in'                     => 'El Estado debe ser ACTIVO o INACTIVO.',
     ];
 
     static $rules = [
-        'descripcion'             => 'required|string|max:50',
+        'nombre'                  => 'required|string|max:50',
+        'descripcion'             => 'nullable|string|max:50',
         'estado'                  => 'required|string|in:ACTIVO,INACTIVO',
     ];
 

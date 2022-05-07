@@ -104,18 +104,18 @@
                 <v-card-text>
                     <v-divider></v-divider>
                     <v-row>
+
                         <v-col cols="4" sm="2" class="pt-4">
-                            <v-subheader>Descripción</v-subheader>
+                            <v-subheader>Nombre</v-subheader>
                         </v-col>
                         <v-col cols="8" sm="4" class="pt-4">
                             <v-text-field
                                 type="text"
-                                v-model="formModalParametros.descripcion"
-                                ref="descripcion"
-                                :error-messages="errors.descripcion"
+                                v-model="formModalParametros.nombre"
+                                ref="nombre"
+                                :error-messages="errors.nombre"
                             ></v-text-field>
                         </v-col>
-
                         <v-col cols="4" sm="2" class="pt-4">
                             <v-subheader>Estado</v-subheader>
                         </v-col>
@@ -123,12 +123,21 @@
                             <v-select
                                 v-model="formModalParametros.estado"
                                 ref="estado"
-                                :items="['', 'ACTIVO', 'INACTIVO']"
+                                :items="['ACTIVO', 'INACTIVO']"
                                 :error-messages="errors.estado"
                             ></v-select>
-                                <!-- :items="names"
-                                item-value="id"
-                                item-text="name" -->
+                        </v-col>
+
+                        <v-col cols="4" sm="2" class="pt-0">
+                            <v-subheader>Descripción</v-subheader>
+                        </v-col>
+                        <v-col cols="8" sm="10" class="pt-0">
+                            <v-text-field
+                                type="text"
+                                v-model="formModalParametros.descripcion"
+                                ref="descripcion"
+                                :error-messages="errors.descripcion"
+                            ></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -169,6 +178,7 @@ export default {
             // Variables modal
             modalParametros: false,
             formModalParametros: {
+                nombre          : "",
                 descripcion     : "",
                 estado          : "",
                 parametrica     : ""
@@ -189,6 +199,7 @@ export default {
             loading: false, // Loading datatable
             headers: [
                 { text: "Id", align: "start", value: "id" },
+                { text: "Nombre", value: "nombre" },
                 { text: "Descripción", value: "descripcion" },
                 { text: "Estado", value: "estado" },
                 { text: "Acciones", value: "actions" },
@@ -339,8 +350,11 @@ export default {
                 .then((response) => {
                     let data = response.data.data;
                     this.errors = "";
+
+                    this.formModalParametros.nombre = data.nombre;
                     this.formModalParametros.descripcion = data.descripcion;
                     this.formModalParametros.estado = data.estado;
+
                     this.idParametro = item.id;
                     this.modalParametros = true;
                 })
@@ -397,6 +411,7 @@ export default {
             }
         },
         limpiarCampos() {
+            this.formModalParametros.nombre   = '';
             this.formModalParametros.descripcion   = '';
             this.formModalParametros.estado   = '';
         },

@@ -31,7 +31,7 @@ class cosechaRequest extends FormRequest
             'cos_numero_plantas'         => 'required|integer',
             'cos_estado_cosecha'         => 'required',
             'cos_dias_floracion'         => 'required|integer',
-            'cos_peso_verde'              => 'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
+            'cos_peso_verde'             => 'required|numeric|regex:/^[\d]{0,11}(\.[\d]{1,2})?$/',
             'cos_observacion'            => 'nullable|string|max:255',
         ];
     }

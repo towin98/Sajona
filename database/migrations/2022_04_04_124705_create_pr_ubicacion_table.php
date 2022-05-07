@@ -15,8 +15,9 @@ class CreatePrUbicacionTable extends Migration
     {
         Schema::create('pr_ubicacion', function (Blueprint $table) {
             $table->id("id");
-            $table->string("descripcion", 50)->comment('Descripcion de Ubicacion');
-            $table->string("estado",10)      ->comment('Estado de Ubicacion');
+            $table->string("nombre", 50)->unique()          ->comment('Nombre de Ubicacion');
+            $table->string("descripcion", 50)->nullable()   ->comment('Descripcion de Ubicacion');
+            $table->string("estado",10)                     ->comment('Estado de Ubicacion');
             $table->timestamps();
         });
     }

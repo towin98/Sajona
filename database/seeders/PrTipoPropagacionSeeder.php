@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Parametros\EstadoCosecha;
+use App\Models\parametros\TipoPropagacion;
 use Illuminate\Database\Seeder;
 
-class ParametrosEstadosCosechaSeeder extends Seeder
+class PrTipoPropagacionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,21 +16,24 @@ class ParametrosEstadosCosechaSeeder extends Seeder
     {
         $arrInsert = [
             [
-                "descripcion" => "EN PROCESO",
+                "nombre"      => "ESQUEJE",
+                "descripcion" => "",
                 "estado"      => "ACTIVO"
             ],
             [
-                "descripcion" => "PENDIENTE",
+                "nombre"      => "SEMILLA",
+                "descripcion" => "",
                 "estado"      => "ACTIVO"
             ],
             [
-                "descripcion" => "FINALIZADO",
+                "nombre"      => "INVITRO",
+                "descripcion" => "",
                 "estado"      => "INACTIVO"
             ],
         ];
 
         foreach ($arrInsert as $key => $insert) {
-            EstadoCosecha::create($insert);
+            TipoPropagacion::create($insert);
         }
     }
 }

@@ -2380,6 +2380,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2395,6 +2404,7 @@ __webpack_require__.r(__webpack_exports__);
       // Variables modal
       modalParametros: false,
       formModalParametros: {
+        nombre: "",
         descripcion: "",
         estado: "",
         parametrica: ""
@@ -2417,6 +2427,9 @@ __webpack_require__.r(__webpack_exports__);
         text: "Id",
         align: "start",
         value: "id"
+      }, {
+        text: "Nombre",
+        value: "nombre"
       }, {
         text: "Descripción",
         value: "descripcion"
@@ -2577,6 +2590,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/sajona/parametro/".concat(this.radioGroupParametros, "/").concat(item.id)).then(function (response) {
         var data = response.data.data;
         _this5.errors = "";
+        _this5.formModalParametros.nombre = data.nombre;
         _this5.formModalParametros.descripcion = data.descripcion;
         _this5.formModalParametros.estado = data.estado;
         _this5.idParametro = item.id;
@@ -2641,6 +2655,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     limpiarCampos: function limpiarCampos() {
+      this.formModalParametros.nombre = '';
       this.formModalParametros.descripcion = '';
       this.formModalParametros.estado = '';
     }
@@ -3720,6 +3735,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4464,7 +4481,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -4770,18 +4795,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
       token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       titleAccion: 'Nuevo',
-      post_porcentaje_humedad: [function (valor) {
-        return valor > 0 || "El valor porcentaje humedad debe ser positivo.";
+      post_porcentaje_rendimiento: [function (valor) {
+        return valor >= 0 || "El valor porcentaje Rendimiento no puede ser negativo negativo.";
       }],
       form: {
         pos_id: '',
@@ -4799,9 +4850,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         post_peso_flor_seco: '',
         post_cbd: '',
         post_thc: '',
-        post_porcentaje_humedad: '',
+        post_porcentaje_rendimiento: '',
         post_observacion: ''
       },
+      itemsEstadoCosecha: [],
       errors: {},
       // Tabla filtro.
       debounce: null,
@@ -4890,6 +4942,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     editPostCosecha: function editPostCosecha(item) {
       var _this3 = this;
 
+      // Vaciando variable de errores
+      this.errors = {};
       this.titleAccion = 'Editar';
       this.overlayLoading = true;
       axios.get("/sajona/post-cosecha/".concat(item.cos_id)).then(function (response) {
@@ -4929,6 +4983,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               _this4.buscarPostCosechas();
             })["catch"](function (errors) {
+              // Se personaliza error.
               var text = '';
 
               if (errors.response.data.errors.pos_id === undefined) {
@@ -4949,8 +5004,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
     },
-    getPorcentajeHumedad: function getPorcentajeHumedad() {
-      this.form.post_porcentaje_humedad = this.form.post_peso_flor_verde - this.form.post_peso_flor_seco;
+    getPorcentajeRendimiento: function getPorcentajeRendimiento() {
+      this.form.post_porcentaje_rendimiento = (this.form.post_peso_flor_seco / this.form.post_peso_flor_verde * 100).toFixed(2);
     },
     getBiomasa: function getBiomasa() {
       this.form.post_peso_biomasa = this.form.cos_peso_verde - this.form.post_peso_flor_verde;
@@ -4958,6 +5013,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     guardarPostCosecha: function guardarPostCosecha() {
       var _this5 = this;
 
+      this.overlayLoading = true;
       axios.post("/sajona/post-cosecha", this.form).then(function (response) {
         _this5.errors = "";
 
@@ -4966,18 +5022,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this5.buscarPostCosechas();
 
         _this5.limpiarCampos();
+
+        _this5.overlayLoading = false;
       })["catch"](function (errores) {
-        _this5.errors = errores.response.data.errors;
+        _this5.errors = _this5.fnResponseError(errores);
+        _this5.overlayLoading = false;
       });
     },
     limpiarCampos: function limpiarCampos() {
       this.form.pos_id = '';
       this.form.cos_id = '', this.form.cos_fecha_cosecha = '', this.form.post_fecha_ini_secado = '', this.form.post_fecha_fin_secado = '', this.form.id_lote = '', this.form.cos_numero_plantas = '', this.$refs["cos_estado_cosecha"].reset();
-      this.form.cos_dias_floracion = '', this.form.cos_peso_verde = '', this.form.post_peso_flor_verde = '', this.form.post_peso_biomasa = '', this.form.post_peso_flor_seco = '', this.form.post_cbd = '', this.form.post_thc = '', this.form.post_porcentaje_humedad = '', this.form.post_observacion = '';
+      this.form.cos_dias_floracion = '', this.form.cos_peso_verde = '', this.form.post_peso_flor_verde = '', this.form.post_peso_biomasa = '', this.form.post_peso_flor_seco = '', this.form.post_cbd = '', this.form.post_thc = '', this.form.post_porcentaje_rendimiento = '', this.form.post_porcentaje_humedad = "";
+      this.form.post_observacion = '';
     }
   },
   mounted: function mounted() {
     window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
+  },
+  created: function created() {
+    var _this6 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _this6.fnBuscarParametro('pr_estado_cosecha');
+
+            case 2:
+              _this6.itemsEstadoCosecha = _context.sent;
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   }
 });
 
@@ -27695,7 +27777,7 @@ var render = function () {
                       _c(
                         "v-col",
                         { staticClass: "pt-4", attrs: { cols: "4", sm: "2" } },
-                        [_c("v-subheader", [_vm._v("Descripción")])],
+                        [_c("v-subheader", [_vm._v("Nombre")])],
                         1
                       ),
                       _vm._v(" "),
@@ -27704,21 +27786,17 @@ var render = function () {
                         { staticClass: "pt-4", attrs: { cols: "8", sm: "4" } },
                         [
                           _c("v-text-field", {
-                            ref: "descripcion",
+                            ref: "nombre",
                             attrs: {
                               type: "text",
-                              "error-messages": _vm.errors.descripcion,
+                              "error-messages": _vm.errors.nombre,
                             },
                             model: {
-                              value: _vm.formModalParametros.descripcion,
+                              value: _vm.formModalParametros.nombre,
                               callback: function ($$v) {
-                                _vm.$set(
-                                  _vm.formModalParametros,
-                                  "descripcion",
-                                  $$v
-                                )
+                                _vm.$set(_vm.formModalParametros, "nombre", $$v)
                               },
-                              expression: "formModalParametros.descripcion",
+                              expression: "formModalParametros.nombre",
                             },
                           }),
                         ],
@@ -27739,7 +27817,7 @@ var render = function () {
                           _c("v-select", {
                             ref: "estado",
                             attrs: {
-                              items: ["", "ACTIVO", "INACTIVO"],
+                              items: ["ACTIVO", "INACTIVO"],
                               "error-messages": _vm.errors.estado,
                             },
                             model: {
@@ -27748,6 +27826,39 @@ var render = function () {
                                 _vm.$set(_vm.formModalParametros, "estado", $$v)
                               },
                               expression: "formModalParametros.estado",
+                            },
+                          }),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pt-0", attrs: { cols: "4", sm: "2" } },
+                        [_c("v-subheader", [_vm._v("Descripción")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { staticClass: "pt-0", attrs: { cols: "8", sm: "10" } },
+                        [
+                          _c("v-text-field", {
+                            ref: "descripcion",
+                            attrs: {
+                              type: "text",
+                              "error-messages": _vm.errors.descripcion,
+                            },
+                            model: {
+                              value: _vm.formModalParametros.descripcion,
+                              callback: function ($$v) {
+                                _vm.$set(
+                                  _vm.formModalParametros,
+                                  "descripcion",
+                                  $$v
+                                )
+                              },
+                              expression: "formModalParametros.descripcion",
                             },
                           }),
                         ],
@@ -29079,7 +29190,8 @@ var render = function () {
                         attrs: {
                           items: _vm.itemsEstadoCosecha,
                           "item-value": "id",
-                          "item-text": "descripcion",
+                          "item-text": "nombre",
+                          "no-data-text": "'Sin Datos'",
                           dense: "",
                           "error-messages": _vm.errors.cos_estado_cosecha,
                           disabled: _vm.titleAccion == "Nuevo",
@@ -29144,7 +29256,8 @@ var render = function () {
                         attrs: {
                           items: _vm.itemsUbicacion,
                           "item-value": "id",
-                          "item-text": "descripcion",
+                          "item-text": "nombre",
+                          "no-data-text": "'Sin Datos'",
                           readonly: "",
                           dense: "",
                           "error-messages": _vm.errors.tp_ubicacion,
@@ -30345,7 +30458,8 @@ var render = function () {
                           type: "number",
                           dense: "",
                           "error-messages": _vm.errors.cos_numero_plantas,
-                          disabled: "",
+                          readonly: "",
+                          disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
                           value: _vm.form.cos_numero_plantas,
@@ -30373,9 +30487,13 @@ var render = function () {
                       _c("v-select", {
                         ref: "cos_estado_cosecha",
                         attrs: {
-                          items: ["Estado 1", "Estado 2"],
+                          items: _vm.itemsEstadoCosecha,
                           dense: "",
+                          "item-value": "id",
+                          "item-text": "nombre",
+                          "no-data-text": "'Sin Datos'",
                           "error-messages": _vm.errors.cos_estado_cosecha,
+                          readonly: "",
                           disabled: _vm.titleAccion == "Nuevo",
                         },
                         model: {
@@ -30474,7 +30592,7 @@ var render = function () {
                         },
                         on: {
                           keyup: function ($event) {
-                            _vm.getPorcentajeHumedad(), _vm.getBiomasa()
+                            _vm.getPorcentajeRendimiento(), _vm.getBiomasa()
                           },
                         },
                         model: {
@@ -30510,7 +30628,7 @@ var render = function () {
                         },
                         on: {
                           keyup: function ($event) {
-                            return _vm.getPorcentajeHumedad()
+                            return _vm.getPorcentajeRendimiento()
                           },
                         },
                         model: {
@@ -30560,14 +30678,53 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { staticClass: "pl-0 pb-0", attrs: { cols: "6", sm: "2" } },
-                    [_c("v-subheader", [_vm._v("Porcentaje Humedad")])],
+                    { staticClass: "pl-0 pb-0", attrs: { cols: "6", sm: "3" } },
+                    [_c("v-subheader", [_vm._v("Porcentaje Rendimiento %")])],
                     1
                   ),
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { staticClass: "pl-0 pb-0", attrs: { cols: "6", sm: "4" } },
+                    { staticClass: "pl-0 pb-0", attrs: { cols: "6", sm: "3" } },
+                    [
+                      _c("v-text-field", {
+                        ref: "post_porcentaje_rendimiento",
+                        attrs: {
+                          dense: "",
+                          "error-messages":
+                            _vm.errors.post_porcentaje_rendimiento,
+                          rules: _vm.post_porcentaje_rendimiento,
+                          label: "(Peso flor seco / Peso flor verde)*100",
+                          disabled: _vm.titleAccion == "Nuevo",
+                          suffix: "%",
+                          readonly: "",
+                        },
+                        model: {
+                          value: _vm.form.post_porcentaje_rendimiento,
+                          callback: function ($$v) {
+                            _vm.$set(
+                              _vm.form,
+                              "post_porcentaje_rendimiento",
+                              $$v
+                            )
+                          },
+                          expression: "form.post_porcentaje_rendimiento",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
+                    [_c("v-subheader", [_vm._v("Porcentaje Humedad %")])],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
                     [
                       _c("v-text-field", {
                         ref: "post_porcentaje_humedad",
@@ -30575,10 +30732,8 @@ var render = function () {
                           type: "number",
                           dense: "",
                           "error-messages": _vm.errors.post_porcentaje_humedad,
-                          rules: _vm.post_porcentaje_humedad,
-                          label: "Peso flor verde - peso flor seco",
                           disabled: _vm.titleAccion == "Nuevo",
-                          readonly: "",
+                          suffix: "%",
                         },
                         model: {
                           value: _vm.form.post_porcentaje_humedad,
@@ -30601,7 +30756,7 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
                     [
                       _c("v-text-field", {
                         ref: "post_cbd",
@@ -30610,6 +30765,7 @@ var render = function () {
                           dense: "",
                           "error-messages": _vm.errors.post_cbd,
                           disabled: _vm.titleAccion == "Nuevo",
+                          suffix: "%",
                         },
                         model: {
                           value: _vm.form.post_cbd,
@@ -30632,7 +30788,7 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "4" } },
+                    { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
                     [
                       _c("v-text-field", {
                         ref: "post_thc",
@@ -30641,6 +30797,7 @@ var render = function () {
                           dense: "",
                           "error-messages": _vm.errors.post_thc,
                           disabled: _vm.titleAccion == "Nuevo",
+                          suffix: "%",
                         },
                         model: {
                           value: _vm.form.post_thc,
@@ -30668,7 +30825,8 @@ var render = function () {
                       _c("v-textarea", {
                         ref: "post_observacion",
                         attrs: {
-                          label: "Observaciones",
+                          label:
+                            "Escriba aquí por favor si quiere agregar alguna observación a la Post Cosecha.",
                           outlined: "",
                           dense: "",
                           "error-messages": _vm.errors.post_observacion,
@@ -30704,6 +30862,7 @@ var render = function () {
                                 small: "",
                                 color: "success",
                                 tile: "",
+                                disabled: !_vm.$can(["CREAR", "EDITAR"]),
                               },
                               on: { click: _vm.guardarPostCosecha },
                             },
@@ -30732,6 +30891,7 @@ var render = function () {
                               label: "Buscar",
                               "single-line": "",
                               "hide-details": "",
+                              disabled: !_vm.$can(["LISTAR"]),
                             },
                             on: { input: _vm.filterSearch },
                             model: {
@@ -30763,6 +30923,7 @@ var render = function () {
                           "sort-by": "id_lote",
                           "sort-desc": true,
                           "no-data-text": "Sin registros",
+                          "disable-sort": !_vm.$can(["LISTAR"]),
                         },
                         on: {
                           "update:options": function ($event) {
@@ -30775,40 +30936,44 @@ var render = function () {
                             fn: function (ref) {
                               var item = ref.item
                               return [
-                                _c(
-                                  "v-icon",
-                                  {
-                                    staticClass: "mr-2",
-                                    attrs: { small: "" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.editPostCosecha(item)
+                                _vm.$can(["VER", "EDITAR"])
+                                  ? _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "mr-2",
+                                        attrs: { small: "" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.editPostCosecha(item)
+                                          },
+                                        },
                                       },
-                                    },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                            mdi-pencil\n                        "
-                                    ),
-                                  ]
-                                ),
+                                      [
+                                        _vm._v(
+                                          "\n                            mdi-pencil\n                        "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
                                 _vm._v(" "),
-                                _c(
-                                  "v-icon",
-                                  {
-                                    attrs: { small: "" },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.deletePostCosecha(item)
+                                _vm.$can(["ELIMINAR"])
+                                  ? _c(
+                                      "v-icon",
+                                      {
+                                        attrs: { small: "" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.deletePostCosecha(item)
+                                          },
+                                        },
                                       },
-                                    },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                            mdi-delete\n                        "
-                                    ),
-                                  ]
-                                ),
+                                      [
+                                        _vm._v(
+                                          "\n                            mdi-delete\n                        "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
                               ]
                             },
                           },
@@ -30992,7 +31157,7 @@ var render = function () {
                           rules: _vm.rulesTipoPropagacion,
                           items: _vm.itemsTipoPropagacion,
                           "item-value": "id",
-                          "item-text": "descripcion",
+                          "item-text": "nombre",
                           "error-messages": _vm.errors.pro_tipo_propagacion,
                           dense: "",
                         },
@@ -31056,7 +31221,7 @@ var render = function () {
                           rules: _vm.rulesVariedad,
                           items: _vm.itemsVariedad,
                           "item-value": "id",
-                          "item-text": "descripcion",
+                          "item-text": "nombre",
                           "error-messages": _vm.errors.pro_variedad,
                           dense: "",
                         },
@@ -31119,7 +31284,7 @@ var render = function () {
                           rules: _vm.rulesTipoIncorporacion,
                           items: _vm.itemsTipoIncorporacion,
                           "item-value": "id",
-                          "item-text": "descripcion",
+                          "item-text": "nombre",
                           "error-messages": _vm.errors.pro_tipo_incorporacion,
                           dense: "",
                         },
@@ -32027,7 +32192,7 @@ var render = function () {
                             attrs: {
                               items: _vm.itemsTipoLote,
                               "item-value": "id",
-                              "item-text": "descripcion",
+                              "item-text": "nombre",
                               "error-messages": _vm.modalErrors.tp_tipo_lote,
                               dense: "",
                               "no-data-text": "Sin Datos",
@@ -32091,7 +32256,7 @@ var render = function () {
                             attrs: {
                               items: _vm.itemsUbicacion,
                               "item-value": "id",
-                              "item-text": "descripcion",
+                              "item-text": "nombre",
                               "error-messages": _vm.modalErrors.tp_ubicacion,
                               dense: "",
                               "no-data-text": "Sin Datos",

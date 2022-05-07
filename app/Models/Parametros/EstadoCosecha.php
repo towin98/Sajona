@@ -18,6 +18,7 @@ class EstadoCosecha extends Model
      * @var string[]
      */
     protected $fillable = [
+        "nombre",
         "descripcion",
         "estado"
     ];
@@ -29,6 +30,7 @@ class EstadoCosecha extends Model
      */
     protected $visible = [
         "id",
+        "nombre",
         "descripcion",
         "estado"
     ];
@@ -44,6 +46,7 @@ class EstadoCosecha extends Model
         if($buscar) {
             return $query
                 ->where('id', 'LIKE', "%$buscar%")
+                ->orWhere('nombre', 'LIKE', "%$buscar%")
                 ->orWhere('descripcion', 'LIKE', "%$buscar%")
                 ->orWhere('estado', 'LIKE', "%$buscar%");
         }
@@ -62,6 +65,9 @@ class EstadoCosecha extends Model
             switch ($columna) {
                 case 'id':
                     return $query->orderBy('id', $orden);
+                break;
+                case 'nombre':
+                    return $query->orderBy('nombre', $orden);
                 break;
                 case 'descripcion':
                     return $query->orderBy('descripcion', $orden);

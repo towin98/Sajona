@@ -15,8 +15,9 @@ class CreatePrEstadoCosechaTable extends Migration
     {
         Schema::create('pr_estado_cosecha', function (Blueprint $table) {
             $table->id("id");
-            $table->string("descripcion", 50)->comment('Descripcion de estado de cosecha');
-            $table->string("estado",10)      ->comment('Estado de cosecha');
+            $table->string("nombre", 50)->unique()          ->comment('Nombre de estado de cosecha');
+            $table->string("descripcion", 50)->nullable()   ->comment('Descripcion de estado de cosecha');
+            $table->string("estado",10)                     ->comment('Estado de cosecha');
             $table->timestamps();
         });
     }

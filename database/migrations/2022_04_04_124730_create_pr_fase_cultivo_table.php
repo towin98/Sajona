@@ -15,8 +15,9 @@ class CreatePrFaseCultivoTable extends Migration
     {
         Schema::create('pr_fase_cultivo', function (Blueprint $table) {
             $table->id("id");
-            $table->string("descripcion", 50)->comment('Descripcion de fase de cultivo');
-            $table->string("estado",10)      ->comment('Estado de fase de cultivo');
+            $table->string("nombre", 50)->unique()          ->comment('Nombre de fase de cultivo');
+            $table->string("descripcion", 50)->nullable()   ->comment('Descripcion de fase de cultivo');
+            $table->string("estado",10)                     ->comment('Estado de fase de cultivo');
             $table->timestamps();
         });
     }

@@ -15,8 +15,9 @@ class CreatePrTipoPropagacionTable extends Migration
     {
         Schema::create('pr_tipo_propagacion', function (Blueprint $table) {
             $table->id("id");
-            $table->string("descripcion", 50)->comment('Descripcion de tipo de propagacion');
-            $table->string("estado",10)->comment('Estado de tipo tipo de propagacion');
+            $table->string("nombre", 50)->unique()          ->comment('Nombre de tipo de propagacion');
+            $table->string("descripcion", 50)->nullable()   ->comment('Descripcion de tipo de propagacion');
+            $table->string("estado",10)                     ->comment('Estado de tipo tipo de propagacion');
             $table->timestamps();
         });
     }
