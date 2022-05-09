@@ -18,7 +18,8 @@ class CreateBajaTable extends Migration
             $table->unsignedBigInteger("bj_pro_id_lote");
             $table->dateTime("bj_fecha");
             $table->integer("bj_cantidad");
-            $table->string("bj_fase_cultivo", 20);
+            $table->integer("bj_fase_cultivo");
+            $table->integer('bj_motivo_perdida');
             $table->string("bj_observacion", 255)->nullable();
             $table->boolean("bj_estado");
             $table->timestamps();

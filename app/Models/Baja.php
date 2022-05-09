@@ -23,6 +23,7 @@ class Baja extends Model
         "bj_fecha",
         "bj_cantidad",
         'bj_fase_cultivo',
+        "bj_motivo_perdida",
         "bj_observacion",
         "bj_estado"
     ];
@@ -38,6 +39,7 @@ class Baja extends Model
         "bj_fecha",
         "bj_cantidad",
         "bj_fase_cultivo",
+        "bj_motivo_perdida",
         "bj_observacion",
         "bj_estado"
     ];
@@ -48,13 +50,15 @@ class Baja extends Model
         'bj_cantidad.integer'               => 'La cantidad de bajas debe ser númerico.',
         'bj_cantidad.required'              => 'La cantidad de bajas es requerida.',
         'bj_fase_cultivo.required'          => 'La Fase del cultivo es requerida.',
+        'bj_motivo_perdida.required'        => 'El motivo de perdida es requerido.',
         'bj_observacion.max'                => 'La Observación no puede superar los 255 caracteres.',
     ];
 
     static $rules = [
         'bj_fecha'             => 'required|date_format:Y-m-d',
         'bj_cantidad'          => 'required|integer',
-        'bj_fase_cultivo'      => 'required',
+        'bj_fase_cultivo'      => 'required|integer',
+        'bj_motivo_perdida'    => 'required|integer',
         'bj_observacion'       => 'nullable|max:255',
     ];
 

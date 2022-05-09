@@ -3151,7 +3151,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3322,11 +3356,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      token: localStorage.getItem("TOKEN_SAJONA"),
+      itemsFaseCultivo: [],
+      itemsMotivoPerdida: [],
       overlayLoading: false,
 
       /* start Variables Modal bajas*/
@@ -3363,6 +3398,8 @@ __webpack_require__.r(__webpack_exports__);
         sortable: false
       }],
       dataSet: [],
+      start: 0,
+      length: 0,
 
       /* end variables Table. */
       id_lote: "",
@@ -3370,6 +3407,8 @@ __webpack_require__.r(__webpack_exports__);
         bajas: [],
         id_lote: ""
       },
+      disabledAccion: false,
+      // Variable que deshabilita campos o botones
       error: {
         errores: []
       }
@@ -3387,13 +3426,17 @@ __webpack_require__.r(__webpack_exports__);
     buscarBajas: function buscarBajas() {
       var _this = this;
 
+      var buscar = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.buscar;
       this.overlayLoading = true;
       this.loading = true;
       var _this$options = this.options,
           page = _this$options.page,
           itemsPerPage = _this$options.itemsPerPage,
           sortBy = _this$options.sortBy,
-          sortDesc = _this$options.sortDesc;
+          sortDesc = _this$options.sortDesc; // Obteniendo rangos de consultado paginación.
+
+      this.start = itemsPerPage * (page - 1);
+      this.length = this.start + itemsPerPage;
 
       if (sortDesc[0] == true) {
         sortBy = sortBy[0];
@@ -3406,12 +3449,11 @@ __webpack_require__.r(__webpack_exports__);
         sortDesc = "";
       }
 
-      axios.get("/sajona/baja/buscar?page=".concat(page, "&length=").concat(itemsPerPage, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
-        _this.loading = false;
+      axios.get("/sajona/baja/buscar?start=".concat(this.start, "&length=").concat(this.length, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(buscar)).then(function (response) {
         _this.dataSet = response.data.data;
         _this.totalRegistros = response.data.total;
-        _this.numberOfPages = response.data.last_page;
         _this.overlayLoading = false;
+        _this.loading = false;
       })["catch"](function (errors) {
         _this.overlayLoading = false;
         _this.loading = false;
@@ -3458,18 +3500,41 @@ __webpack_require__.r(__webpack_exports__);
     guardarBajas: function guardarBajas() {
       var _this4 = this;
 
-      this.overlayLoading = true;
-      axios.post("/sajona/baja", this.dataBajasModal).then(function (response) {
-        _this4.$swal(response.data.message, '', 'success');
+      // Se condiciona por si el usuario da click mas de una vez en el boton de guardar.
+      if (this.disabledAccion == false) {
+        this.disabledAccion = true;
+        this.overlayLoading = true;
+        axios.post("/sajona/baja", this.dataBajasModal).then(function (response) {
+          _this4.disabledAccion = false;
 
-        _this4.overlayLoading = false;
-        _this4.modal = false;
+          _this4.$swal(response.data.message, '', 'success');
 
-        _this4.buscarBajas();
-      })["catch"](function (errors) {
-        _this4.error.errores = errors.response.data.errores;
-        _this4.overlayLoading = false;
-      });
+          _this4.overlayLoading = false;
+          _this4.modal = false;
+
+          _this4.buscarBajas();
+        })["catch"](function (errors) {
+          _this4.disabledAccion = false;
+
+          if (errors.response.status == 500 || errors.response.status == 403 || errors.response.status == 409 || errors.response.status == 404) {
+            var mensaje = "El sistema a generado un Error";
+
+            if (errors.response.data.message != undefined) {
+              mensaje = errors.response.data.message;
+            }
+
+            _this4.$swal({
+              icon: 'error',
+              title: "".concat(mensaje),
+              text: "".concat(errors.response.data.errors)
+            });
+          } else {
+            _this4.error.errores = errors.response.data.errors;
+          }
+
+          _this4.overlayLoading = false;
+        });
+      }
     },
     fnNuevaBaja: function fnNuevaBaja() {
       this.dataBajasModal.bajas.push({
@@ -3477,6 +3542,7 @@ __webpack_require__.r(__webpack_exports__);
         bj_fecha: "",
         bj_cantidad: "",
         bj_fase_cultivo: "",
+        bj_motivo_perdida: "",
         bj_observacion: ""
       });
       this.fnErrorJson();
@@ -3489,6 +3555,33 @@ __webpack_require__.r(__webpack_exports__);
       this.dataBajasModal.bajas.splice(index, 1);
       this.error.errores.splice(index, 1);
     }
+  },
+  created: function created() {
+    var _this5 = this;
+
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _this5.fnBuscarParametro('pr_fase_cultivo');
+
+            case 2:
+              _this5.itemsFaseCultivo = _context.sent;
+              _context.next = 5;
+              return _this5.fnBuscarParametro('pr_motivo_perdida');
+
+            case 5:
+              _this5.itemsMotivoPerdida = _context.sent;
+
+            case 6:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   }
 });
 
@@ -4881,7 +4974,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         value: "actions"
       }],
       dataSet: [],
-      startData: 0,
+      start: 0,
       length: 0
     };
   },
@@ -6870,7 +6963,7 @@ var commons = {
     },
     fnResponseError: function fnResponseError(errores) {
       if (errores.response.status == 500 || errores.response.status == 403 || errores.response.status == 409 || errores.response.status == 404) {
-        var mensaje = "El sistema a generado un Error.";
+        var mensaje = "El sistema a generado un Error";
 
         if (errores.response.data.message != undefined) {
           mensaje = errores.response.data.message;
@@ -28617,6 +28710,7 @@ var render = function () {
                               label: "Buscar",
                               "single-line": "",
                               "hide-details": "",
+                              disabled: !_vm.$can(["LISTAR"]),
                             },
                             on: { input: _vm.filterSearch },
                             model: {
@@ -28644,11 +28738,12 @@ var render = function () {
                           "items-per-page": 5,
                           "item-key": "id_lote",
                           "footer-props": {
-                            "items-per-page-options": [3, 5, 10, 15],
+                            "items-per-page-options": [5, 15, 30, 50],
                           },
                           "sort-by": "id_lote",
                           "sort-desc": true,
                           "no-data-text": "Sin registros",
+                          "disable-sort": !_vm.$can(["LISTAR"]),
                         },
                         on: {
                           "update:options": function ($event) {
@@ -28661,28 +28756,30 @@ var render = function () {
                             fn: function (ref) {
                               var item = ref.item
                               return [
-                                _c(
-                                  "v-icon",
-                                  {
-                                    staticClass: "mr-2",
-                                    attrs: {
-                                      color: "primary",
-                                      title: "Editar Bajas del lote",
-                                    },
-                                    on: {
-                                      click: function ($event) {
-                                        return _vm.consultarLotesBajas(
-                                          item.id_lote
-                                        )
+                                _vm.$can(["VER", "EDITAR"])
+                                  ? _c(
+                                      "v-icon",
+                                      {
+                                        staticClass: "mr-2",
+                                        attrs: {
+                                          color: "primary",
+                                          title: "Editar Bajas del lote",
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.consultarLotesBajas(
+                                              item.id_lote
+                                            )
+                                          },
+                                        },
                                       },
-                                    },
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                mdi-pencil\n                            "
-                                    ),
-                                  ]
-                                ),
+                                      [
+                                        _vm._v(
+                                          "\n                                mdi-pencil\n                            "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
                               ]
                             },
                           },
@@ -28704,7 +28801,7 @@ var render = function () {
       _c(
         "v-dialog",
         {
-          attrs: { persistent: "", width: "1000px" },
+          attrs: { persistent: "", width: "1100px" },
           model: {
             value: _vm.modal,
             callback: function ($$v) {
@@ -28776,6 +28873,7 @@ var render = function () {
                                 type: "date",
                                 filled: "",
                                 label: "Fecha de baja",
+                                dense: "",
                                 "error-messages":
                                   _vm.error.errores[index].bj_fecha != undefined
                                     ? _vm.error.errores[index].bj_fecha
@@ -28809,6 +28907,7 @@ var render = function () {
                                     ? _vm.error.errores[index].bj_cantidad
                                     : "",
                                 label: "Cantidad Bajas",
+                                dense: "",
                               },
                               model: {
                                 value: baja.bj_cantidad,
@@ -28830,18 +28929,17 @@ var render = function () {
                               ref: "bj_fase_cultivo",
                               refInFor: true,
                               attrs: {
-                                items: [
-                                  "esquejes",
-                                  "bolsa",
-                                  "campo",
-                                  "cosecha",
-                                ],
+                                items: _vm.itemsFaseCultivo,
+                                "item-value": "id",
+                                "item-text": "nombre",
+                                "no-data-text": "Sin valores",
                                 "error-messages":
                                   _vm.error.errores[index].bj_fase_cultivo !=
                                   undefined
                                     ? _vm.error.errores[index].bj_fase_cultivo
                                     : "",
                                 filled: "",
+                                dense: "",
                                 label: "Fase de Cultivo",
                               },
                               model: {
@@ -28858,7 +28956,40 @@ var render = function () {
                         _vm._v(" "),
                         _c(
                           "v-col",
-                          { attrs: { cols: "4", sm: "4" } },
+                          { attrs: { cols: "2", sm: "2" } },
+                          [
+                            _c("v-select", {
+                              ref: "bj_motivo_perdida",
+                              refInFor: true,
+                              attrs: {
+                                items: _vm.itemsMotivoPerdida,
+                                "item-value": "id",
+                                "item-text": "nombre",
+                                "no-data-text": "Sin valores",
+                                "error-messages":
+                                  _vm.error.errores[index].bj_motivo_perdida !=
+                                  undefined
+                                    ? _vm.error.errores[index].bj_motivo_perdida
+                                    : "",
+                                filled: "",
+                                dense: "",
+                                label: "Motivo Perdida",
+                              },
+                              model: {
+                                value: baja.bj_motivo_perdida,
+                                callback: function ($$v) {
+                                  _vm.$set(baja, "bj_motivo_perdida", $$v)
+                                },
+                                expression: "baja.bj_motivo_perdida",
+                              },
+                            }),
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-col",
+                          { attrs: { cols: "2", sm: "2" } },
                           [
                             _c("v-textarea", {
                               ref: "bj_observacion",
@@ -28871,6 +29002,7 @@ var render = function () {
                                     : "",
                                 label: "Observaciones",
                                 rows: "1",
+                                dense: "",
                                 filled: "",
                               },
                               model: {
@@ -28898,10 +29030,10 @@ var render = function () {
                                 staticClass: "mx-2",
                                 attrs: {
                                   fab: "",
-                                  dark: "",
                                   small: "",
                                   color: "red",
                                   title: "Elimina registro de baja.",
+                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
                                 },
                                 on: {
                                   click: function ($event) {
@@ -28910,7 +29042,7 @@ var render = function () {
                                 },
                               },
                               [
-                                _c("v-icon", { attrs: { dark: "" } }, [
+                                _c("v-icon", { attrs: { color: "white" } }, [
                                   _vm._v(
                                     "\n                                cancel\n                            "
                                   ),
@@ -28946,6 +29078,7 @@ var render = function () {
                             color: "success",
                             tile: "",
                             title: "Añade un nueva fila para agregar baja.",
+                            disabled: !_vm.$can(["CREAR", "EDITAR"]),
                           },
                           on: { click: _vm.fnNuevaBaja },
                         },
@@ -28973,6 +29106,7 @@ var render = function () {
                             color: "success",
                             tile: "",
                             title: "Guarda todos los registros de Bajas.",
+                            disabled: !_vm.$can(["CREAR", "EDITAR"]),
                           },
                           on: { click: _vm.guardarBajas },
                         },
