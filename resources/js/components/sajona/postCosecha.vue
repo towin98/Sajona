@@ -378,7 +378,7 @@ export default {
                 { text: "Acciones", value: "actions" }
             ],
             dataSet: [],
-            startData : 0,
+            start     : 0,
             length    : 0
         };
     },

@@ -25,7 +25,7 @@ export const commons = {
                 errores.response.status == 409 ||
                 errores.response.status == 404)
             {
-                let mensaje = "El sistema a generado un Error.";
+                let mensaje = "El sistema a generado un Error";
                 if (errores.response.data.message != undefined) {
                     mensaje = errores.response.data.message;
                 }

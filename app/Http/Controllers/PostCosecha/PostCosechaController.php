@@ -30,7 +30,8 @@ class PostCosechaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function buscarPostCosechas(Request $request) {
+    public function buscarPostCosechas(Request $request)
+    {
 
         // Se válida si envian los parámetros length y start.
         if($request->has(['length', 'start'])){

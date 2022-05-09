@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers\Baja;
 
-use App\Http\Controllers\Controller;
+use Throwable;
 use App\Models\Baja;
+use App\Models\PlantaMadre;
 use App\Models\Propagacion;
 use Illuminate\Http\Request;
-use Throwable;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use App\Traits\paginationTrait;
 
 class BajaController extends Controller
 {
-    use paginationTrait;
+
+    public function __construct()
+    {
+        $this->middleware(['permission:LISTAR'])->only('buscarLotes');
+        $this->middleware(['permission:CREAR|EDITAR'])->only('store');
+        $this->middleware(['permission:EDITAR'])->only('update');
+        $this->middleware(['permission:VER'])->only('show');
+    }
 
     /**
      * Método que busca lotes.
@@ -23,11 +30,13 @@ class BajaController extends Controller
     public function buscarLotes(Request $request)
     {
 
-        // Se válida si envian los parámetros length
-        if (!$request->filled('length')) {
-            $length = 15;
-        } else {
+        // Se válida si envian los parámetros length y start.
+        if ($request->has(['length', 'start'])) {
             $length = $request->length;
+            $start  = $request->start;
+        } else {
+            $length = 15;
+            $start  = 0;
         }
 
         $data = [];
@@ -35,44 +44,60 @@ class BajaController extends Controller
             ->with([
                 'getBaja' => function ($query) {
                     $query->select([
-                        'bj_pro_id_lote',
-                        'bj_fecha',
-                        'bj_cantidad'
+                        "bj_pro_id_lote",
+                        "bj_fecha",
+                        "bj_cantidad"
                     ]);
                 }
             ])
-            ->with('getPlantaMadre')
+            ->has('getPlantaMadre')
+            ->with([
+                'getPlantaMadre' => function ($query) {
+                    $query->select([
+                        'pm_id',
+                        'pm_pro_id_lote',
+                        'pm_cantidad_semillas',
+                        'pm_cantidad_esquejes',
+                        'pm_estado'
+                    ]);
+                }
+            ]);
+
+        // consulta para saber cuantos registros hay.
+        $totalRegistros = $registros->count();
+
+        $registros = $registros->skip($start)
+            ->take($length)
             ->get()
-            ->where('getPlantaMadre','!=',null)
             ->toArray();
 
-            // Tratando data bajas
-            foreach ($registros as $registro) {
-                $nBajas = 0;
-                $nCantidadEsquejesSemillas = 0;
-                $getPlantaMadre = $registro['get_planta_madre'];
+        // Tratando data bajas
+        foreach ($registros as $registro) {
+            $nBajas = 0;
+            $nCantidadEsquejesSemillas = 0;
+            $getPlantaMadre = $registro['get_planta_madre'];
 
-                if (!empty($registro['get_baja'])) {
-                    foreach ($registro['get_baja'] as $baja) {
-                        $nBajas += $baja['bj_cantidad'];
-                    }
-                    $registro = $baja; // Agrupando
-                }else{
-                    unset($registro['get_baja']);
-                    unset($registro['get_planta_madre']); // Se borra repetidos.
+            if (!empty($registro['get_baja'])) {
+                foreach ($registro['get_baja'] as $baja) {
+                    $nBajas += $baja['bj_cantidad'];
                 }
-
-                $registro['descartes'] = $nBajas;
-                unset($registro['bj_cantidad']);
-
-                // Tratando data planta madre
-                if (!empty($getPlantaMadre)) {
-                    $nCantidadEsquejesSemillas = $getPlantaMadre['pm_cantidad_semillas'] + $getPlantaMadre['pm_cantidad_esquejes'];
-                }
-
-                $registro['cantidadSemillasEsquejes'] = $nCantidadEsquejesSemillas;
-                $data[] = $registro;
+                $registro = $baja; // Agrupando, sobre escribiendo.
+            } else {
+                unset($registro['get_baja']);
+                unset($registro['get_planta_madre']); // Se borra repetidos.
             }
+
+            $registro['descartes'] = $nBajas;
+            unset($registro['bj_cantidad']);
+
+            // Tratando data planta madre
+            if (!empty($getPlantaMadre)) {
+                $nCantidadEsquejesSemillas = $getPlantaMadre['pm_cantidad_semillas'] + $getPlantaMadre['pm_cantidad_esquejes'];
+            }
+
+            $registro['cantidadSemillasEsquejes'] = $nCantidadEsquejesSemillas;
+            $data[] = $registro;
+        }
 
         $registros = collect($data);
 
@@ -86,7 +111,7 @@ class BajaController extends Controller
         });
 
         if ($request->filled('orderColumn') && $request->filled('order')) {
-            $registros = $registros->sortBy([[$request->orderColumn, $request->order]]);
+            $registros = $registros->sortBy([[$request->orderColumn, strtolower($request->order)]]);
         }
 
         $buscar = $request->buscar;
@@ -106,11 +131,11 @@ class BajaController extends Controller
             }
         });
 
-        $registros = $registros->toArray();
-
-        $registros = $this->paginar($request, $registros, $length);
-
-        return response()->json($registros, 200);
+        return response()->json([
+            'data'      => $registros->values(),
+            'filtrados' => $registros->count(),
+            'total'     => $totalRegistros,
+        ], 200);
     }
 
     /**
@@ -134,7 +159,7 @@ class BajaController extends Controller
             if ($validator->fails()) {
                 $errores[] = $validator->errors();
                 $contadorErrores++;
-            }else{
+            } else {
                 $errores[] = json_decode("{}");
             }
         }
@@ -142,28 +167,52 @@ class BajaController extends Controller
         if ($contadorErrores > 0) {
             return response()->json([
                 'message' => 'Error de Validación de Datos',
-                'errores' => $errores
+                'errors' => $errores
             ], 422);
+        }
+
+        // Consultando en planta madre la cantidad de siembra o cantidad propagada.
+        // Validando que la cantidad sembrada no sea menos a la descartes.
+        $plantaMadre = PlantaMadre::select(['pm_id','pm_pro_id_lote', 'pm_cantidad_semillas', 'pm_cantidad_esquejes'])
+            ->where('pm_pro_id_lote', $request->id_lote)
+            ->first();
+
+        if (!$plantaMadre) {
+            return response()->json([
+                'message' => 'Error de Validación de Datos',
+                'errors' => "El lote $request->id_lote aun no tiene esquejaciones."
+            ], 409);
+        }else{
+            $totalSemillasEsquejes = $plantaMadre->pm_cantidad_semillas + $plantaMadre->pm_cantidad_esquejes;
+            $totalDescartes = 0;
+            foreach ($bajas as $baja) {
+                $totalDescartes += $baja['bj_cantidad'];
+            }
+            if ($totalDescartes > $totalSemillasEsquejes) {
+                return response()->json([
+                    'message' => 'Error de Validación de Datos',
+                    'errors' => "El total de descartes ($totalDescartes) para el lote $request->id_lote no puede superar la cantidad siembra ($totalSemillasEsquejes)."
+                ], 409);
+            }
         }
 
         try {
             Baja::where('bj_pro_id_lote', $id_lote)->delete();
+            foreach ($bajas as $baja) {
+                $baja['bj_fecha']        = $baja['bj_fecha'] . " " . date('H:i:s');
+                $baja['bj_estado']       = true;
+                $baja['bj_pro_id_lote']  = $id_lote;
+                Baja::create($baja);
+            }
         } catch (Throwable $e) {
             return response()->json([
-                'message' => 'Error al guardar Bajas, comunicate con el area de Sistemas.',
+                'errors' => 'Error al guardar Bajas, comunicate con el area de Sistemas.',
             ], 500);
-        }
-
-        foreach ($bajas as $baja) {
-            $baja['bj_estado']       = true;
-            $baja['bj_pro_id_lote']  = $id_lote;
-            Baja::create($baja);
         }
 
         return response()->json([
             'message' => 'Datos Guardados.',
         ], 200);
-
     }
 
     /**
@@ -178,11 +227,12 @@ class BajaController extends Controller
             ->get()
             ->map(function ($baja) {
                 return [
-                    "bj_pro_id_lote"  => $baja->bj_pro_id_lote,
-                    "bj_fecha"        => substr($baja->bj_fecha,0,10),
-                    "bj_cantidad"     => $baja->bj_cantidad,
-                    "bj_fase_cultivo" => $baja->bj_fase_cultivo,
-                    "bj_observacion"  => $baja->bj_observacion
+                    "bj_pro_id_lote"    => $baja->bj_pro_id_lote,
+                    "bj_fecha"          => substr($baja->bj_fecha, 0, 10),
+                    "bj_cantidad"       => $baja->bj_cantidad,
+                    "bj_fase_cultivo"   => $baja->bj_fase_cultivo,
+                    "bj_motivo_perdida" => $baja->bj_motivo_perdida,
+                    "bj_observacion"    => $baja->bj_observacion
                 ];
             });
 

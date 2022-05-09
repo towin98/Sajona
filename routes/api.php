@@ -68,7 +68,7 @@ Route::group(['prefix' => 'post-cosecha' , 'middleware' => 'auth:sanctum'] , fun
     Route::post('/delete', [PostCosechaController::class, 'deletePostCosecha']);
 });
 
-Route::group(['prefix' => 'baja'/* , 'middleware' => 'auth:sanctum' */] , function(){
+Route::group(['prefix' => 'baja', 'middleware' => 'auth:sanctum'] , function(){
     Route::resource('/',  BajaController::class)->only(['store']);
     Route::get('/buscar', [BajaController::class, 'buscarLotes']);
     Route::get('/{id_lote}', [BajaController::class, 'show']);

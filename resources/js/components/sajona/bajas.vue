@@ -21,6 +21,7 @@
                                 hide-details
                                 v-model="buscar"
                                 @input="filterSearch"
+                                :disabled="!$can(['LISTAR'])"
                             ></v-text-field>
                         </v-card-title>
                         <v-data-table
@@ -35,11 +36,12 @@
                             :items-per-page="5"
                             item-key="id_lote"
                             :footer-props="{
-                                'items-per-page-options': [3, 5, 10, 15],
+                                'items-per-page-options': [5, 15, 30, 50],
                             }"
                             sort-by="id_lote"
                             :sort-desc="true"
                             no-data-text="Sin registros"
+                            :disable-sort="!$can(['LISTAR'])"
                         >
                             <template v-slot:item.acciones="{ item }">
                                 <v-icon
@@ -47,6 +49,7 @@
                                     class="mr-2"
                                     @click="consultarLotesBajas(item.id_lote)"
                                     title="Editar Bajas del lote"
+                                    v-if="$can(['VER', 'EDITAR'])"
                                 >
                                     mdi-pencil
                                 </v-icon>
@@ -59,7 +62,7 @@
         </v-container>
 
         <!-- Modal bajas -->
-        <v-dialog v-model="modal" persistent width="1000px">
+        <v-dialog v-model="modal" persistent width="1100px">
             <v-card>
                 <v-card-title class="text-h5 py-2">
                     Editar
@@ -83,6 +86,7 @@
                                 ref="bj_fecha"
                                 filled
                                 label="Fecha de baja"
+                                dense
                                 :error-messages="(error.errores[index].bj_fecha != undefined) ? error.errores[index].bj_fecha : ''"
                             ></v-text-field>
                         </v-col>
@@ -94,6 +98,7 @@
                                 filled
                                 :error-messages="(error.errores[index].bj_cantidad != undefined) ? error.errores[index].bj_cantidad : ''"
                                 label="Cantidad Bajas"
+                                dense
                             ></v-text-field>
                         </v-col>
 
@@ -101,19 +106,38 @@
                             <v-select
                                 v-model="baja.bj_fase_cultivo"
                                 ref="bj_fase_cultivo"
-                                :items="['esquejes','bolsa', 'campo', 'cosecha']"
+                                :items="itemsFaseCultivo"
+                                item-value="id"
+                                item-text="nombre"
+                                no-data-text="Sin valores"
                                 :error-messages="(error.errores[index].bj_fase_cultivo != undefined) ? error.errores[index].bj_fase_cultivo : ''"
                                 filled
+                                dense
                                 label="Fase de Cultivo"
                             ></v-select>
                         </v-col>
-                        <v-col cols="4" sm="4">
+                        <v-col cols="2" sm="2" class="">
+                            <v-select
+                                v-model="baja.bj_motivo_perdida"
+                                ref="bj_motivo_perdida"
+                                :items="itemsMotivoPerdida"
+                                item-value="id"
+                                item-text="nombre"
+                                no-data-text="Sin valores"
+                                :error-messages="(error.errores[index].bj_motivo_perdida != undefined) ? error.errores[index].bj_motivo_perdida : ''"
+                                filled
+                                dense
+                                label="Motivo Perdida"
+                            ></v-select>
+                        </v-col>
+                        <v-col cols="2" sm="2">
                             <v-textarea
                                 v-model="baja.bj_observacion"
                                 ref="bj_observacion"
                                 :error-messages="(error.errores[index].bj_observacion != undefined) ? error.errores[index].bj_observacion : ''"
                                 label="Observaciones"
                                 rows="1"
+                                dense
                                 filled>
                             </v-textarea>
                         </v-col>
@@ -121,12 +145,12 @@
                             <v-btn
                                 class="mx-2"
                                 fab
-                                dark
                                 small
                                 color="red"
                                 title="Elimina registro de baja."
-                                v-on:click="fnEliminarBaja(index)">
-                                <v-icon dark>
+                                v-on:click="fnEliminarBaja(index)"
+                                :disabled="!$can(['CREAR', 'EDITAR'])">
+                                <v-icon color="white">
                                     cancel
                                 </v-icon>
                             </v-btn>
@@ -142,6 +166,7 @@
                             tile
                             title="Añade un nueva fila para agregar baja."
                             v-on:click="fnNuevaBaja"
+                            :disabled="!$can(['CREAR', 'EDITAR'])"
                         >
                         <v-icon> add </v-icon>Añadir Baja
                         </v-btn>
@@ -156,6 +181,7 @@
                             tile
                             title="Guarda todos los registros de Bajas."
                             v-on:click="guardarBajas"
+                            :disabled="!$can(['CREAR', 'EDITAR'])"
                         >
                         <v-icon> save </v-icon>Guardar
                         </v-btn>
@@ -173,7 +199,8 @@ export default {
     },
     data() {
         return {
-            token: localStorage.getItem("TOKEN_SAJONA"),
+            itemsFaseCultivo    : [],
+            itemsMotivoPerdida  : [],
             overlayLoading   : false,
             /* start Variables Modal bajas*/
             modal     : false,
@@ -197,6 +224,8 @@ export default {
                 { text: "Acciones", value: "acciones", sortable: false },
             ],
             dataSet: [],
+            start     : 0,
+            length    : 0,
             /* end variables Table. */
 
             id_lote : "",
@@ -205,6 +234,7 @@ export default {
                 bajas: [],
                 id_lote: ""
             },
+            disabledAccion : false, // Variable que deshabilita campos o botones
 
             error:{
                 errores: [],
@@ -220,10 +250,14 @@ export default {
         deep: true,
     },
     methods: {
-        buscarBajas() {
+        buscarBajas(buscar = this.buscar) {
             this.overlayLoading = true;
             this.loading = true;
             let { page, itemsPerPage, sortBy, sortDesc } = this.options;
+
+            // Obteniendo rangos de consultado paginación.
+            this.start = itemsPerPage * (page - 1);
+            this.length= this.start + itemsPerPage;
 
             if (sortDesc[0] == true) {
                 sortBy = sortBy[0];
@@ -238,15 +272,14 @@ export default {
 
             axios
                 .get(
-                    `/sajona/baja/buscar?page=${page}&length=${itemsPerPage}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${this.buscar}`
+                    `/sajona/baja/buscar?start=${this.start}&length=${this.length}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${buscar}`
                 )
                 .then((response) => {
-                    this.loading = false;
                     this.dataSet = response.data.data;
                     this.totalRegistros = response.data.total;
-                    this.numberOfPages = response.data.last_page;
 
                     this.overlayLoading = false;
+                    this.loading = false;
                 })
                 .catch((errors) => {
                     this.overlayLoading = false;
@@ -290,31 +323,55 @@ export default {
                 });
         },
         guardarBajas(){
-            this.overlayLoading = true;
-            axios
-                .post(`/sajona/baja`, this.dataBajasModal)
-                .then((response) => {
-                    this.$swal(
-                        response.data.message,
-                        '',
-                        'success'
-                    );
-                    this.overlayLoading = false;
-                    this.modal = false;
-                    this.buscarBajas();
-                })
-                .catch((errors) => {
-                    this.error.errores = errors.response.data.errores;
-                    this.overlayLoading = false;
-                });
+            // Se condiciona por si el usuario da click mas de una vez en el boton de guardar.
+            if (this.disabledAccion == false) {
+
+                this.disabledAccion = true;
+                this.overlayLoading = true;
+                axios
+                    .post(`/sajona/baja`, this.dataBajasModal)
+                    .then((response) => {
+                        this.disabledAccion = false;
+                        this.$swal(
+                            response.data.message,
+                            '',
+                            'success'
+                        );
+                        this.overlayLoading = false;
+                        this.modal = false;
+                        this.buscarBajas();
+                    })
+                    .catch((errors) => {
+                        this.disabledAccion = false;
+                        if (errors.response.status == 500 ||
+                            errors.response.status == 403 ||
+                            errors.response.status == 409 ||
+                            errors.response.status == 404)
+                        {
+                            let mensaje = "El sistema a generado un Error";
+                            if (errors.response.data.message != undefined) {
+                                mensaje = errors.response.data.message;
+                            }
+                            this.$swal({
+                                icon: 'error',
+                                title: `${mensaje}`,
+                                text: `${errors.response.data.errors}`,
+                            })
+                        }else{
+                            this.error.errores = errors.response.data.errors;
+                        }
+                        this.overlayLoading = false;
+                    });
+            }
         },
         fnNuevaBaja(){
             this.dataBajasModal.bajas.push({
-                bj_pro_id_lote  : "",
-                bj_fecha        : "",
-                bj_cantidad     : "",
-                bj_fase_cultivo : "",
-                bj_observacion  : ""
+                bj_pro_id_lote      : "",
+                bj_fecha            : "",
+                bj_cantidad         : "",
+                bj_fase_cultivo     : "",
+                bj_motivo_perdida   : "",
+                bj_observacion      : ""
             });
             this.fnErrorJson();
         },
@@ -328,5 +385,10 @@ export default {
             this.error.errores.splice(index, 1);
         },
     },
+    async created(){
+        // Aqui se carga informacion de campos parametros.
+        this.itemsFaseCultivo   = await this.fnBuscarParametro('pr_fase_cultivo');
+        this.itemsMotivoPerdida   = await this.fnBuscarParametro('pr_motivo_perdida');
+    }
 };
 </script>

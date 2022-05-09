@@ -7,6 +7,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 trait paginationTrait {
 
+    // BORRAR
+
     /**
      * Crea data paginada
      *
