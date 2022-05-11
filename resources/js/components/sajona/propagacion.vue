@@ -444,6 +444,7 @@ export default {
                 });
         },
         actualizarPropagacion(){
+            this.overlayLoading = true
             axios
                 .put(`/sajona/propagacion/actualizar/${this.form.pro_id_lote}`, this.form)
                 .then((response) => {
@@ -455,10 +456,11 @@ export default {
                     );
                     this.listar();
                     this.limpiarCampo();
+                    this.overlayLoading = false
                 })
                 .catch((errores) => {
                     this.errors = this.fnResponseError(errores);
-                    this.overlayLoading = false;
+                    this.overlayLoading = false
                 });
         },
         limpiarCampo() {

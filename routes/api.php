@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlertaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PlantaMadre\PlantaMadreController;
@@ -74,9 +75,16 @@ Route::group(['prefix' => 'baja', 'middleware' => 'auth:sanctum'] , function(){
     Route::get('/{id_lote}', [BajaController::class, 'show']);
 });
 
+//SISTEMA
 Route::group(['prefix' => 'parametro'/* , 'middleware' => 'auth:sanctum' */] , function(){
     Route::resource('/',  ParametroController::class)->only(['store']);
     Route::put('/{id}', [ParametroController::class, 'update']);
     Route::get('/buscar', [ParametroController::class, 'buscar']);
     Route::get('/{parametrica}/{id}', [ParametroController::class, 'show']);
+});
+
+Route::group(['prefix' => 'sistema', 'middleware' => 'auth:sanctum'] , function(){
+    Route::post('alerta',  [AlertaController::class, 'store']);
+    Route::put('alerta/{id}', [AlertaController::class, 'update']);
+    Route::get('alerta', [AlertaController::class, 'show']);
 });

@@ -104,7 +104,7 @@ export default {
                 .post("sajona/login", this.formData)
                 .then((response) => {
                     localStorage.setItem("TOKEN_SAJONA", response.data.access_token);
-                    this.$router.push("/inicio/dashboard");
+                    this.$router.push("/modulos/dashboard");
                     this.overlayLoading = false;
                     this.$swal("Bienvenido");
                 })

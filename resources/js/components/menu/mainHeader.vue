@@ -3,12 +3,11 @@
         <div class="d-flex">
             <v-spacer></v-spacer>
             <v-icon size="20" color="black">home</v-icon>
-            <h4>Inicio</h4>
-            <h4 v-if="proceso != 'inicio'">/</h4>
-            <v-icon v-if="proceso != 'inicio'" size="20" color="black"
-                >navigate_next</v-icon
+            <h4>Modulos</h4>
+            <h4>/</h4>
+            <v-icon size="20" color="black">navigate_next</v-icon
             >
-            <h4 v-if="proceso != 'inicio'" class="text-capitalize">{{ proceso }}</h4>
+            <h4 class="text-capitalize">{{ proceso }}</h4>
         </div>
         <div class="d-flex">
             <v-btn
