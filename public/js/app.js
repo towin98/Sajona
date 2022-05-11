@@ -2184,7 +2184,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("sajona/login", this.formData).then(function (response) {
         localStorage.setItem("TOKEN_SAJONA", response.data.access_token);
 
-        _this.$router.push("/inicio/dashboard");
+        _this.$router.push("/modulos/dashboard");
 
         _this.overlayLoading = false;
 
@@ -2210,6 +2210,208 @@ __webpack_require__.r(__webpack_exports__);
       month: "long"
     });
     this.date = "".concat(month.substring(0, 3), "/").concat(fecha.getFullYear());
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      form: {
+        id: '',
+        min_rang_propagacion: 0,
+        max_rang_propagacion: 0,
+        min_rang_bolsa: 0,
+        max_rang_bolsa: 0,
+        min_rang_campo: 0,
+        max_rang_campo: 0
+      },
+      errors: {},
+      // Variable loading
+      overlayLoading: false
+    };
+  },
+  methods: {
+    /* Muestra datos alerta si existe*/
+    fnShow: function fnShow() {
+      var _this = this;
+
+      this.overlayLoading = true;
+      axios.get("/sajona/sistema/alerta").then(function (response) {
+        var data = response.data.data;
+        _this.form.id = data.id;
+        _this.form.min_rang_propagacion = data.min_rang_propagacion;
+        _this.form.max_rang_propagacion = data.max_rang_propagacion;
+        _this.form.min_rang_bolsa = data.min_rang_bolsa;
+        _this.form.max_rang_bolsa = data.max_rang_bolsa;
+        _this.form.min_rang_campo = data.min_rang_campo;
+        _this.form.max_rang_campo = data.max_rang_campo;
+        _this.overlayLoading = false;
+      })["catch"](function (errores) {
+        _this.fnResponseError(errores);
+
+        _this.overlayLoading = false;
+      });
+    },
+    fnAccion: function fnAccion() {
+      if (this.form.id == "") {
+        this.fnStore();
+      } else {
+        this.fnUpdate();
+      }
+    },
+    fnStore: function fnStore() {
+      var _this2 = this;
+
+      this.overlayLoading = true;
+      axios.post("/sajona/sistema/alerta", this.form).then(function (response) {
+        _this2.$swal(response.data.message, '', 'success');
+
+        _this2.errors = {};
+        _this2.overlayLoading = false;
+      })["catch"](function (errores) {
+        _this2.errors = _this2.fnResponseError(errores);
+        _this2.overlayLoading = false;
+      });
+    },
+    fnUpdate: function fnUpdate() {
+      var _this3 = this;
+
+      this.overlayLoading = true;
+      axios.put("/sajona/sistema/alerta/".concat(this.form.id), this.form).then(function (response) {
+        _this3.errors = {};
+
+        _this3.$swal(response.data.message, '', 'success');
+
+        _this3.overlayLoading = false;
+      })["catch"](function (errores) {
+        _this3.errors = _this3.fnResponseError(errores);
+        _this3.overlayLoading = false;
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.fnShow();
   }
 });
 
@@ -2770,7 +2972,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["proceso"]
 });
@@ -2990,6 +3191,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 
  // Creamos un Mixin Global para poder obtener los permisos desde cualquier vista.
@@ -3009,6 +3256,15 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
       drawer: null,
       token: localStorage.getItem("TOKEN_SAJONA"),
       date: "",
+      // Variables para dedicidir si se muestra menu
+      menu: {
+        modulos: {
+          active: ""
+        },
+        sistema: {
+          active: ""
+        }
+      },
       propagacion: false,
       plantaMadre: false,
       transplanteBolsa: false,
@@ -3017,6 +3273,10 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
       postCosecha: false,
       bajas: false,
       reportes: false,
+      sistemaGroup: false,
+      parametros: false,
+      alerta: false,
+      // FIN Variables para dedicidir si se muestra menu.
 
       /* AQUI VAN VARIABLES CON RESPECTO A PERMISOS Y ROLES START*/
       cRol: "",
@@ -3060,15 +3320,32 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
             case 0:
               window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(_this2.token); // Obteniendo nombre de la ruta.
 
-              if (_this2.$route.name) {
-                _this2.titleProceso = _this2.$route.name.replace("-", " ");
+              if (!_this2.$route.name) {
+                _context2.next = 10;
+                break;
               }
 
+              _this2.titleProceso = _this2.$route.name.replace("-", " ");
+              _context2.t0 = _this2.$route.name;
+              _context2.next = _context2.t0 === 'parametros' ? 6 : _context2.t0 === 'alerta' ? 6 : _context2.t0 === 'alerta' ? 8 : _context2.t0 === 'inicio' ? 8 : _context2.t0 === 'propagacion' ? 8 : _context2.t0 === 'planta-madre' ? 8 : _context2.t0 === 'transplante-bolsa' ? 8 : _context2.t0 === 'transplante-campo' ? 8 : _context2.t0 === 'cosecha' ? 8 : _context2.t0 === 'post-cosecha' ? 8 : _context2.t0 === 'bajas' ? 8 : _context2.t0 === 'reportes' ? 8 : 10;
+              break;
+
+            case 6:
+              _this2.menu.sistema.active = true; // Desplegando menu de Sistema
+
+              return _context2.abrupt("break", 10);
+
+            case 8:
+              _this2.menu.modulos.active = true; // Desplegando menu de Modulos
+
+              return _context2.abrupt("break", 10);
+
+            case 10:
               _this2.overlayLoading = true;
-              _context2.next = 5;
+              _context2.next = 13;
               return _this2.$fnConsultaPermisosUsuario();
 
-            case 5:
+            case 13:
               fecha = new Date();
               month = fecha.toLocaleString("es-CO", {
                 month: "long"
@@ -3076,10 +3353,10 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
               _this2.date = "".concat(month.substring(0, 3), "/").concat(fecha.getFullYear());
               /* DEPENDIENDO DEL ROL DEL USUARIO SE MUESTRA MENU. */
 
-              _context2.next = 10;
+              _context2.next = 18;
               return _this2.buscaNombreRolUser();
 
-            case 10:
+            case 18:
               _this2.overlayLoading = false;
               _this2.intervalId = setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
                 return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -3096,11 +3373,11 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
                   }
                 }, _callee);
               })), 20000);
-              _context2.t0 = _this2.cRol;
-              _context2.next = _context2.t0 === "Agronomo" ? 15 : _context2.t0 === "Gerente" ? 24 : _context2.t0 === "Auxiliar" ? 26 : 29;
+              _context2.t1 = _this2.cRol;
+              _context2.next = _context2.t1 === "Agronomo" ? 23 : _context2.t1 === "Gerente" ? 35 : _context2.t1 === "Auxiliar" ? 37 : 40;
               break;
 
-            case 15:
+            case 23:
               _this2.propagacion = true;
               _this2.plantaMadre = true;
               _this2.transplanteBolsa = true;
@@ -3109,9 +3386,12 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
               _this2.postCosecha = true;
               _this2.bajas = true;
               _this2.reportes = true;
-              return _context2.abrupt("break", 29);
+              _this2.sistemaGroup = true;
+              _this2.parametros = true;
+              _this2.alerta = true;
+              return _context2.abrupt("break", 40);
 
-            case 24:
+            case 35:
               _this2.propagacion = true; // this.plantaMadre       = true;
               // this.transplanteBolsa  = true;
               // this.transplanteCampo  = true;
@@ -3120,14 +3400,14 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
               // this.bajas             = true;
               // this.reportes          = true;
 
-              return _context2.abrupt("break", 29);
+              return _context2.abrupt("break", 40);
 
-            case 26:
+            case 37:
               _this2.propagacion = true;
               _this2.bajas = true;
-              return _context2.abrupt("break", 29);
+              return _context2.abrupt("break", 40);
 
-            case 29:
+            case 40:
             case "end":
               return _context2.stop();
           }
@@ -5625,6 +5905,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     actualizarPropagacion: function actualizarPropagacion() {
       var _this7 = this;
 
+      this.overlayLoading = true;
       axios.put("/sajona/propagacion/actualizar/".concat(this.form.pro_id_lote), this.form).then(function (response) {
         _this7.errors = "";
 
@@ -5633,6 +5914,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this7.listar();
 
         _this7.limpiarCampo();
+
+        _this7.overlayLoading = false;
       })["catch"](function (errores) {
         _this7.errors = _this7.fnResponseError(errores);
         _this7.overlayLoading = false;
@@ -6847,7 +7130,7 @@ _routes__WEBPACK_IMPORTED_MODULE_3__["default"].beforeEach(function (to, from, n
   })) {
     if (loggedIn()) {
       next({
-        path: '/inicio/',
+        path: '/modulos/dashboard',
         query: {
           redirect: to.fullPath
         }
@@ -7011,7 +7294,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_sajona_bajas_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/sajona/bajas.vue */ "./resources/js/components/sajona/bajas.vue");
 /* harmony import */ var _components_sajona_reportes_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/sajona/reportes.vue */ "./resources/js/components/sajona/reportes.vue");
 /* harmony import */ var _components_config_parametros_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/config/parametros.vue */ "./resources/js/components/config/parametros.vue");
-/* harmony import */ var _components_errors_404_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/errors/404.vue */ "./resources/js/components/errors/404.vue");
+/* harmony import */ var _components_config_alerta_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/config/alerta.vue */ "./resources/js/components/config/alerta.vue");
+/* harmony import */ var _components_errors_404_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/errors/404.vue */ "./resources/js/components/errors/404.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -7019,6 +7303,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
 
 
 /*Menu sajona*/
+
 
 
 
@@ -7044,7 +7329,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       guest: true
     }
   }, {
-    path: '/inicio',
+    path: '/modulos',
     component: _components_menu_menu_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     meta: {
       requiresAuth: true
@@ -7087,7 +7372,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       name: 'reportes'
     }]
   }, {
-    path: '/config',
+    path: '/sistema',
     component: _components_menu_menu_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     meta: {
       requiresAuth: true
@@ -7096,10 +7381,14 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: 'parametros',
       component: _components_config_parametros_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
       name: 'parametros'
+    }, {
+      path: 'alerta',
+      component: _components_config_alerta_vue__WEBPACK_IMPORTED_MODULE_14__["default"],
+      name: 'alerta'
     }]
   }, {
     path: '*',
-    component: _components_errors_404_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
+    component: _components_errors_404_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
   }]
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
@@ -7247,7 +7536,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7271,7 +7560,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: red;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\n    color :white !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26148,6 +26437,45 @@ component.options.__file = "resources/js/components/auth/login.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/config/alerta.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/config/alerta.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alerta.vue?vue&type=template&id=5530c4b7& */ "./resources/js/components/config/alerta.vue?vue&type=template&id=5530c4b7&");
+/* harmony import */ var _alerta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./alerta.vue?vue&type=script&lang=js& */ "./resources/js/components/config/alerta.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _alerta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__.render,
+  _alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/config/alerta.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/config/parametros.vue":
 /*!*******************************************************!*\
   !*** ./resources/js/components/config/parametros.vue ***!
@@ -26750,6 +27078,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/config/alerta.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/config/alerta.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./alerta.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/config/parametros.vue?vue&type=script&lang=js&":
 /*!********************************************************************************!*\
   !*** ./resources/js/components/config/parametros.vue?vue&type=script&lang=js& ***!
@@ -27046,6 +27390,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_login_vue_vue_type_template_id_6aa0b866___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_login_vue_vue_type_template_id_6aa0b866___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./login.vue?vue&type=template&id=6aa0b866& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/login.vue?vue&type=template&id=6aa0b866&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/config/alerta.vue?vue&type=template&id=5530c4b7&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/config/alerta.vue?vue&type=template&id=5530c4b7& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./alerta.vue?vue&type=template&id=5530c4b7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=template&id=5530c4b7&");
 
 
 /***/ }),
@@ -27535,6 +27896,299 @@ var render = function () {
               _c("loadingGeneral", {
                 attrs: { overlayLoading: _vm.overlayLoading },
               }),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=template&id=5530c4b7&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=template&id=5530c4b7& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
+      _vm._v(" "),
+      _c("h4", [_vm._v("Alerta")]),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        { attrs: { elevation: "2" } },
+        [
+          _c("v-card-title", { staticClass: "rounded-sm" }, [
+            _c("span", { staticClass: "text-h6 font-weight-bold" }, [
+              _vm._v("Alerta de procesos"),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("v-divider"),
+          _vm._v(" "),
+          _c(
+            "v-card-text",
+            [
+              _c(
+                "v-row",
+                [
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "4" } },
+                    [
+                      _c("div", { staticClass: "text-center" }, [
+                        _vm._v(
+                          "Rango alerta en días para el módulo propagación"
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        { staticClass: "mt-4" },
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                ref: "min_rang_propagacion",
+                                attrs: {
+                                  type: "number",
+                                  dense: "",
+                                  label: "Rag. Min",
+                                  "error-messages":
+                                    _vm.errors.min_rang_propagacion,
+                                },
+                                model: {
+                                  value: _vm.form.min_rang_propagacion,
+                                  callback: function ($$v) {
+                                    _vm.$set(
+                                      _vm.form,
+                                      "min_rang_propagacion",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "form.min_rang_propagacion",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                ref: "max_rang_propagacion",
+                                attrs: {
+                                  type: "number",
+                                  dense: "",
+                                  label: "Rag. max",
+                                  "error-messages":
+                                    _vm.errors.max_rang_propagacion,
+                                },
+                                model: {
+                                  value: _vm.form.max_rang_propagacion,
+                                  callback: function ($$v) {
+                                    _vm.$set(
+                                      _vm.form,
+                                      "max_rang_propagacion",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "form.max_rang_propagacion",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "4" } },
+                    [
+                      _c("div", { staticClass: "text-center" }, [
+                        _vm._v(
+                          "Rango alerta en días para el módulo Trans. Bolsa"
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        { staticClass: "mt-4" },
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                ref: "min_rang_bolsa",
+                                attrs: {
+                                  type: "number",
+                                  dense: "",
+                                  label: "Rag. Min",
+                                  "error-messages": _vm.errors.min_rang_bolsa,
+                                },
+                                model: {
+                                  value: _vm.form.min_rang_bolsa,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "min_rang_bolsa", $$v)
+                                  },
+                                  expression: "form.min_rang_bolsa",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                ref: "max_rang_bolsa",
+                                attrs: {
+                                  type: "number",
+                                  dense: "",
+                                  label: "Rag. Max",
+                                  "error-messages": _vm.errors.max_rang_bolsa,
+                                },
+                                model: {
+                                  value: _vm.form.max_rang_bolsa,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "max_rang_bolsa", $$v)
+                                  },
+                                  expression: "form.max_rang_bolsa",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "4" } },
+                    [
+                      _c("div", { staticClass: "text-center" }, [
+                        _vm._v(
+                          "Rango alerta en días para el módulo Trans. Campo"
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-row",
+                        { staticClass: "mt-4" },
+                        [
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                ref: "min_rang_campo",
+                                attrs: {
+                                  type: "number",
+                                  dense: "",
+                                  label: "Rag. Min",
+                                  "error-messages": _vm.errors.min_rang_campo,
+                                },
+                                model: {
+                                  value: _vm.form.min_rang_campo,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "min_rang_campo", $$v)
+                                  },
+                                  expression: "form.min_rang_campo",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-col",
+                            { attrs: { cols: "6" } },
+                            [
+                              _c("v-text-field", {
+                                ref: "max_rang_campo",
+                                attrs: {
+                                  type: "number",
+                                  dense: "",
+                                  label: "Rag. max",
+                                  "error-messages": _vm.errors.max_rang_campo,
+                                },
+                                model: {
+                                  value: _vm.form.max_rang_campo,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "max_rang_campo", $$v)
+                                  },
+                                  expression: "form.max_rang_campo",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            { staticClass: "flex justify-end text-none" },
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: {
+                    color: "success",
+                    disabled: !_vm.$can(["CREAR", "EDITAR"]),
+                  },
+                  on: { click: _vm.fnAccion },
+                },
+                [_vm._v(" Guardar ")]
+              ),
             ],
             1
           ),
@@ -28115,21 +28769,17 @@ var render = function () {
             _vm._v("home"),
           ]),
           _vm._v(" "),
-          _c("h4", [_vm._v("Inicio")]),
+          _c("h4", [_vm._v("Modulos")]),
           _vm._v(" "),
-          _vm.proceso != "inicio" ? _c("h4", [_vm._v("/")]) : _vm._e(),
+          _c("h4", [_vm._v("/")]),
           _vm._v(" "),
-          _vm.proceso != "inicio"
-            ? _c("v-icon", { attrs: { size: "20", color: "black" } }, [
-                _vm._v("navigate_next"),
-              ])
-            : _vm._e(),
+          _c("v-icon", { attrs: { size: "20", color: "black" } }, [
+            _vm._v("navigate_next"),
+          ]),
           _vm._v(" "),
-          _vm.proceso != "inicio"
-            ? _c("h4", { staticClass: "text-capitalize" }, [
-                _vm._v(_vm._s(_vm.proceso)),
-              ])
-            : _vm._e(),
+          _c("h4", { staticClass: "text-capitalize" }, [
+            _vm._v(_vm._s(_vm.proceso)),
+          ]),
         ],
         1
       ),
@@ -28333,291 +28983,448 @@ var render = function () {
             [
               _c(
                 "v-list",
-                { attrs: { dense: "", dark: "", temporary: "" } },
+                { attrs: { dense: "", dark: "" } },
                 [
-                  _c(
-                    "v-list-item",
-                    {
-                      attrs: { to: { name: "inicio" } },
-                      on: {
-                        click: function ($event) {
-                          _vm.titleProceso = "inicio"
-                        },
-                      },
-                    },
-                    [
-                      _c(
-                        "v-list-item-icon",
-                        [_c("v-icon", [_vm._v("home")])],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-list-item-content",
-                        [_c("v-list-item-title", [_vm._v("Inicio")])],
-                        1
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  this.propagacion
+                  this.sistemaGroup
                     ? _c(
-                        "v-list-item",
+                        "v-list-group",
                         {
-                          attrs: { to: { name: "propagacion" } },
+                          attrs: {
+                            "prepend-icon": "view_module",
+                            value: _vm.menu.modulos.active,
+                          },
                           on: {
                             click: function ($event) {
-                              _vm.titleProceso = "Propagación"
+                              _vm.titleProceso = "Modulos"
                             },
                           },
-                        },
-                        [
-                          _c(
-                            "v-list-item-icon",
-                            [_c("v-icon", [_vm._v("navigate_next")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
-                            [_c("v-list-item-title", [_vm._v("Propagación")])],
-                            1
-                          ),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.plantaMadre
-                    ? _c(
-                        "v-list-item",
-                        {
-                          attrs: { to: { name: "planta-madre" } },
-                          on: {
-                            click: function ($event) {
-                              _vm.titleProceso = "Planta Madre"
-                            },
-                          },
-                        },
-                        [
-                          _c(
-                            "v-list-item-icon",
-                            [_c("v-icon", [_vm._v("navigate_next")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
-                            [_c("v-list-item-title", [_vm._v("Planta Madre")])],
-                            1
-                          ),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.transplanteBolsa
-                    ? _c(
-                        "v-list-item",
-                        {
-                          attrs: { to: { name: "transplante-bolsa" } },
-                          on: {
-                            click: function ($event) {
-                              _vm.titleProceso = "Transplante Bolsa"
-                            },
-                          },
-                        },
-                        [
-                          _c(
-                            "v-list-item-icon",
-                            [_c("v-icon", [_vm._v("navigate_next")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
+                          scopedSlots: _vm._u(
                             [
-                              _c("v-list-item-title", [
-                                _vm._v("Transplante a bolsa"),
-                              ]),
+                              {
+                                key: "activator",
+                                fn: function () {
+                                  return [
+                                    _c(
+                                      "v-list-item-content",
+                                      [
+                                        _c("v-list-item-title", {
+                                          domProps: {
+                                            textContent: _vm._s("Modulos"),
+                                          },
+                                        }),
+                                      ],
+                                      1
+                                    ),
+                                  ]
+                                },
+                                proxy: true,
+                              },
+                            ],
+                            null,
+                            false,
+                            1541453492
+                          ),
+                        },
+                        [
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item",
+                            {
+                              attrs: { to: { name: "inicio" } },
+                              on: {
+                                click: function ($event) {
+                                  _vm.titleProceso = "inicio"
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "v-list-item-icon",
+                                [_c("v-icon", [_vm._v("navigate_next")])],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-list-item-content",
+                                [_c("v-list-item-title", [_vm._v("Inicio")])],
+                                1
+                              ),
                             ],
                             1
                           ),
+                          _vm._v(" "),
+                          this.propagacion
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { to: { name: "propagacion" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Propagación"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Propagación"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.plantaMadre
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { to: { name: "planta-madre" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Planta Madre"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Planta Madre"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.transplanteBolsa
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { to: { name: "transplante-bolsa" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Transplante Bolsa"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Transplante a bolsa"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.transplanteCampo
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { to: { name: "transplante-campo" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Transplante Campo"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Transplante a campos"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.cosecha
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { to: { name: "cosecha" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Cosecha"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Cosecha"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.postCosecha
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { to: { name: "post-cosecha" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Post Cosecha"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Post Cosecha"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.bajas
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { to: { name: "bajas" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Bajas"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Bajas"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.reportes
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { to: { name: "reportes" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Reporte"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Reportes"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
                         ],
                         1
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  this.transplanteCampo
+                  this.sistemaGroup
                     ? _c(
-                        "v-list-item",
+                        "v-list-group",
                         {
-                          attrs: { to: { name: "transplante-campo" } },
+                          attrs: {
+                            "prepend-icon": "settings",
+                            value: _vm.menu.sistema.active,
+                          },
                           on: {
                             click: function ($event) {
-                              _vm.titleProceso = "Transplante Campo"
+                              _vm.titleProceso = "Sistema"
                             },
                           },
-                        },
-                        [
-                          _c(
-                            "v-list-item-icon",
-                            [_c("v-icon", [_vm._v("navigate_next")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
+                          scopedSlots: _vm._u(
                             [
-                              _c("v-list-item-title", [
-                                _vm._v("Transplante a campos"),
-                              ]),
+                              {
+                                key: "activator",
+                                fn: function () {
+                                  return [
+                                    _c(
+                                      "v-list-item-content",
+                                      [
+                                        _c("v-list-item-title", {
+                                          domProps: {
+                                            textContent: _vm._s("Sistema"),
+                                          },
+                                        }),
+                                      ],
+                                      1
+                                    ),
+                                  ]
+                                },
+                                proxy: true,
+                              },
                             ],
-                            1
+                            null,
+                            false,
+                            2916603363
                           ),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.cosecha
-                    ? _c(
-                        "v-list-item",
-                        {
-                          attrs: { to: { name: "cosecha" } },
-                          on: {
-                            click: function ($event) {
-                              _vm.titleProceso = "Cosecha"
-                            },
-                          },
                         },
                         [
-                          _c(
-                            "v-list-item-icon",
-                            [_c("v-icon", [_vm._v("navigate_next")])],
-                            1
-                          ),
                           _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
-                            [_c("v-list-item-title", [_vm._v("Cosecha")])],
-                            1
-                          ),
+                          this.parametros
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: {
+                                    link: "",
+                                    to: { name: "parametros" },
+                                  },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "Parametros"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Parametros"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          this.alerta
+                            ? _c(
+                                "v-list-item",
+                                {
+                                  attrs: { link: "", to: { name: "alerta" } },
+                                  on: {
+                                    click: function ($event) {
+                                      _vm.titleProceso = "alerta"
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-list-item-icon",
+                                    [_c("v-icon", [_vm._v("navigate_next")])],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-list-item-content",
+                                    [
+                                      _c("v-list-item-title", [
+                                        _vm._v("Alerta"),
+                                      ]),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              )
+                            : _vm._e(),
                         ],
                         1
                       )
                     : _vm._e(),
-                  _vm._v(" "),
-                  this.postCosecha
-                    ? _c(
-                        "v-list-item",
-                        {
-                          attrs: { to: { name: "post-cosecha" } },
-                          on: {
-                            click: function ($event) {
-                              _vm.titleProceso = "Post Cosecha"
-                            },
-                          },
-                        },
-                        [
-                          _c(
-                            "v-list-item-icon",
-                            [_c("v-icon", [_vm._v("navigate_next")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
-                            [_c("v-list-item-title", [_vm._v("Post Cosecha")])],
-                            1
-                          ),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.bajas
-                    ? _c(
-                        "v-list-item",
-                        {
-                          attrs: { to: { name: "bajas" } },
-                          on: {
-                            click: function ($event) {
-                              _vm.titleProceso = "Bajas"
-                            },
-                          },
-                        },
-                        [
-                          _c(
-                            "v-list-item-icon",
-                            [_c("v-icon", [_vm._v("navigate_next")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
-                            [_c("v-list-item-title", [_vm._v("Bajas")])],
-                            1
-                          ),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.reportes
-                    ? _c(
-                        "v-list-item",
-                        {
-                          attrs: { to: { name: "reportes" } },
-                          on: {
-                            click: function ($event) {
-                              _vm.titleProceso = "Reporte"
-                            },
-                          },
-                        },
-                        [
-                          _c(
-                            "v-list-item-icon",
-                            [_c("v-icon", [_vm._v("navigate_next")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-item-content",
-                            [_c("v-list-item-title", [_vm._v("Reportes")])],
-                            1
-                          ),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "v-list-item",
-                    {
-                      attrs: { to: { name: "parametros" } },
-                      on: {
-                        click: function ($event) {
-                          _vm.titleProceso = "Parametros"
-                        },
-                      },
-                    },
-                    [
-                      _c(
-                        "v-list-item-icon",
-                        [_c("v-icon", [_vm._v("settings")])],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-list-item-content",
-                        [_c("v-list-item-title", [_vm._v("Parametros")])],
-                        1
-                      ),
-                    ],
-                    1
-                  ),
                 ],
                 1
               ),
@@ -29654,16 +30461,9 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div")
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("inicio")])])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

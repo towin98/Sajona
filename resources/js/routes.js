@@ -19,6 +19,7 @@ import bajas from './components/sajona/bajas.vue'
 import reportes from './components/sajona/reportes.vue'
 
 import parametros from './components/config/parametros.vue'
+import alerta from './components/config/alerta.vue'
 /*Menu end*/
 
 import errors from './components/errors/404.vue'
@@ -34,7 +35,7 @@ const router = new VueRouter({
         },
 
         {
-            path: '/inicio',
+            path: '/modulos',
             component: menuSajona,
             meta: {requiresAuth: true},
             children:[
@@ -87,7 +88,7 @@ const router = new VueRouter({
             ],
         },
         {
-            path: '/config',
+            path: '/sistema',
             component: menuSajona,
             meta: {requiresAuth: true},
             children:[
@@ -95,6 +96,11 @@ const router = new VueRouter({
                     path: 'parametros',
                     component: parametros,
                     name: 'parametros',
+                },
+                {
+                    path: 'alerta',
+                    component: alerta,
+                    name: 'alerta',
                 }
             ],
         },

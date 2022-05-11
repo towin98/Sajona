@@ -34,149 +34,195 @@
                 class="grey darken-4"
                 clipped
             >
-                <v-list dense dark temporary>
-                    <v-list-item
-                        :to="{ name: 'inicio' }"
-                        v-on:click="titleProceso = 'inicio'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>home</v-icon>
-                        </v-list-item-icon>
+                <v-list dense dark>
 
-                        <v-list-item-content>
-                            <v-list-item-title>Inicio</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                        v-if="this.propagacion"
-                        :to="{ name: 'propagacion' }"
-                        v-on:click="titleProceso = 'Propagación'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>navigate_next</v-icon>
-                        </v-list-item-icon>
+                    <v-list-group
+                        v-if="this.sistemaGroup"
+                        prepend-icon="view_module"
+                        :value="menu.modulos.active"
+                        v-on:click="titleProceso = 'Modulos'">
 
-                        <v-list-item-content>
-                            <v-list-item-title>Propagación</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                        v-if="this.plantaMadre"
-                        :to="{ name: 'planta-madre' }"
-                        v-on:click="titleProceso = 'Planta Madre'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>navigate_next</v-icon>
-                        </v-list-item-icon>
+                        <template v-slot:activator>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="'Modulos'"></v-list-item-title>
+                            </v-list-item-content>
+                        </template>
 
-                        <v-list-item-content>
-                            <v-list-item-title>Planta Madre</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
+                        <v-list-item
+                            :to="{ name: 'inicio' }"
+                            v-on:click="titleProceso = 'inicio'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
 
-                    <v-list-item
-                        v-if="this.transplanteBolsa"
-                        :to="{ name: 'transplante-bolsa' }"
-                        v-on:click="titleProceso = 'Transplante Bolsa'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>navigate_next</v-icon>
-                        </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>Inicio</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
 
-                        <v-list-item-content>
-                            <v-list-item-title
-                                >Transplante a bolsa</v-list-item-title
-                            >
-                        </v-list-item-content>
-                    </v-list-item>
+                        <v-list-item
+                            v-if="this.propagacion"
+                            :to="{ name: 'propagacion' }"
+                            v-on:click="titleProceso = 'Propagación'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
 
-                    <v-list-item
-                        v-if="this.transplanteCampo"
-                        :to="{ name: 'transplante-campo' }"
-                        v-on:click="titleProceso = 'Transplante Campo'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>navigate_next</v-icon>
-                        </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>Propagación</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
 
-                        <v-list-item-content>
-                            <v-list-item-title
-                                >Transplante a campos</v-list-item-title
-                            >
-                        </v-list-item-content>
-                    </v-list-item>
+                        <v-list-item
+                            v-if="this.plantaMadre"
+                            :to="{ name: 'planta-madre' }"
+                            v-on:click="titleProceso = 'Planta Madre'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
 
-                    <v-list-item
-                        v-if="this.cosecha"
-                        :to="{ name: 'cosecha' }"
-                        v-on:click="titleProceso = 'Cosecha'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>navigate_next</v-icon>
-                        </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>Planta Madre</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
 
-                        <v-list-item-content>
-                            <v-list-item-title>Cosecha</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
+                        <v-list-item
+                            v-if="this.transplanteBolsa"
+                            :to="{ name: 'transplante-bolsa' }"
+                            v-on:click="titleProceso = 'Transplante Bolsa'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
 
-                    <v-list-item
-                        v-if="this.postCosecha"
-                        :to="{ name: 'post-cosecha' }"
-                        v-on:click="titleProceso = 'Post Cosecha'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>navigate_next</v-icon>
-                        </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title
+                                    >Transplante a bolsa</v-list-item-title
+                                >
+                            </v-list-item-content>
+                        </v-list-item>
 
-                        <v-list-item-content>
-                            <v-list-item-title>Post Cosecha</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
+                        <v-list-item
+                            v-if="this.transplanteCampo"
+                            :to="{ name: 'transplante-campo' }"
+                            v-on:click="titleProceso = 'Transplante Campo'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
 
-                    <v-list-item
-                        v-if="this.bajas"
-                        :to="{ name: 'bajas' }"
-                        v-on:click="titleProceso = 'Bajas'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>navigate_next</v-icon>
-                        </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title
+                                    >Transplante a campos</v-list-item-title
+                                >
+                            </v-list-item-content>
+                        </v-list-item>
 
-                        <v-list-item-content>
-                            <v-list-item-title>Bajas</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
+                        <v-list-item
+                            v-if="this.cosecha"
+                            :to="{ name: 'cosecha' }"
+                            v-on:click="titleProceso = 'Cosecha'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
 
-                    <v-list-item
-                        v-if="this.reportes"
-                        :to="{ name: 'reportes' }"
-                        v-on:click="titleProceso = 'Reporte'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>navigate_next</v-icon>
-                        </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>Cosecha</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
 
-                        <v-list-item-content>
-                            <v-list-item-title>Reportes</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
+                        <v-list-item
+                            v-if="this.postCosecha"
+                            :to="{ name: 'post-cosecha' }"
+                            v-on:click="titleProceso = 'Post Cosecha'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
 
-                    <!-- Modulo de parametros -->
-                    <v-list-item
-                        :to="{ name: 'parametros' }"
-                        v-on:click="titleProceso = 'Parametros'"
-                    >
-                        <v-list-item-icon>
-                            <v-icon>settings</v-icon>
-                        </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>Post Cosecha</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
 
-                        <v-list-item-content>
-                            <v-list-item-title>Parametros</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <!-- Fin Módulo de parametros -->
+                        <v-list-item
+                            v-if="this.bajas"
+                            :to="{ name: 'bajas' }"
+                            v-on:click="titleProceso = 'Bajas'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                                <v-list-item-title>Bajas</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item
+                            v-if="this.reportes"
+                            :to="{ name: 'reportes' }"
+                            v-on:click="titleProceso = 'Reporte'"
+                        >
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                                <v-list-item-title>Reportes</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
+
+                    <!-- Menu Sistema -->
+                    <v-list-group
+                        v-if="this.sistemaGroup"
+                        prepend-icon="settings"
+                        :value="menu.sistema.active"
+                        v-on:click="titleProceso = 'Sistema'">
+                        <template v-slot:activator>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="'Sistema'"></v-list-item-title>
+                            </v-list-item-content>
+                        </template>
+
+                        <v-list-item
+                            v-if="this.parametros"
+                            link
+                            :to="{ name: 'parametros' }"
+                            v-on:click="titleProceso = 'Parametros'">
+
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                                <v-list-item-title>Parametros</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item
+                            v-if="this.alerta"
+                            link
+                            :to="{ name: 'alerta' }"
+                            v-on:click="titleProceso = 'alerta'">
+
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                                <v-list-item-title>Alerta</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                    </v-list-group>
                 </v-list>
+
             </v-navigation-drawer>
             <v-main>
                 <v-container>
@@ -206,19 +252,32 @@ export default {
     },
     data() {
         return {
-
             drawer: null,
             token: localStorage.getItem("TOKEN_SAJONA"),
             date: "",
 
-            propagacion: false,
-            plantaMadre: false,
-            transplanteBolsa: false,
-            transplanteCampo: false,
-            cosecha: false,
-            postCosecha: false,
-            bajas: false,
-            reportes: false,
+            // Variables para dedicidir si se muestra menu
+            menu : {
+                modulos : {
+                    active : ""
+                },
+                sistema : {
+                    active : ""
+                },
+            },
+
+            propagacion      : false,
+            plantaMadre      : false,
+            transplanteBolsa : false,
+            transplanteCampo : false,
+            cosecha          : false,
+            postCosecha      : false,
+            bajas            : false,
+            reportes         : false,
+            sistemaGroup     : false,
+            parametros       : false,
+            alerta           : false,
+            // FIN Variables para dedicidir si se muestra menu.
 
             /* AQUI VAN VARIABLES CON RESPECTO A PERMISOS Y ROLES START*/
             cRol: "",
@@ -254,6 +313,25 @@ export default {
         // Obteniendo nombre de la ruta.
         if (this.$route.name) {
             this.titleProceso = this.$route.name.replace("-", " ");
+
+            switch (this.$route.name) {
+                case 'parametros':
+                case 'alerta':
+                    this.menu.sistema.active = true; // Desplegando menu de Sistema
+                break;
+                case 'alerta':
+                case 'inicio':
+                case 'propagacion':
+                case 'planta-madre':
+                case 'transplante-bolsa':
+                case 'transplante-campo':
+                case 'cosecha':
+                case 'post-cosecha':
+                case 'bajas':
+                case 'reportes':
+                    this.menu.modulos.active = true; // Desplegando menu de Modulos
+                break;
+            }
         }
         this.overlayLoading = true;
         await this.$fnConsultaPermisosUsuario();
@@ -273,14 +351,17 @@ export default {
 
         switch (this.cRol) {
             case "Agronomo":
-                this.propagacion = true;
-                this.plantaMadre = true;
+                this.propagacion      = true;
+                this.plantaMadre      = true;
                 this.transplanteBolsa = true;
                 this.transplanteCampo = true;
-                this.cosecha = true;
-                this.postCosecha = true;
-                this.bajas = true;
-                this.reportes = true;
+                this.cosecha          = true;
+                this.postCosecha      = true;
+                this.bajas            = true;
+                this.reportes         = true;
+                this.sistemaGroup     = true;
+                this.parametros       = true;
+                this.alerta           = true;
                 break;
             case "Gerente":
                 this.propagacion = true;
@@ -303,6 +384,9 @@ export default {
 </script>
 <style>
 .v-list-item--active {
-    background: red;
+    background: rgba(82, 82, 82, 0.479);
+}
+.v-list-item--active {
+    color :white !important;
 }
 </style>

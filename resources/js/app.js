@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
     } else if(to.matched.some(record => record.meta.guest)) {
         if (loggedIn()) {
             next({
-            path: '/inicio/',
+            path: '/modulos/dashboard',
             query: { redirect: to.fullPath }
             })
         } else {
