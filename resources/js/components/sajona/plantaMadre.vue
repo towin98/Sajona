@@ -31,12 +31,12 @@
                                     <v-text-field
                                         v-model="form.fecha_inicio"
                                         append-icon="mdi-calendar"
-                                        readonly
                                         v-bind="attrs"
                                         v-on="on"
                                         ref="fecha_inicio"
                                         :error-messages="errors.fecha_inicio"
                                         dense
+                                        :disabled="!$can(['LISTAR'])"
                                     >
                                     </v-text-field>
                                 </template>
@@ -65,12 +65,12 @@
                                     <v-text-field
                                         v-model="form.fecha_fin"
                                         append-icon="mdi-calendar"
-                                        readonly
                                         v-bind="attrs"
                                         v-on="on"
                                         ref="fecha_fin"
                                         :error-messages="errors.fecha_fin"
                                         dense
+                                        :disabled="!$can(['LISTAR'])"
                                     >
                                     </v-text-field>
                                 </template>
@@ -90,7 +90,7 @@
                                 class="white--text text-none mr-2"
                                 tile
                                 v-on:click="fnLimpiarFechaIniFin"
-
+                                :disabled="!$can(['LISTAR'])"
                             >
                                 <v-icon> clear </v-icon>Limpiar
                             </v-btn>
@@ -139,6 +139,7 @@
                             sort-by="pro_id_lote"
                             :sort-desc="true"
                             no-data-text="Sin registros"
+                            :disable-sort="!$can(['LISTAR'])"
                         >
                             <template v-slot:item.pro_fecha="{ item }">
                                 <v-chip

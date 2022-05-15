@@ -2166,7 +2166,8 @@ __webpack_require__.r(__webpack_exports__);
       formData: {
         email: "",
         password: "",
-        device_name: "browser"
+        device_name: "browser",
+        closeSesion: "NO"
       },
       errors: {
         email: "",
@@ -2180,6 +2181,8 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
+      var closeSesion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'NO';
+      this.formData.closeSesion = closeSesion;
       this.overlayLoading = true;
       axios.post("sajona/login", this.formData).then(function (response) {
         localStorage.setItem("TOKEN_SAJONA", response.data.access_token);
@@ -2199,7 +2202,25 @@ __webpack_require__.r(__webpack_exports__);
           });
         } else {
           _this.overlayLoading = false;
-          _this.errors = errors.response.data.errors;
+
+          if (errors.response.status == 423) {
+            _this.$swal({
+              title: errors.response.data.message,
+              text: errors.response.data.errors,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              cancelButtonText: 'N0',
+              confirmButtonText: 'SI'
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                _this.login('SI');
+              }
+            });
+          } else if (errors.response.status == 422) {
+            _this.errors = errors.response.data.errors;
+          }
         }
       });
     }
@@ -2227,6 +2248,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2591,6 +2618,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2714,11 +2747,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.loading = false;
         _this2.overlayLoading = false;
 
-        _this2.$swal({
-          icon: 'error',
-          title: "".concat(errors.response.data.message),
-          text: "".concat(errors.response.data.errors[0])
-        });
+        _this2.fnResponseError(errors);
       });
     },
     fnAccion: function fnAccion(accion) {
@@ -4663,6 +4692,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5675,6 +5705,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6300,6 +6331,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6483,6 +6526,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this4.overlayLoading = false;
         _this4.modalErrors = _this4.fnResponseError(errores);
       });
+    },
+    fnLimpiarFechaIniFin: function fnLimpiarFechaIniFin() {
+      this.form.fecha_inicial = "";
+      this.form.fecha_final = "";
     }
   },
   created: function created() {
@@ -6528,6 +6575,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6948,6 +7007,10 @@ __webpack_require__.r(__webpack_exports__);
         _this4.modalErrors = _this4.fnResponseError(errores);
         _this4.overlayLoading = false;
       });
+    },
+    fnLimpiarFechaIniFin: function fnLimpiarFechaIniFin() {
+      this.form.fecha_inicial = "";
+      this.form.fecha_final = "";
     }
   }
 });
@@ -7560,7 +7623,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\n    color :white !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\r\n    color :white !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -27980,6 +28043,7 @@ var render = function () {
                                   label: "Rag. Min",
                                   "error-messages":
                                     _vm.errors.min_rang_propagacion,
+                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
                                 },
                                 model: {
                                   value: _vm.form.min_rang_propagacion,
@@ -28009,6 +28073,7 @@ var render = function () {
                                   label: "Rag. max",
                                   "error-messages":
                                     _vm.errors.max_rang_propagacion,
+                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
                                 },
                                 model: {
                                   value: _vm.form.max_rang_propagacion,
@@ -28057,6 +28122,7 @@ var render = function () {
                                   dense: "",
                                   label: "Rag. Min",
                                   "error-messages": _vm.errors.min_rang_bolsa,
+                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
                                 },
                                 model: {
                                   value: _vm.form.min_rang_bolsa,
@@ -28081,6 +28147,7 @@ var render = function () {
                                   dense: "",
                                   label: "Rag. Max",
                                   "error-messages": _vm.errors.max_rang_bolsa,
+                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
                                 },
                                 model: {
                                   value: _vm.form.max_rang_bolsa,
@@ -28125,6 +28192,7 @@ var render = function () {
                                   dense: "",
                                   label: "Rag. Min",
                                   "error-messages": _vm.errors.min_rang_campo,
+                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
                                 },
                                 model: {
                                   value: _vm.form.min_rang_campo,
@@ -28149,6 +28217,7 @@ var render = function () {
                                   dense: "",
                                   label: "Rag. max",
                                   "error-messages": _vm.errors.max_rang_campo,
+                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
                                 },
                                 model: {
                                   value: _vm.form.max_rang_campo,
@@ -28326,7 +28395,11 @@ var render = function () {
                       _c(
                         "v-btn",
                         {
-                          attrs: { color: "red lighten-2", dark: "" },
+                          attrs: {
+                            color: "red lighten-2",
+                            dark: "",
+                            disabled: !_vm.$can(["LISTAR"]),
+                          },
                           on: {
                             click: function ($event) {
                               return _vm.fnBuscar(
@@ -28347,7 +28420,11 @@ var render = function () {
                         ? _c(
                             "v-btn",
                             {
-                              attrs: { color: "success", dark: "" },
+                              attrs: {
+                                color: "success",
+                                dark: "",
+                                disabled: !_vm.$can(["CREAR"]),
+                              },
                               on: {
                                 click: function ($event) {
                                   return _vm.fnCambiaTitulo(
@@ -28394,6 +28471,7 @@ var render = function () {
                       label: "Buscar",
                       "single-line": "",
                       "hide-details": "",
+                      disabled: !_vm.$can(["LISTAR"]),
                     },
                     on: { input: _vm.filterSearch },
                     model: {
@@ -28425,6 +28503,7 @@ var render = function () {
                   "sort-by": "id",
                   "sort-desc": true,
                   "no-data-text": "Sin registros",
+                  "disable-sort": !_vm.$can(["LISTAR"]),
                 },
                 on: {
                   "update:options": function ($event) {
@@ -28437,22 +28516,24 @@ var render = function () {
                     fn: function (ref) {
                       var item = ref.item
                       return [
-                        _c(
-                          "v-icon",
-                          {
-                            staticClass: "mr-2",
-                            on: {
-                              click: function ($event) {
-                                return _vm.fnShowParametro(item)
+                        _vm.$can(["VER", "EDITAR"])
+                          ? _c(
+                              "v-icon",
+                              {
+                                staticClass: "mr-2",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.fnShowParametro(item)
+                                  },
+                                },
                               },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                        mdi-pencil\n                    "
-                            ),
-                          ]
-                        ),
+                              [
+                                _vm._v(
+                                  "\n                        mdi-pencil\n                    "
+                                ),
+                              ]
+                            )
+                          : _vm._e(),
                       ]
                     },
                   },
@@ -28632,6 +28713,7 @@ var render = function () {
                         small: "",
                         color: "success",
                         tile: "",
+                        disabled: !_vm.$can(["CREAR", "EDITAR"]),
                       },
                       on: {
                         click: function ($event) {
@@ -30562,10 +30644,10 @@ var render = function () {
                                               ref: "fecha_inicio",
                                               attrs: {
                                                 "append-icon": "mdi-calendar",
-                                                readonly: "",
                                                 "error-messages":
                                                   _vm.errors.fecha_inicio,
                                                 dense: "",
+                                                disabled: !_vm.$can(["LISTAR"]),
                                               },
                                               model: {
                                                 value: _vm.form.fecha_inicio,
@@ -30658,10 +30740,10 @@ var render = function () {
                                               ref: "fecha_fin",
                                               attrs: {
                                                 "append-icon": "mdi-calendar",
-                                                readonly: "",
                                                 "error-messages":
                                                   _vm.errors.fecha_fin,
                                                 dense: "",
+                                                disabled: !_vm.$can(["LISTAR"]),
                                               },
                                               model: {
                                                 value: _vm.form.fecha_fin,
@@ -30734,6 +30816,7 @@ var render = function () {
                                 small: "",
                                 color: "red",
                                 tile: "",
+                                disabled: !_vm.$can(["LISTAR"]),
                               },
                               on: { click: _vm.fnLimpiarFechaIniFin },
                             },
@@ -30822,6 +30905,7 @@ var render = function () {
                           "sort-by": "pro_id_lote",
                           "sort-desc": true,
                           "no-data-text": "Sin registros",
+                          "disable-sort": !_vm.$can(["LISTAR"]),
                         },
                         on: {
                           "update:options": function ($event) {
@@ -32366,6 +32450,7 @@ var render = function () {
                           "sort-by": "pro_id_lote",
                           "sort-desc": true,
                           "no-data-text": "Sin registros",
+                          "disable-sort": !_vm.$can(["LISTAR"]),
                         },
                         on: {
                           "update:options": function ($event) {
@@ -32747,6 +32832,26 @@ var render = function () {
                           _c(
                             "v-btn",
                             {
+                              staticClass: "white--text text-none mr-2",
+                              attrs: {
+                                type: "button",
+                                small: "",
+                                color: "red",
+                                tile: "",
+                                disabled: !_vm.$can(["LISTAR"]),
+                              },
+                              on: { click: _vm.fnLimpiarFechaIniFin },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" clear ")]),
+                              _vm._v("Limpiar\n                        "),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
                               staticClass: "white--text text-none",
                               attrs: {
                                 type: "submit",
@@ -32821,6 +32926,7 @@ var render = function () {
                           "sort-by": "id_lote",
                           "sort-desc": true,
                           "no-data-text": "Sin registros",
+                          "disable-sort": !_vm.$can(["LISTAR"]),
                         },
                         on: {
                           "update:options": function ($event) {
@@ -33518,6 +33624,26 @@ var render = function () {
                           _c(
                             "v-btn",
                             {
+                              staticClass: "white--text text-none mr-2",
+                              attrs: {
+                                type: "button",
+                                small: "",
+                                color: "red",
+                                tile: "",
+                                disabled: !_vm.$can(["LISTAR"]),
+                              },
+                              on: { click: _vm.fnLimpiarFechaIniFin },
+                            },
+                            [
+                              _c("v-icon", [_vm._v(" clear ")]),
+                              _vm._v("Limpiar\n                        "),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
                               staticClass: "white--text text-none",
                               attrs: {
                                 type: "submit",
@@ -33592,6 +33718,7 @@ var render = function () {
                           "sort-by": "id_lote",
                           "sort-desc": true,
                           "no-data-text": "Sin registros",
+                          "disable-sort": !_vm.$can(["LISTAR"]),
                         },
                         on: {
                           "update:options": function ($event) {

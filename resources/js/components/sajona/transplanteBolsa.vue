@@ -85,6 +85,17 @@
                         </v-col>
                         <v-col cols="12" class="d-flex justify-center">
                             <v-btn
+                                type="button"
+                                small
+                                color="red"
+                                class="white--text text-none mr-2"
+                                tile
+                                v-on:click="fnLimpiarFechaIniFin"
+                                :disabled="!$can(['LISTAR'])"
+                            >
+                                <v-icon> clear </v-icon>Limpiar
+                            </v-btn>
+                            <v-btn
                                 type="submit"
                                 small
                                 color="#00bcd4"
@@ -129,6 +140,7 @@
                             sort-by="id_lote"
                             :sort-desc="true"
                             no-data-text="Sin registros"
+                            :disable-sort="!$can(['LISTAR'])"
                         >
                             <template v-slot:item.fecha_propagacion="{ item }">
                                 <v-chip
@@ -455,6 +467,10 @@ export default {
                     this.overlayLoading = false;
                     this.modalErrors = this.fnResponseError(errores);
                 });
+        },
+        fnLimpiarFechaIniFin() {
+            this.form.fecha_inicial = "";
+            this.form.fecha_final = "";
         }
     },
     async created(){

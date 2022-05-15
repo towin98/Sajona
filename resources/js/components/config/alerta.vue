@@ -22,6 +22,7 @@
                                     dense
                                     label="Rag. Min"
                                     :error-messages="errors.min_rang_propagacion"
+                                    :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="6">
@@ -32,6 +33,7 @@
                                     dense
                                     label="Rag. max"
                                     :error-messages="errors.max_rang_propagacion"
+                                    :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -48,6 +50,7 @@
                                     dense
                                     label="Rag. Min"
                                     :error-messages="errors.min_rang_bolsa"
+                                    :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="6">
@@ -58,6 +61,7 @@
                                     dense
                                     label="Rag. Max"
                                     :error-messages="errors.max_rang_bolsa"
+                                    :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -75,6 +79,7 @@
                                     dense
                                     label="Rag. Min"
                                     :error-messages="errors.min_rang_campo"
+                                    :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="6">
@@ -85,6 +90,7 @@
                                     dense
                                     label="Rag. max"
                                     :error-messages="errors.max_rang_campo"
+                                    :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
                             </v-col>
                         </v-row>

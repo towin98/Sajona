@@ -76,7 +76,7 @@ Route::group(['prefix' => 'baja', 'middleware' => 'auth:sanctum'] , function(){
 });
 
 //SISTEMA
-Route::group(['prefix' => 'parametro'/* , 'middleware' => 'auth:sanctum' */] , function(){
+Route::group(['prefix' => 'parametro', 'middleware' => 'auth:sanctum'] , function(){
     Route::resource('/',  ParametroController::class)->only(['store']);
     Route::put('/{id}', [ParametroController::class, 'update']);
     Route::get('/buscar', [ParametroController::class, 'buscar']);
