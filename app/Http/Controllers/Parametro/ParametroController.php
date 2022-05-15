@@ -11,6 +11,14 @@ class ParametroController extends Controller
 {
     use ParametricaTrait;
 
+    public function __construct()
+    {
+        $this->middleware(['permission:LISTAR'])->only('buscar');
+        $this->middleware(['permission:CREAR'])->only('store');
+        $this->middleware(['permission:EDITAR'])->only('update');
+        $this->middleware(['permission:VER'])->only('show');
+    }
+
     /**
      * Método que busca registros, lista registros de una tabla parámetrica.
      *

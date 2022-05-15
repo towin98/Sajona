@@ -29,6 +29,7 @@
                             color="red lighten-2"
                             dark
                             v-on:click="fnBuscar(radioGroupParametros,buscar)"
+                            :disabled="!$can(['LISTAR'])"
                         >
                             Buscar
                         </v-btn>
@@ -37,6 +38,7 @@
                             dark
                             v-on:click="fnCambiaTitulo(radioGroupParametros, 'NUEVO')"
                             v-if="radioGroupParametros != null"
+                            :disabled="!$can(['CREAR'])"
                         >
                             <v-icon> add </v-icon>Nuevo
                         </v-btn>
@@ -56,6 +58,7 @@
                         hide-details
                         v-model="buscar"
                         @input="filterSearch"
+                        :disabled="!$can(['LISTAR'])"
                     ></v-text-field>
                 </v-card-title>
                 <v-data-table
@@ -74,11 +77,13 @@
                     sort-by="id"
                     :sort-desc="true"
                     no-data-text="Sin registros"
+                    :disable-sort="!$can(['LISTAR'])"
                 >
                     <template v-slot:item.actions="{ item }">
                         <v-icon
                             class="mr-2"
                             @click="fnShowParametro(item)"
+                            v-if="$can(['VER', 'EDITAR'])"
                         >
                             mdi-pencil
                         </v-icon>
@@ -151,6 +156,7 @@
                         class="white--text text-none"
                         tile
                         v-on:click="fnAccion(accion)"
+                        :disabled="!$can(['CREAR', 'EDITAR'])"
                     >
                         <v-icon> save </v-icon>{{ accion }}
                     </v-btn>
@@ -273,11 +279,7 @@ export default {
                     this.dataSet = [];
                     this.loading = false;
                     this.overlayLoading = false;
-                    this.$swal({
-                        icon: 'error',
-                        title: `${errors.response.data.message}`,
-                        text: `${errors.response.data.errors[0]}`,
-                    })
+                    this.fnResponseError(errors);
                 });
         },
         fnAccion(accion) {

@@ -187,6 +187,7 @@
                             sort-by="pro_id_lote"
                             :sort-desc="true"
                             no-data-text="Sin registros"
+                            :disable-sort="!$can(['LISTAR'])"
                         >
                             <template v-slot:item.acciones="{ item }">
                                 <v-icon

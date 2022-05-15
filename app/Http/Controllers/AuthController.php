@@ -42,6 +42,18 @@ class AuthController extends Controller
                     'Las credenciales proporcionadas son incorrectas.'
                 ],
             ],409);
+        }else{
+            if (count($user->tokens) > 0) {
+                if ($request->closeSesion != "SI") {
+                    return response()->json([
+                        'message' => 'Ya existe una sesión iniciada',
+                        'errors'  => "¿Quieres iniciar sesión aquí?."
+                    ], 423);
+                }else{
+                    // Si ya hay una sesion iniciada y se envia como parametro SI se cierra sesión.
+                    $user->tokens()->delete();
+                }
+            }
         }
 
         $token = $user->createToken('token')->plainTextToken;

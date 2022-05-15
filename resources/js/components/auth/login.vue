@@ -87,6 +87,7 @@ export default {
                 email: "",
                 password: "",
                 device_name: "browser",
+                closeSesion: "NO"
             },
             errors: {
                 email: "",
@@ -98,7 +99,8 @@ export default {
         };
     },
     methods: {
-        login() {
+        login(closeSesion = 'NO') {
+            this.formData.closeSesion = closeSesion;
             this.overlayLoading = true;
             axios
                 .post("sajona/login", this.formData)
@@ -117,7 +119,24 @@ export default {
                         });
                     } else {
                         this.overlayLoading = false;
-                        this.errors = errors.response.data.errors;
+                        if (errors.response.status == 423) {
+                            this.$swal({
+                                title: errors.response.data.message,
+                                text: errors.response.data.errors,
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                cancelButtonText: 'N0',
+                                confirmButtonText: 'SI'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        this.login('SI');
+                                    }
+                                });
+                        }else if(errors.response.status == 422){
+                            this.errors = errors.response.data.errors;
+                        }
                     }
                 });
         },
