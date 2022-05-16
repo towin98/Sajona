@@ -5,11 +5,13 @@ namespace Tests\Feature\http\Controllers\PlantaMadre;
 use App\Models\Propagacion;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\Feature\Http\Controllers\Traits\AutenticacionTrait;
 use Tests\TestCase;
 
 class PlantaMadreControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use AutenticacionTrait;
 
     /**
      * Test para probar rules de validación del método que busca lotes de propagación por un
@@ -20,7 +22,12 @@ class PlantaMadreControllerTest extends TestCase
     public function test_validacion_de_buscar_lotes_de_plantas_madres_por_rangos_de_fechas()
     {
         $this->withoutExceptionHandling();
-        $response = $this->get('/sajona/planta-madre/buscar-lotes?fecha_inicio=&fecha_fin=2021-10-04');
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $response = $this->get('/sajona/planta-madre/buscar-lotes?fecha_inicio=&fecha_fin=2021-10-04',
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         // $response->assertValid();
         $response->assertUnprocessable(); // si devuelve 422 pasa la prueba
@@ -34,13 +41,19 @@ class PlantaMadreControllerTest extends TestCase
      */
     public function test_que_busca_registros_correctamente_de_lotes_de_plantas_madres_por_un_rango_fechas()
     {
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         // Crando registros para pruebas.
         Propagacion::factory(5)->create();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('/sajona/planta-madre/buscar-lotes?fecha_inicio=2021-12-01&fecha_fin=2022-03-01');
+        $response = $this->get('/sajona/planta-madre/buscar-lotes?fecha_inicio=2021-12-01&fecha_fin=2022-03-01',
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         // $response->assertValid();
         $response->assertStatus(200);
@@ -55,21 +68,25 @@ class PlantaMadreControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         // Creamos un registro de propagación
         $propagacion = Propagacion::factory()->create();
         // Hacemos la solicitud a la url
-        $response = $this->get('sajona/planta-madre/'.$propagacion->pro_id_lote);
-        
+        $response = $this->get('sajona/planta-madre/'.$propagacion->pro_id_lote,
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
+
         // Validamos la respuesta
         $response->assertJsonStructure([
             'data'=> [
-                '*' => [
-                    "pro_id_lote",
-                    "pro_cantidad_plantas_madres",
-                    "pm_fecha_esquejacion",
-                    "pm_cantidad_esquejes",
-                    "pm_cantidad_semillas"  
-                ]
+                "pro_id_lote",
+                "pro_cantidad_plantas_madres",
+                "pm_fecha_esquejacion",
+                "pm_cantidad_esquejes",
+                "pm_cantidad_semillas"
             ],
         ]);
         // $response->assertValid();
@@ -85,6 +102,8 @@ class PlantaMadreControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         // Registro temporal.
         Propagacion::create([
             "pro_id_lote"                   => 100,
@@ -98,11 +117,15 @@ class PlantaMadreControllerTest extends TestCase
         ]);
 
         $response = $this->post('sajona/planta-madre',[
-            'pm_pro_id_lote'                => 100,
-            'pm_fecha_esquejacion'          => '2021-10-10ddd',
-            'pm_cantidad_esquejes'          => "2s",
-            'pm_cantidad_semillas'          => "s3"
-        ]);
+                'pm_pro_id_lote'                => 100,
+                'pm_fecha_esquejacion'          => '2021-10-10ddd',
+                'pm_cantidad_esquejes'          => "2s",
+                'pm_cantidad_semillas'          => "s3"
+            ],
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         // $response->assertValid();
         $response->assertUnprocessable(); // si devuelve 422 pasa la prueba
@@ -117,6 +140,8 @@ class PlantaMadreControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         // Registro temporal.
         Propagacion::create([
             "pro_id_lote"                   => 100,
@@ -130,11 +155,15 @@ class PlantaMadreControllerTest extends TestCase
         ]);
 
         $response = $this->post('sajona/planta-madre',[
-            'pm_pro_id_lote'                => 100,
-            'pm_fecha_esquejacion'          => '2021-10-10',
-            'pm_cantidad_esquejes'          => 2,
-            'pm_cantidad_semillas'          => 3
-        ]);
+                'pm_pro_id_lote'                => 100,
+                'pm_fecha_esquejacion'          => '2021-10-10',
+                'pm_cantidad_esquejes'          => 2,
+                'pm_cantidad_semillas'          => 3
+            ],
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         // $response->assertValid();
         $response->assertStatus(201);

@@ -54,6 +54,8 @@ trait AutenticacionTrait
             "email"             => $email,
             "password"          => $pass
         ]);
-        $response->assertStatus(200);
+
+        $token = $response->original['access_token'];
+        return $token;
     }
 }

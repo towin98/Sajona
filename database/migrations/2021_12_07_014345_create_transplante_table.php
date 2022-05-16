@@ -17,9 +17,9 @@ class CreateTransplanteTable extends Migration
             $table->id("tp_id");
             $table->unsignedBigInteger("tp_pm_id");
             $table->string("tp_tipo", 20);
-            $table->integer("tp_tipo_lote");
+            $table->unsignedBigInteger("tp_tipo_lote");
             $table->dateTime("tp_fecha");
-            $table->integer("tp_ubicacion");
+            $table->unsignedBigInteger("tp_ubicacion");
             $table->float("tp_cantidad_area", 11,2);
             $table->boolean("tp_estado");
             $table->timestamps();

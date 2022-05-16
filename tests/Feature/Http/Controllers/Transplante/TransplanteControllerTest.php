@@ -7,11 +7,13 @@ use App\Models\Propagacion;
 use App\Models\Transplante;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\Feature\Http\Controllers\Traits\AutenticacionTrait;
 use Tests\TestCase;
 
 class TransplanteControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use AutenticacionTrait;
 
     /**
      * A basic feature test example.
@@ -21,6 +23,8 @@ class TransplanteControllerTest extends TestCase
     public function test_listar_registros_de_transplante_a_bolsa_por_un_rango_de_fechas_correctamente()
     {
         $this->withoutExceptionHandling();
+
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
 
         // Crando registros para pruebas.
         for ($i=0; $i < 5; $i++) {
@@ -35,37 +39,27 @@ class TransplanteControllerTest extends TestCase
         }
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('/sajona/transplante-bolsa/buscar?fecha_inicial=2021-12-01&fecha_final=2022-03-01');
+        $response = $this->get('/sajona/transplante-bolsa/buscar?fecha_inicial=2021-12-01&fecha_final=2022-03-01',
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         $response->assertJsonStructure([
-            'current_page',
             'data'=> [
                 '*' => [
+                    'pm_id',
                     'id_lote',
                     'fecha_propagacion',
-                    'fecha_transplante',
+                    'pm_fecha_esquejacion',
+                    'tp_fecha',
                     'accion',
                     'estado_lote',
                     'dias_transcurridos',
                     'color'
                 ]
             ],
-            'first_page_url',
-            'from',
-            'last_page',
-            'last_page_url',
-            'links' => [
-                '*' => [
-                    "url",
-                    "label",
-                    "active",
-                ]
-            ],
-            'next_page_url',
-            'path',
-            'per_page',
-            'prev_page_url',
-            'to',
+            'filtrados',
             'total'
         ]);
 
@@ -82,8 +76,14 @@ class TransplanteControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('/sajona/transplante-bolsa/buscar?fecha_inicial=2021--12-01&fecha_final=2022--03-01');
+        $response = $this->get('/sajona/transplante-bolsa/buscar?fecha_inicial=2021--12-01&fecha_final=2022--03-01',
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         // $response->assertValid();
         $response->assertUnprocessable(); // si devuelve 422 pasa la prueba
@@ -97,6 +97,8 @@ class TransplanteControllerTest extends TestCase
     public function test_para_visualizar_un_transplante_a_bolsa_en_especifico_correctamente()
     {
         $this->withoutExceptionHandling();
+
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
 
         // Crando registros para pruebas.
         $propagacion = Propagacion::create([
@@ -130,13 +132,17 @@ class TransplanteControllerTest extends TestCase
         ]);
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('sajona/transplante-bolsa/10');
+        $response = $this->get('sajona/transplante-bolsa/10',
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         // $response->assertValid();
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            '*'=> [
+            'data'=> [
                 'tp_pm_id',
                 'tp_fecha',
                 'cantidad_transplante_bolsa',
@@ -155,8 +161,13 @@ class TransplanteControllerTest extends TestCase
      */
     public function test_de_validaciones_al_visualizar_un_transplante()
     {
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('sajona/transplante-bolsa/100u2338273');
+        $response = $this->get('sajona/transplante-bolsa/100u2338273', [
+                "Authorization" => "Bearer $token"
+            ]
+        );
         // El transplante no existe en base de datos.
         $response->assertStatus(404);
     }
@@ -170,8 +181,13 @@ class TransplanteControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->post('sajona/transplante-bolsa',[
-        ]);
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
+        $response = $this->post('sajona/transplante-bolsa',[],
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         $response->assertUnprocessable(); // si devuelve 422 pasa la prueba
     }
@@ -185,13 +201,15 @@ class TransplanteControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         // Crando registros para pruebas.
         $propagacion = Propagacion::create([
             "pro_id_lote"                   => 100,
             "pro_fecha"                     => date("Y-m-d H:i:s"),
-            "pro_tipo_propagacion"          => "Esqueje",
-            "pro_variedad"                  => rand(1,10),
-            "pro_tipo_incorporacion"        => 'prueba',
+            "pro_tipo_propagacion"          => 1,
+            "pro_variedad"                  => 1,
+            "pro_tipo_incorporacion"        => 1,
             "pro_cantidad_material"         => 200,
             "pro_cantidad_plantas_madres"   => rand(1,50),
             "pro_estado"                    => true,
@@ -206,14 +224,18 @@ class TransplanteControllerTest extends TestCase
         ]);
 
         $response = $this->post('sajona/transplante-bolsa',[
-            'tp_pm_id'          => 10,
-            'tp_tipo'           => 'transplante_bolsa',
-            'tp_tipo_lote'      => 'Planta Madre',
-            'tp_fecha'          => '2022-01-14',
-            'tp_ubicacion'      => 'Casa malla',
-            'tp_cantidad_area'  => 32,
-            'tp_estado'         => true,
-        ]);
+                'tp_pm_id'          => 10,
+                'tp_tipo'           => 'transplante_bolsa',
+                'tp_tipo_lote'      => 'bolsa',
+                'tp_fecha'          => '2022-01-14',
+                'tp_ubicacion'      => 'Casa malla',
+                'tp_cantidad_area'  => 32,
+                'tp_estado'         => true,
+            ],
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         // $response->assertValid();
         $response->assertStatus(201);

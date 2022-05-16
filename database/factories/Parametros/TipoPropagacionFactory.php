@@ -23,6 +23,7 @@ class TipoPropagacionFactory extends Factory
     {
         return [
             "id"            => rand(1,100),
+            "nombre"        => $this->faker->text(10),
             "descripcion"   => $this->faker->text(20),
             "estado"        => "ACTIVO",
         ];

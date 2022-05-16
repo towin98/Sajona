@@ -14,7 +14,7 @@ use App\Models\Parametros\Variedad;
 trait ParametricaTrait {
 
     static $messages = [
-        'nombre.required'               => 'El Nombre a mostrar como parametro es requerido.',
+        'nombre.required'               => 'El Nombre como parametro es requerido.',
         'nombre.max'                    => 'El Nombre no debe superar los 50 carácteres.',
         // 'descripcion.required'          => 'La Descripción es requerida.',
         'descripcion.max'               => 'La Descripcion no debe superar los 50 carácteres.',

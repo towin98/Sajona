@@ -2218,7 +2218,7 @@ __webpack_require__.r(__webpack_exports__);
                 _this.login('SI');
               }
             });
-          } else if (errors.response.status == 422) {
+          } else if (errors.response.status == 409 || errors.response.status == 422) {
             _this.errors = errors.response.data.errors;
           }
         }
