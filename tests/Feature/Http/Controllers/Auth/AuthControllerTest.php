@@ -23,7 +23,7 @@ class AuthControllerTest extends TestCase
         // $this->withoutExceptionHandling();
 
         $user = User::factory()->create();
-        
+
         $response = $this->post('/sajona/login', [
             'email'     => $user->email,
             'password'  => 'admin123',

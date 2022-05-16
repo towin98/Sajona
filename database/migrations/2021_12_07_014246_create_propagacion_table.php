@@ -16,9 +16,9 @@ class CreatePropagacionTable extends Migration
         Schema::create('propagacion', function (Blueprint $table) {
             $table->id('pro_id_lote');
             $table->dateTime("pro_fecha");
-            $table->integer("pro_tipo_propagacion");
-            $table->integer("pro_variedad");
-            $table->integer("pro_tipo_incorporacion");
+            $table->unsignedBigInteger("pro_tipo_propagacion");
+            $table->unsignedBigInteger("pro_variedad");
+            $table->unsignedBigInteger("pro_tipo_incorporacion");
             $table->integer("pro_cantidad_material");
             $table->integer("pro_cantidad_plantas_madres");
             $table->boolean("pro_estado");

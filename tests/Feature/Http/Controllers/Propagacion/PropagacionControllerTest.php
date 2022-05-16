@@ -21,14 +21,20 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         $response = $this->post('/sajona/propagacion', [
-            "pro_fecha"                     => date("Y-m-d"),
-            "pro_tipo_propagacion"          => "Esqueje",
-            "pro_variedad"                  => 2,
-            "pro_tipo_incorporacion"        => "PROPIA",
-            "pro_cantidad_material"         => 200,
-            "pro_cantidad_plantas_madres"   => 110,
-        ]);
+                "pro_fecha"                     => date("Y-m-d"),
+                "pro_tipo_propagacion"          => 1,
+                "pro_variedad"                  => 1,
+                "pro_tipo_incorporacion"        => 1,
+                "pro_cantidad_material"         => 200,
+                "pro_cantidad_plantas_madres"   => 110,
+            ],
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         $response->assertValid();
 
@@ -48,14 +54,20 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         $response = $this->post('/sajona/propagacion', [
-            "pro_fecha"                     => date("Y-m-d H:i:s"),
-            "pro_tipo_propagacion"          => "Esqueje",
-            "pro_variedad"                  => 2,
-            "pro_tipo_incorporacion"        => "Propia",
-            "pro_cantidad_material"         => "13e22",
-            "pro_cantidad_plantas_madres"   => 837,
-        ]);
+                "pro_fecha"                     => date("Y-m-d H:i:s"),
+                "pro_tipo_propagacion"          => "Esqueje",
+                "pro_variedad"                  => 2,
+                "pro_tipo_incorporacion"        => "Propia",
+                "pro_cantidad_material"         => "13e22",
+                "pro_cantidad_plantas_madres"   => 837,
+            ],
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         $response->assertUnprocessable(); // si devuelve 422 pasa la prueba
         // $response->assertValid();
@@ -70,9 +82,15 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         Propagacion::factory(20)->create();
 
-        $response = $this->get('sajona/propagacion/listar?length=3&start=0');
+        $response = $this->get('sajona/propagacion/listar?length=3&start=0',
+            [
+                "Authorization" => "Bearer $token"
+            ]
+        );
 
         $response->assertJsonStructure([
             'current_page',
@@ -112,13 +130,18 @@ class PropagacionControllerTest extends TestCase
 
     public function test_actualiza_un_registro_de_una_propagacion_correctamente(){
         $this->withoutExceptionHandling();
-        // $this->Autenticacion("cristian@gmail.com", "admin123");
+
+        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+
         // Creamos un registro de Tipo de propagacion
         $tipoPropagacion = Propagacion::factory(1)->create()->first();
 
         // Hacemos la solicitud a la url
         $response = $this->put("sajona/propagacion/actualizar/".$tipoPropagacion->pro_id_lote, [
                 "pro_fecha"                     => "2022-04-05",
+            ],
+            [
+                "Authorization" => "Bearer $token"
             ]
         );
         $response->assertStatus(201);

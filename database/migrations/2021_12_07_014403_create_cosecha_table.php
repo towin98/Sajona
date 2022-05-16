@@ -19,7 +19,7 @@ class CreateCosechaTable extends Migration
             $table->dateTime("cos_fecha_suelo");
             $table->dateTime("cos_fecha_cosecha");
             $table->integer("cos_numero_plantas");
-            $table->integer("cos_estado_cosecha");
+            $table->unsignedBigInteger("cos_estado_cosecha");
             $table->integer("cos_dias_floracion");
             $table->float("cos_peso_verde", 11,2);
             $table->string("cos_observacion", 500)->nullable();

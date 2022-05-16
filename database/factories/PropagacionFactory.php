@@ -23,7 +23,7 @@ class PropagacionFactory extends Factory
     {
         return [
             "pro_id_lote"                   => rand(1,10000),
-            "pro_fecha"                     => date("Y-m-d H:i:s"),
+            "pro_fecha"                     => date('2022-01-01 08:10:12'),
             "pro_tipo_propagacion"          => rand(1,2),
             "pro_variedad"                  => rand(1,2),
             "pro_tipo_incorporacion"        => rand(1,2),
