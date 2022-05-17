@@ -26,6 +26,8 @@ Route::get('/permisos-usuario/', [PermissionController::class, 'buscaPermisosUsu
 Route::get('/permission/{permissionName}', [PermissionController::class, 'buscaPermisosUsuario'])->middleware('auth:sanctum');
 Artisan::call('cache:clear');
 
+Route::post('/password/email', [AuthController::class, 'resetPassword']);
+
 /*Rutas Sojana (MENU)*/
 Route::group(['prefix' => 'propagacion', 'middleware' => 'auth:sanctum'] , function(){
     Route::get('/listar', [PropagacionController::class, 'listar']);

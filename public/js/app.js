@@ -2156,6 +2156,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -2184,7 +2189,7 @@ __webpack_require__.r(__webpack_exports__);
       var closeSesion = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'NO';
       this.formData.closeSesion = closeSesion;
       this.overlayLoading = true;
-      axios.post("sajona/login", this.formData).then(function (response) {
+      axios.post("/sajona/login", this.formData).then(function (response) {
         localStorage.setItem("TOKEN_SAJONA", response.data.access_token);
 
         _this.$router.push("/modulos/dashboard");
@@ -2231,6 +2236,132 @@ __webpack_require__.r(__webpack_exports__);
       month: "long"
     });
     this.date = "".concat(month.substring(0, 3), "/").concat(fecha.getFullYear());
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/recuperarPass.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/recuperarPass.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loadingGeneral/loadingGeneral.vue */ "./resources/js/components/loadingGeneral/loadingGeneral.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    loadingGeneral: _loadingGeneral_loadingGeneral_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      form: {
+        email: ''
+      },
+      errors: {},
+      overlayLoading: false
+    };
+  },
+  methods: {
+    fnRecuperarPass: function fnRecuperarPass() {
+      var _this = this;
+
+      this.overlayLoading = true;
+      axios.post("/sajona/password/email", this.form).then(function (response) {
+        _this.overlayLoading = false;
+        console.log(response.data);
+
+        _this.$swal('Datos de Acceso', response.data.message, 'success');
+
+        _this.$router.push("/");
+      })["catch"](function (errors) {
+        _this.overlayLoading = false;
+
+        if (errors.response.status == 500) {
+          _this.$swal({
+            icon: 'error',
+            title: "Error inesperado al recuperar password",
+            text: "".concat(errors.response.data.errors)
+          });
+        } else if (errors.response.status == 401) {
+          // Ojo el error 401 es de que no existe el email.
+          _this.$swal({
+            icon: 'error',
+            title: "",
+            text: "".concat(errors.response.data.errors)
+          });
+
+          _this.$router.push("/");
+        } else {
+          _this.errors = errors.response.data.errors;
+        }
+      });
+    }
   }
 });
 
@@ -7346,23 +7477,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_auth_login_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/auth/login.vue */ "./resources/js/components/auth/login.vue");
-/* harmony import */ var _components_menu_menu_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/menu/menu.vue */ "./resources/js/components/menu/menu.vue");
-/* harmony import */ var _components_sajona_inicio_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/sajona/inicio.vue */ "./resources/js/components/sajona/inicio.vue");
-/* harmony import */ var _components_sajona_propagacion_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/sajona/propagacion.vue */ "./resources/js/components/sajona/propagacion.vue");
-/* harmony import */ var _components_sajona_plantaMadre_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/sajona/plantaMadre.vue */ "./resources/js/components/sajona/plantaMadre.vue");
-/* harmony import */ var _components_sajona_transplanteBolsa_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/sajona/transplanteBolsa.vue */ "./resources/js/components/sajona/transplanteBolsa.vue");
-/* harmony import */ var _components_sajona_transplanteCampo_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/sajona/transplanteCampo.vue */ "./resources/js/components/sajona/transplanteCampo.vue");
-/* harmony import */ var _components_sajona_cosecha_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/sajona/cosecha.vue */ "./resources/js/components/sajona/cosecha.vue");
-/* harmony import */ var _components_sajona_postCosecha_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/sajona/postCosecha.vue */ "./resources/js/components/sajona/postCosecha.vue");
-/* harmony import */ var _components_sajona_bajas_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/sajona/bajas.vue */ "./resources/js/components/sajona/bajas.vue");
-/* harmony import */ var _components_sajona_reportes_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/sajona/reportes.vue */ "./resources/js/components/sajona/reportes.vue");
-/* harmony import */ var _components_config_parametros_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/config/parametros.vue */ "./resources/js/components/config/parametros.vue");
-/* harmony import */ var _components_config_alerta_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/config/alerta.vue */ "./resources/js/components/config/alerta.vue");
-/* harmony import */ var _components_errors_404_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/errors/404.vue */ "./resources/js/components/errors/404.vue");
+/* harmony import */ var _components_auth_recuperarPass_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/auth/recuperarPass.vue */ "./resources/js/components/auth/recuperarPass.vue");
+/* harmony import */ var _components_menu_menu_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/menu/menu.vue */ "./resources/js/components/menu/menu.vue");
+/* harmony import */ var _components_sajona_inicio_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/sajona/inicio.vue */ "./resources/js/components/sajona/inicio.vue");
+/* harmony import */ var _components_sajona_propagacion_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/sajona/propagacion.vue */ "./resources/js/components/sajona/propagacion.vue");
+/* harmony import */ var _components_sajona_plantaMadre_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/sajona/plantaMadre.vue */ "./resources/js/components/sajona/plantaMadre.vue");
+/* harmony import */ var _components_sajona_transplanteBolsa_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/sajona/transplanteBolsa.vue */ "./resources/js/components/sajona/transplanteBolsa.vue");
+/* harmony import */ var _components_sajona_transplanteCampo_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/sajona/transplanteCampo.vue */ "./resources/js/components/sajona/transplanteCampo.vue");
+/* harmony import */ var _components_sajona_cosecha_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/sajona/cosecha.vue */ "./resources/js/components/sajona/cosecha.vue");
+/* harmony import */ var _components_sajona_postCosecha_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/sajona/postCosecha.vue */ "./resources/js/components/sajona/postCosecha.vue");
+/* harmony import */ var _components_sajona_bajas_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/sajona/bajas.vue */ "./resources/js/components/sajona/bajas.vue");
+/* harmony import */ var _components_sajona_reportes_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/sajona/reportes.vue */ "./resources/js/components/sajona/reportes.vue");
+/* harmony import */ var _components_config_parametros_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/config/parametros.vue */ "./resources/js/components/config/parametros.vue");
+/* harmony import */ var _components_config_alerta_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/config/alerta.vue */ "./resources/js/components/config/alerta.vue");
+/* harmony import */ var _components_errors_404_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/errors/404.vue */ "./resources/js/components/errors/404.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /*auth*/
+
 
 
 /*Menu sajona*/
@@ -7392,66 +7525,73 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       guest: true
     }
   }, {
+    path: '/auth/recuperar-password',
+    component: _components_auth_recuperarPass_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    name: 'recuperar-password',
+    meta: {
+      guest: true
+    }
+  }, {
     path: '/modulos',
-    component: _components_menu_menu_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    component: _components_menu_menu_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     meta: {
       requiresAuth: true
     },
     children: [{
       path: 'dashboard',
-      component: _components_sajona_inicio_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+      component: _components_sajona_inicio_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
       name: 'inicio'
     }, {
       path: 'propagacion',
-      component: _components_sajona_propagacion_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+      component: _components_sajona_propagacion_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
       name: 'propagacion'
     }, {
       path: 'planta-madre',
-      component: _components_sajona_plantaMadre_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+      component: _components_sajona_plantaMadre_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
       name: 'planta-madre'
     }, {
       path: 'transplante-bolsa',
-      component: _components_sajona_transplanteBolsa_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
+      component: _components_sajona_transplanteBolsa_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
       name: 'transplante-bolsa'
     }, {
       path: 'transplante-campo',
-      component: _components_sajona_transplanteCampo_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
+      component: _components_sajona_transplanteCampo_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
       name: 'transplante-campo'
     }, {
       path: 'cosecha',
-      component: _components_sajona_cosecha_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+      component: _components_sajona_cosecha_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
       name: 'cosecha'
     }, {
       path: 'post-cosecha',
-      component: _components_sajona_postCosecha_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+      component: _components_sajona_postCosecha_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
       name: 'post-cosecha'
     }, {
       path: 'bajas',
-      component: _components_sajona_bajas_vue__WEBPACK_IMPORTED_MODULE_11__["default"],
+      component: _components_sajona_bajas_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
       name: 'bajas'
     }, {
       path: 'reportes',
-      component: _components_sajona_reportes_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
+      component: _components_sajona_reportes_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
       name: 'reportes'
     }]
   }, {
     path: '/sistema',
-    component: _components_menu_menu_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    component: _components_menu_menu_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     meta: {
       requiresAuth: true
     },
     children: [{
       path: 'parametros',
-      component: _components_config_parametros_vue__WEBPACK_IMPORTED_MODULE_13__["default"],
+      component: _components_config_parametros_vue__WEBPACK_IMPORTED_MODULE_14__["default"],
       name: 'parametros'
     }, {
       path: 'alerta',
-      component: _components_config_alerta_vue__WEBPACK_IMPORTED_MODULE_14__["default"],
+      component: _components_config_alerta_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
       name: 'alerta'
     }]
   }, {
     path: '*',
-    component: _components_errors_404_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
+    component: _components_errors_404_vue__WEBPACK_IMPORTED_MODULE_16__["default"]
   }]
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
@@ -7623,7 +7763,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\r\n    color :white !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\n    color :white !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26500,6 +26640,45 @@ component.options.__file = "resources/js/components/auth/login.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/auth/recuperarPass.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/auth/recuperarPass.vue ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _recuperarPass_vue_vue_type_template_id_2b077ade___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./recuperarPass.vue?vue&type=template&id=2b077ade& */ "./resources/js/components/auth/recuperarPass.vue?vue&type=template&id=2b077ade&");
+/* harmony import */ var _recuperarPass_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./recuperarPass.vue?vue&type=script&lang=js& */ "./resources/js/components/auth/recuperarPass.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _recuperarPass_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _recuperarPass_vue_vue_type_template_id_2b077ade___WEBPACK_IMPORTED_MODULE_0__.render,
+  _recuperarPass_vue_vue_type_template_id_2b077ade___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/auth/recuperarPass.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/config/alerta.vue":
 /*!***************************************************!*\
   !*** ./resources/js/components/config/alerta.vue ***!
@@ -27141,6 +27320,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/auth/recuperarPass.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/auth/recuperarPass.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_recuperarPass_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./recuperarPass.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/recuperarPass.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_recuperarPass_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/config/alerta.vue?vue&type=script&lang=js&":
 /*!****************************************************************************!*\
   !*** ./resources/js/components/config/alerta.vue?vue&type=script&lang=js& ***!
@@ -27453,6 +27648,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_login_vue_vue_type_template_id_6aa0b866___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_login_vue_vue_type_template_id_6aa0b866___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./login.vue?vue&type=template&id=6aa0b866& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/login.vue?vue&type=template&id=6aa0b866&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/recuperarPass.vue?vue&type=template&id=2b077ade&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/auth/recuperarPass.vue?vue&type=template&id=2b077ade& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_recuperarPass_vue_vue_type_template_id_2b077ade___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_recuperarPass_vue_vue_type_template_id_2b077ade___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_recuperarPass_vue_vue_type_template_id_2b077ade___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./recuperarPass.vue?vue&type=template&id=2b077ade& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/recuperarPass.vue?vue&type=template&id=2b077ade&");
 
 
 /***/ }),
@@ -27912,13 +28124,23 @@ var render = function () {
                       _vm._v(" "),
                       _c(
                         "v-layout",
-                        { attrs: { "justify-center": "" } },
+                        { attrs: { "justify-end": "" } },
                         [
                           _c(
                             "v-card-actions",
                             { staticClass: "mt-4" },
                             [
                               _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "pr-3 text-decoration-none text-subtitle-2 white--text",
+                                  attrs: { to: { name: "recuperar-password" } },
+                                },
+                                [_c("span", [_vm._v("Recuperar Password")])]
+                              ),
                               _vm._v(" "),
                               _c(
                                 "v-btn",
@@ -27942,6 +28164,184 @@ var render = function () {
                                   ),
                                 ],
                                 1
+                              ),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("loadingGeneral", {
+                attrs: { overlayLoading: _vm.overlayLoading },
+              }),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/recuperarPass.vue?vue&type=template&id=2b077ade&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/auth/recuperarPass.vue?vue&type=template&id=2b077ade& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-app",
+    [
+      _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        {
+          staticStyle: { background: "#424242" },
+          attrs: { fluid: "", "fill-height": "" },
+        },
+        [
+          _c(
+            "v-layout",
+            { attrs: { "align-center": "", "justify-center": "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "", sm8: "", md4: "" } },
+                [
+                  _c(
+                    "v-card",
+                    {
+                      staticClass: "elevation-0",
+                      staticStyle: { background: "#424242" },
+                    },
+                    [
+                      _c(
+                        "v-toolbar",
+                        {
+                          staticClass:
+                            "d-flex justify-center rounded-0 elevation-0",
+                          staticStyle: { background: "#424242" },
+                        },
+                        [
+                          _c(
+                            "v-toolbar-title",
+                            { staticClass: "white--text" },
+                            [
+                              _c("div", { staticClass: "text-center" }, [
+                                _c("h3", [_vm._v("SAJONA")]),
+                                _vm._v(" "),
+                                _c("h4", [_vm._v("Recuperar Password")]),
+                              ]),
+                            ]
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        { staticClass: "mt-11" },
+                        [
+                          _c(
+                            "v-form",
+                            [
+                              _c("v-text-field", {
+                                attrs: {
+                                  "prepend-icon": "email",
+                                  name: "login",
+                                  label: "Email",
+                                  "error-messages": _vm.errors.email,
+                                  type: "text",
+                                  dark: "",
+                                },
+                                model: {
+                                  value: _vm.form.email,
+                                  callback: function ($$v) {
+                                    _vm.$set(_vm.form, "email", $$v)
+                                  },
+                                  expression: "form.email",
+                                },
+                              }),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        { attrs: { "justify-center": "" } },
+                        [
+                          _c(
+                            "v-card-actions",
+                            { staticClass: "mt-2" },
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  staticClass: "text-none",
+                                  attrs: { link: true, color: "primary" },
+                                  on: { click: _vm.fnRecuperarPass },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                RECUPERAR PASSWORD\n                            "
+                                  ),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-layout",
+                        { attrs: { "justify-center": "" } },
+                        [
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass:
+                                    "pr-3 text-decoration-none text-subtitle-2 white--text",
+                                  attrs: { to: { name: "login" } },
+                                },
+                                [_c("span", [_vm._v("Regresar al login")])]
                               ),
                             ],
                             1

@@ -5,6 +5,7 @@ Vue.use(VueRouter);
 
 /*auth*/
 import login from './components/auth/login.vue'
+import recuperarPass from './components/auth/recuperarPass.vue'
 
 /*Menu sajona*/
 import menuSajona from './components/menu/menu.vue'
@@ -33,7 +34,12 @@ const router = new VueRouter({
             name: 'login',
             meta: {guest: true}
         },
-
+        {
+            path: '/auth/recuperar-password',
+            component: recuperarPass,
+            name: 'recuperar-password',
+            meta: {guest: true}
+        },
         {
             path: '/modulos',
             component: menuSajona,

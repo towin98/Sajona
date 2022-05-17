@@ -56,9 +56,14 @@
                                 ></v-text-field>
                             </v-form>
                         </v-card-text>
-                        <v-layout justify-center>
+                        <v-layout justify-end>
                             <v-card-actions class="mt-4">
                                 <v-spacer></v-spacer>
+                                <router-link
+                                    :to="{ name: 'recuperar-password' }"
+                                    class="pr-3 text-decoration-none text-subtitle-2 white--text">
+                                    <span>Recuperar Password</span>
+                                </router-link>
                                 <v-btn
                                     color="success"
                                     class="text-none"
@@ -103,7 +108,7 @@ export default {
             this.formData.closeSesion = closeSesion;
             this.overlayLoading = true;
             axios
-                .post("sajona/login", this.formData)
+                .post("/sajona/login", this.formData)
                 .then((response) => {
                     localStorage.setItem("TOKEN_SAJONA", response.data.access_token);
                     this.$router.push("/modulos/dashboard");
@@ -139,7 +144,7 @@ export default {
                         }
                     }
                 });
-        },
+        }
     },
     mounted() {
         const fecha = new Date();
