@@ -100,6 +100,9 @@ class TransplanteController extends Controller
 
         $filtrados = $registros->count();
 
+        // Requerido, consultando rango de transplantes.
+        $this->fnconsultarRangosAlerta();
+
         $registros = $registros->map(function ($value, $key){
             // Se armana data como la requiere, tipo object.
             $data = new Request([
@@ -311,6 +314,9 @@ class TransplanteController extends Controller
             ->take($length)
             ->get()
             ->toArray();
+
+        // Requerido, consultando rango de transplantes.
+        $this->fnconsultarRangosAlerta();
 
         $registros = ListarTransplanteCampoCollection::collection($registros);
 

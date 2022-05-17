@@ -14,7 +14,7 @@
                         <div class="text-center">Rango alerta en días para el módulo propagación</div>
 
                         <v-row class="mt-4">
-                            <v-col cols="6">
+                            <!-- <v-col cols="6">
                                 <v-text-field
                                     type="number"
                                     v-model="form.min_rang_propagacion"
@@ -24,7 +24,7 @@
                                     :error-messages="errors.min_rang_propagacion"
                                     :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
-                            </v-col>
+                            </v-col> -->
                             <v-col cols="6">
                                 <v-text-field
                                     type="number"
@@ -42,7 +42,7 @@
                         <div class="text-center">Rango alerta en días para el módulo Trans. Bolsa</div>
 
                         <v-row class="mt-4">
-                            <v-col cols="6">
+                            <!-- <v-col cols="6">
                                 <v-text-field
                                     type="number"
                                     v-model="form.min_rang_bolsa"
@@ -52,7 +52,7 @@
                                     :error-messages="errors.min_rang_bolsa"
                                     :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
-                            </v-col>
+                            </v-col> -->
                             <v-col cols="6">
                                 <v-text-field
                                     type="number"
@@ -71,7 +71,7 @@
                         <div class="text-center">Rango alerta en días para el módulo Trans. Campo</div>
 
                         <v-row class="mt-4">
-                            <v-col cols="6">
+                            <!-- <v-col cols="6">
                                 <v-text-field
                                     type="number"
                                     v-model="form.min_rang_campo"
@@ -81,7 +81,7 @@
                                     :error-messages="errors.min_rang_campo"
                                     :disabled="!$can(['CREAR', 'EDITAR'])"
                                 ></v-text-field>
-                            </v-col>
+                            </v-col> -->
                             <v-col cols="6">
                                 <v-text-field
                                     type="number"
@@ -117,13 +117,13 @@ export default {
         return {
             form : {
                 id                   : '',
-                min_rang_propagacion : 0,
+                // min_rang_propagacion : 0,
                 max_rang_propagacion : 0,
 
-                min_rang_bolsa : 0,
+                // min_rang_bolsa : 0,
                 max_rang_bolsa : 0,
 
-                min_rang_campo : 0,
+                // min_rang_campo : 0,
                 max_rang_campo : 0
             },
             errors: {
@@ -141,13 +141,16 @@ export default {
                 .get(`/sajona/sistema/alerta`)
                 .then((response) => {
                     const data = response.data.data;
-                    this.form.id                   = data.id;
-                    this.form.min_rang_propagacion = data.min_rang_propagacion;
-                    this.form.max_rang_propagacion = data.max_rang_propagacion;
-                    this.form.min_rang_bolsa       = data.min_rang_bolsa;
-                    this.form.max_rang_bolsa       = data.max_rang_bolsa;
-                    this.form.min_rang_campo       = data.min_rang_campo;
-                    this.form.max_rang_campo       = data.max_rang_campo;
+                    if (data.length == 0) {
+                    }else{
+                        this.form.id                   = data.id;
+                        // this.form.min_rang_propagacion = data.min_rang_propagacion;
+                        this.form.max_rang_propagacion = data.max_rang_propagacion;
+                        // this.form.min_rang_bolsa       = data.min_rang_bolsa;
+                        this.form.max_rang_bolsa       = data.max_rang_bolsa;
+                        // this.form.min_rang_campo       = data.min_rang_campo;
+                        this.form.max_rang_campo       = data.max_rang_campo;
+                    }
                     this.overlayLoading = false;
                 })
                 .catch((errores) => {

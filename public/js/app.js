@@ -2497,11 +2497,11 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: {
         id: '',
-        min_rang_propagacion: 0,
+        // min_rang_propagacion : 0,
         max_rang_propagacion: 0,
-        min_rang_bolsa: 0,
+        // min_rang_bolsa : 0,
         max_rang_bolsa: 0,
-        min_rang_campo: 0,
+        // min_rang_campo : 0,
         max_rang_campo: 0
       },
       errors: {},
@@ -2517,13 +2517,17 @@ __webpack_require__.r(__webpack_exports__);
       this.overlayLoading = true;
       axios.get("/sajona/sistema/alerta").then(function (response) {
         var data = response.data.data;
-        _this.form.id = data.id;
-        _this.form.min_rang_propagacion = data.min_rang_propagacion;
-        _this.form.max_rang_propagacion = data.max_rang_propagacion;
-        _this.form.min_rang_bolsa = data.min_rang_bolsa;
-        _this.form.max_rang_bolsa = data.max_rang_bolsa;
-        _this.form.min_rang_campo = data.min_rang_campo;
-        _this.form.max_rang_campo = data.max_rang_campo;
+
+        if (data.length == 0) {} else {
+          _this.form.id = data.id; // this.form.min_rang_propagacion = data.min_rang_propagacion;
+
+          _this.form.max_rang_propagacion = data.max_rang_propagacion; // this.form.min_rang_bolsa       = data.min_rang_bolsa;
+
+          _this.form.max_rang_bolsa = data.max_rang_bolsa; // this.form.min_rang_campo       = data.min_rang_campo;
+
+          _this.form.max_rang_campo = data.max_rang_campo;
+        }
+
         _this.overlayLoading = false;
       })["catch"](function (errores) {
         _this.fnResponseError(errores);
@@ -7739,7 +7743,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -28436,36 +28440,6 @@ var render = function () {
                             { attrs: { cols: "6" } },
                             [
                               _c("v-text-field", {
-                                ref: "min_rang_propagacion",
-                                attrs: {
-                                  type: "number",
-                                  dense: "",
-                                  label: "Rag. Min",
-                                  "error-messages":
-                                    _vm.errors.min_rang_propagacion,
-                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
-                                },
-                                model: {
-                                  value: _vm.form.min_rang_propagacion,
-                                  callback: function ($$v) {
-                                    _vm.$set(
-                                      _vm.form,
-                                      "min_rang_propagacion",
-                                      $$v
-                                    )
-                                  },
-                                  expression: "form.min_rang_propagacion",
-                                },
-                              }),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "6" } },
-                            [
-                              _c("v-text-field", {
                                 ref: "max_rang_propagacion",
                                 attrs: {
                                   type: "number",
@@ -28516,31 +28490,6 @@ var render = function () {
                             { attrs: { cols: "6" } },
                             [
                               _c("v-text-field", {
-                                ref: "min_rang_bolsa",
-                                attrs: {
-                                  type: "number",
-                                  dense: "",
-                                  label: "Rag. Min",
-                                  "error-messages": _vm.errors.min_rang_bolsa,
-                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
-                                },
-                                model: {
-                                  value: _vm.form.min_rang_bolsa,
-                                  callback: function ($$v) {
-                                    _vm.$set(_vm.form, "min_rang_bolsa", $$v)
-                                  },
-                                  expression: "form.min_rang_bolsa",
-                                },
-                              }),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "6" } },
-                            [
-                              _c("v-text-field", {
                                 ref: "max_rang_bolsa",
                                 attrs: {
                                   type: "number",
@@ -28581,31 +28530,6 @@ var render = function () {
                         "v-row",
                         { staticClass: "mt-4" },
                         [
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "6" } },
-                            [
-                              _c("v-text-field", {
-                                ref: "min_rang_campo",
-                                attrs: {
-                                  type: "number",
-                                  dense: "",
-                                  label: "Rag. Min",
-                                  "error-messages": _vm.errors.min_rang_campo,
-                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
-                                },
-                                model: {
-                                  value: _vm.form.min_rang_campo,
-                                  callback: function ($$v) {
-                                    _vm.$set(_vm.form, "min_rang_campo", $$v)
-                                  },
-                                  expression: "form.min_rang_campo",
-                                },
-                              }),
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
                           _c(
                             "v-col",
                             { attrs: { cols: "6" } },

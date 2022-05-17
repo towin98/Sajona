@@ -65,6 +65,9 @@ class PlantaMadreController extends Controller
 
         $registros = $registros->paginate($length);
 
+        // Requerido, consultando rango de transplantes.
+        $this->fnconsultarRangosAlerta();
+
         $registros->getCollection()->transform(function($data, $key) {
 
             $arrAlerta = $this->alerta($data);

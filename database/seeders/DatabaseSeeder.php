@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PrTipoPropagacionSeeder::class);
         $this->call(PrUbicacionSeeder::class);
         $this->call(PrVariedadSeeder::class);
+        $this->call(AlertaSeeder::class);
 
         $this->call(PermissionsSeeder::class);
         for ($i=0; $i < 10; $i++) {
