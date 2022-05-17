@@ -26,11 +26,11 @@ class AlertaRequest extends FormRequest
     public function rules()
     {
         return [
-            'min_rang_propagacion'  => 'required|integer|min:0',
+            // 'min_rang_propagacion'  => 'required|integer|min:0',
             'max_rang_propagacion'  => 'required|integer|min:0',
-            'min_rang_bolsa'        => 'required|integer|min:0',
+            // 'min_rang_bolsa'        => 'required|integer|min:0',
             'max_rang_bolsa'        => 'required|integer|min:0',
-            'min_rang_campo'        => 'required|integer|min:0',
+            // 'min_rang_campo'        => 'required|integer|min:0',
             'max_rang_campo'        => 'required|integer|min:0',
         ];
     }

@@ -19,11 +19,11 @@ class Alerta extends Model
      * @var string[]
      */
     protected $fillable = [
-        'min_rang_propagacion',
+        // 'min_rang_propagacion',
         'max_rang_propagacion',
-        'min_rang_bolsa',
+        // 'min_rang_bolsa',
         'max_rang_bolsa',
-        'min_rang_campo',
+        // 'min_rang_campo',
         'max_rang_campo'
     ];
 
@@ -34,11 +34,11 @@ class Alerta extends Model
      */
     protected $visible = [
         'id',
-        'min_rang_propagacion',
+        // 'min_rang_propagacion',
         'max_rang_propagacion',
-        'min_rang_bolsa',
+        // 'min_rang_bolsa',
         'max_rang_bolsa',
-        'min_rang_campo',
+        // 'min_rang_campo',
         'max_rang_campo'
     ];
 
