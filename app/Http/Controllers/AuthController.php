@@ -22,8 +22,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return void
      */
-    public function login(Request $request)
-    {
+    public function login(Request $request){
         $reglas =  [
             'email'     => 'required|email|max:50',
             'password'  => 'required|min:8',
@@ -124,5 +123,47 @@ class AuthController extends Controller
                 "errors" => "No fue posible realizar la operación solicitada."
             ], 500);
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function passwordChange(Request $request){
+        $reglas =  [
+            'claveActual'            => 'required|min:8',
+            'password'               => 'required|confirmed|min:8',
+            'password_confirmation'  => 'required|min:8',
+        ];
+
+        $objValidator = Validator::make($request->all(),  $reglas, User::$messagesValidatorsCambioClave);
+        if($objValidator->fails()){
+            return response()->json([
+                'message' => 'Error de Validación de Datos',
+                'errors'  => $objValidator->errors()
+            ], 422);
+        }
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->claveActual, $user->password)) {
+            return response()->json([
+                "message" => "Error de Validación de Datos",
+                "errors" => [
+                        "claveActual" => [
+                            "Contraseña actual Ingresada Incorrecta."
+                        ]
+                    ]
+            ], 422);
+        }
+
+        User::findOrFail($user->id)->update([
+            "password" => Hash::make($request->password)
+        ]);
+
+        return response()->json([
+            "message" => "Se cambio exitosamente la contraseña."
+        ], 200);
     }
 }

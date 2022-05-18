@@ -220,6 +220,21 @@
                             </v-list-item-content>
                         </v-list-item>
 
+                        <v-list-item
+                            v-if="this.cambioClave"
+                            link
+                            :to="{ name: 'cambio-clave' }"
+                            v-on:click="titleProceso = 'Cambio Clave'">
+
+                            <v-list-item-icon>
+                                <v-icon>navigate_next</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                                <v-list-item-title>Cambio de Clave</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
                     </v-list-group>
                 </v-list>
 
@@ -277,6 +292,7 @@ export default {
             sistemaGroup     : false,
             parametros       : false,
             alerta           : false,
+            cambioClave      : false,
             // FIN Variables para dedicidir si se muestra menu.
 
             /* AQUI VAN VARIABLES CON RESPECTO A PERMISOS Y ROLES START*/
@@ -317,6 +333,7 @@ export default {
             switch (this.$route.name) {
                 case 'parametros':
                 case 'alerta':
+                case 'cambio-clave':
                     this.menu.sistema.active = true; // Desplegando menu de Sistema
                 break;
                 case 'alerta':
@@ -362,9 +379,12 @@ export default {
                 this.sistemaGroup     = true;
                 this.parametros       = true;
                 this.alerta           = true;
+                this.cambioClave      = true;
                 break;
             case "Gerente":
-                this.propagacion = true;
+                this.propagacion      = true;
+                this.sistemaGroup     = true;
+                this.cambioClave      = true;
                 // this.plantaMadre       = true;
                 // this.transplanteBolsa  = true;
                 // this.transplanteCampo  = true;
@@ -374,8 +394,10 @@ export default {
                 // this.reportes          = true;
                 break;
             case "Auxiliar":
-                this.propagacion = true;
-                this.bajas = true;
+                this.propagacion      = true;
+                this.bajas            = true;
+                this.sistemaGroup     = true;
+                this.cambioClave      = true;
                 break;
         }
     },
