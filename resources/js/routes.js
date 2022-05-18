@@ -21,6 +21,7 @@ import reportes from './components/sajona/reportes.vue'
 
 import parametros from './components/config/parametros.vue'
 import alerta from './components/config/alerta.vue'
+import cambioClave from './components/config/cambioClave.vue'
 /*Menu end*/
 
 import errors from './components/errors/404.vue'
@@ -107,6 +108,11 @@ const router = new VueRouter({
                     path: 'alerta',
                     component: alerta,
                     name: 'alerta',
+                },
+                {
+                    path: 'cambio-clave',
+                    component: cambioClave,
+                    name: 'cambio-clave',
                 }
             ],
         },

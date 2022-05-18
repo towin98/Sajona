@@ -57,4 +57,21 @@ class User extends Authenticatable
         'email.email'                         => 'El correo electronico no es válido.',
         'email.max'                           => 'El correo electronico no puede superar los 50 carácteres.',
     ];
+
+        /**
+     * Reglas de validación para el recurso crear.
+     *
+     * @var array
+     */
+    public static $messagesValidatorsCambioClave = [
+        // Cambio clave
+        'claveActual.required'                => 'La clave actual es requerida.',
+        'claveActual.min'                     => 'La contraseña Actual debe tener minimo 8 carácteres.',
+        'password.required'                   => 'La contraseña Nueva es requerida.',
+        'password.min'                        => 'La contraseña Nueva debe tener minimo 8 carácteres.',
+        'password.confirmed'                  => 'La confirmación de contraseña no coincide.',
+        'password_confirmation.required'      => 'El campo de confirmación de contraseña es obligatorio',
+        'password_confirmation.min'           => 'La contraseña de confirmación debe tener minimo 8 carácteres.',
+
+    ];
 }

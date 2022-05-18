@@ -174,8 +174,6 @@ export default {
     },
     data() {
         return {
-
-            token: localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading: false,
             titleAccion: "Parametros Módulos",
 
