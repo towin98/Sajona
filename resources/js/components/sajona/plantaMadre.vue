@@ -373,6 +373,9 @@ export default {
                     this.overlayLoading = false;
                     this.loading = false;
                     this.dataSet = [];
+                    if (errores.response.status == 422) {
+                        this.errors = errores.response.data.errors;
+                    }
                 });
         },
         filterSearch() {

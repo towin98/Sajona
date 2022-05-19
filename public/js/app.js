@@ -2345,7 +2345,7 @@ __webpack_require__.r(__webpack_exports__);
         if (errors.response.status == 500) {
           _this.$swal({
             icon: 'error',
-            title: "Error inesperado al recuperar password",
+            title: "Error inesperado al recuperar clave",
             text: "".concat(errors.response.data.errors)
           });
         } else if (errors.response.status == 401) {
@@ -3165,9 +3165,6 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalParametros.descripcion = '';
       this.formModalParametros.estado = '';
     }
-  },
-  mounted: function mounted() {
-    window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
   }
 });
 
@@ -3673,7 +3670,7 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
                 }, _callee);
               })), 20000);
               _context2.t1 = _this2.cRol;
-              _context2.next = _context2.t1 === "Agronomo" ? 23 : _context2.t1 === "Gerente" ? 36 : _context2.t1 === "Auxiliar" ? 38 : 41;
+              _context2.next = _context2.t1 === "Agronomo" ? 23 : _context2.t1 === "Gerente" ? 36 : _context2.t1 === "Auxiliar" ? 40 : 45;
               break;
 
             case 23:
@@ -3689,10 +3686,12 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
               _this2.parametros = true;
               _this2.alerta = true;
               _this2.cambioClave = true;
-              return _context2.abrupt("break", 41);
+              return _context2.abrupt("break", 45);
 
             case 36:
-              _this2.propagacion = true; // this.plantaMadre       = true;
+              _this2.propagacion = true;
+              _this2.sistemaGroup = true;
+              _this2.cambioClave = true; // this.plantaMadre       = true;
               // this.transplanteBolsa  = true;
               // this.transplanteCampo  = true;
               // this.cosecha           = true;
@@ -3700,14 +3699,16 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
               // this.bajas             = true;
               // this.reportes          = true;
 
-              return _context2.abrupt("break", 41);
+              return _context2.abrupt("break", 45);
 
-            case 38:
+            case 40:
               _this2.propagacion = true;
               _this2.bajas = true;
-              return _context2.abrupt("break", 41);
+              _this2.sistemaGroup = true;
+              _this2.cambioClave = true;
+              return _context2.abrupt("break", 45);
 
-            case 41:
+            case 45:
             case "end":
               return _context2.stop();
           }
@@ -4417,7 +4418,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
-      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       titleAccion: 'Nuevo',
       form: {
@@ -4627,9 +4627,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$refs["cos_observacion"].reset();
     }
   },
-  mounted: function mounted() {
-    window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
-  },
+  mounted: function mounted() {},
   created: function created() {
     var _this6 = this;
 
@@ -5083,6 +5081,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.overlayLoading = false;
         _this.loading = false;
         _this.dataSet = [];
+
+        if (errores.response.status == 422) {
+          _this.errors = errores.response.data.errors;
+        }
       });
     },
     filterSearch: function filterSearch() {
@@ -5502,7 +5504,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
-      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       titleAccion: 'Nuevo',
       post_porcentaje_rendimiento: [function (valor) {
@@ -5710,9 +5711,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.form.post_observacion = '';
     }
   },
-  mounted: function mounted() {
-    window.axios.defaults.headers.common["Authorization"] = "Bearer ".concat(this.token);
-  },
+  mounted: function mounted() {},
   created: function created() {
     var _this6 = this;
 
@@ -6746,7 +6745,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this.overlayLoading = false;
         _this.loading = false;
         _this.dataSet = [];
-        _this.errors = errors.response.data.errors;
+
+        if (errors.response.status == 422) {
+          _this.errors = errors.response.data.errors;
+        }
       });
     },
     filterSearch: function filterSearch() {
@@ -7105,7 +7107,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      token: localStorage.getItem("TOKEN_SAJONA"),
       overlayLoading: false,
       menuDateInicial: false,
       menuDateFinal: false,
@@ -7226,7 +7227,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.overlayLoading = false;
         _this.loading = false;
         _this.dataSet = [];
-        _this.errors = errors.response.data.errors;
+
+        if (errors.response.status == 422) {
+          _this.errors = errors.response.data.errors;
+        }
       });
     },
     filterSearch: function filterSearch() {
@@ -7667,9 +7671,9 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       guest: true
     }
   }, {
-    path: '/auth/recuperar-password',
+    path: '/auth/recuperar-clave',
     component: _components_auth_recuperarPass_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    name: 'recuperar-password',
+    name: 'recuperar-clave',
     meta: {
       guest: true
     }
@@ -7885,7 +7889,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7909,7 +7913,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*======================\n    404 page\n=======================*/\n.page_404[data-v-c01741c2] {\n    padding: 40px 0;\n    background: #fff;\n    font-family: \"Arvo\", serif;\n}\n.page_404 img[data-v-c01741c2] {\n    width: 100%;\n}\n.four_zero_four_bg[data-v-c01741c2] {\n    background-image: url(/img-sistema/dribbble_1.gif);\n    height: 400px;\n    background-position: center;\n}\n.four_zero_four_bg h1[data-v-c01741c2] {\n    font-size: 80px;\n}\n.four_zero_four_bg h3[data-v-c01741c2] {\n    font-size: 80px;\n}\n.link_404[data-v-c01741c2] {\n    color: #fff !important;\n    padding: 10px 20px;\n    background: #39ac31;\n    margin: 20px 0;\n    display: inline-block;\n}\n.contant_box_404[data-v-c01741c2] {\n    margin-top: -50px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/*======================\r\n    404 page\r\n=======================*/\n.page_404[data-v-c01741c2] {\r\n    padding: 40px 0;\r\n    background: #fff;\r\n    font-family: \"Arvo\", serif;\n}\n.page_404 img[data-v-c01741c2] {\r\n    width: 100%;\n}\n.four_zero_four_bg[data-v-c01741c2] {\r\n    background-image: url(/img-sistema/dribbble_1.gif);\r\n    height: 400px;\r\n    background-position: center;\n}\n.four_zero_four_bg h1[data-v-c01741c2] {\r\n    font-size: 80px;\n}\n.four_zero_four_bg h3[data-v-c01741c2] {\r\n    font-size: 80px;\n}\n.link_404[data-v-c01741c2] {\r\n    color: #fff !important;\r\n    padding: 10px 20px;\r\n    background: #39ac31;\r\n    margin: 20px 0;\r\n    display: inline-block;\n}\n.contant_box_404[data-v-c01741c2] {\r\n    margin-top: -50px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7933,7 +7937,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\n    color :white !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\r\n    color :white !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -28406,9 +28410,9 @@ var render = function () {
                                 {
                                   staticClass:
                                     "pr-3 text-decoration-none text-subtitle-2 white--text",
-                                  attrs: { to: { name: "recuperar-password" } },
+                                  attrs: { to: { name: "recuperar-clave" } },
                                 },
-                                [_c("span", [_vm._v("Recuperar Password")])]
+                                [_c("span", [_vm._v("Recuperar Contraseña")])]
                               ),
                               _vm._v(" "),
                               _c(
@@ -28583,7 +28587,7 @@ var render = function () {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                RECUPERAR PASSWORD\n                            "
+                                    "\n                                RECUPERAR CONTRASEÑA\n                            "
                                   ),
                                 ]
                               ),

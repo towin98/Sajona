@@ -37,7 +37,7 @@
                                     color="primary"
                                     class="text-none"
                                     v-on:click="fnRecuperarPass">
-                                    RECUPERAR PASSWORD
+                                    RECUPERAR CONTRASEÑA
                                 </v-btn>
                             </v-card-actions>
                         </v-layout>
@@ -91,7 +91,7 @@ export default {
                     if (errors.response.status == 500) {
                         this.$swal({
                             icon: 'error',
-                            title: `Error inesperado al recuperar password`,
+                            title: `Error inesperado al recuperar clave`,
                             text: `${errors.response.data.errors}`,
                         });
                     }else if(errors.response.status == 401){ // Ojo el error 401 es de que no existe el email.

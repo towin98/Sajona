@@ -60,9 +60,9 @@
                             <v-card-actions class="mt-4">
                                 <v-spacer></v-spacer>
                                 <router-link
-                                    :to="{ name: 'recuperar-password' }"
+                                    :to="{ name: 'recuperar-clave' }"
                                     class="pr-3 text-decoration-none text-subtitle-2 white--text">
-                                    <span>Recuperar Password</span>
+                                    <span>Recuperar Contraseña</span>
                                 </router-link>
                                 <v-btn
                                     color="success"

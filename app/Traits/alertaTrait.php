@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Models\Alerta;
+use App\Models\Cosecha;
 use App\Models\Transplante;
 
 trait alertaTrait {
@@ -44,12 +45,12 @@ trait alertaTrait {
             // Si encuentra transplante a bolsa se busca si tiene transplante a campo.
 
             // Buscando transplante campo.
-            $transplante = transplante::select(['tp_fecha'])
+            $transplante = transplante::select(['tp_id','tp_fecha'])
                 ->where('tp_pm_id', optional($data->getPlantaMadre)->pm_id)
                 ->where('tp_tipo', 'campo')
-                ->get();
+                ->first();
 
-            if (count($transplante) == 0) {
+            if (!$transplante) {
                 if ($diasTranscurridos < ($this->max_rang_bolsa-1) ) { // rang max trans. bolsa (menos - 1 dia)
                     $arrAlerta[0] = "En Bolsa.";
                     $arrAlerta[1] = "#008F39";
@@ -61,8 +62,27 @@ trait alertaTrait {
                     $arrAlerta[1] = "#FF0000";
                 }
             }else{
-                $arrAlerta[0] = "Transplantes Completos.";
-                $arrAlerta[1] = "#008f39";
+                if ($diasTranscurridos < ($this->max_rang_campo-1) ) { // rang max trans. Campo (menos - 1 dia)
+                    $arrAlerta[0] = "En Campo";
+                    $arrAlerta[1] = "#008F39";
+                }else if($diasTranscurridos >= ($this->max_rang_campo-1) /* rang max trans. Campo (menos - 1 dia), armar rango cercano */  && $diasTranscurridos <= ($this->max_rang_campo)){
+                    $arrAlerta[0] = "Casi listo para Cosecha.";
+                    $arrAlerta[1] = "#ff8000";
+                }else if($diasTranscurridos > ($this->max_rang_campo) ){ // rang max trans. Campo
+
+                    // Consultando Cosecha, para saber si ya las plantas estan listas para cosecha.
+                    $cosecha = Cosecha::select(['cos_id'])->where('cos_tp_id', $transplante->tp_id)->where('cos_estado',1)->first();
+                    if ($cosecha) {
+                        // Si existe
+                        $arrAlerta[0] = "Cosechado.";
+                        $arrAlerta[1] = "#008F39";
+                    }else{
+                        // Si no hay registros en Cosecha.
+                        $arrAlerta[0] = "Listo para Cosecha.";
+                        $arrAlerta[1] = "#FF0000";
+                    }
+
+                }
             }
 
         }

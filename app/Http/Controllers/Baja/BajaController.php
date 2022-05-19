@@ -40,8 +40,15 @@ class BajaController extends Controller
         }
 
         $data = [];
-        $registros = Propagacion::select(['pro_id_lote'])
-            ->with([
+        $registros = Propagacion::select(['pro_id_lote']);
+
+        // Ordenamineto solo para lote.
+        if ($request->filled('orderColumn') && $request->filled('order')) {
+            if ($request->orderColumn == "id_lote") {
+                $registros = $registros->orderBy('pro_id_lote',$request->order);
+            }
+        }
+        $registros = $registros->with([
                 'getBaja' => function ($query) {
                     $query->select([
                         "bj_pro_id_lote",

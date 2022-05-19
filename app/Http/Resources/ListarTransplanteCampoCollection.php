@@ -32,6 +32,8 @@ class ListarTransplanteCampoCollection extends ResourceCollection
             ])
         ]);
 
+        $this->fnconsultarRangosAlerta();
+
         $arrAlerta = $this->alerta($data);
 
         $evento            = $arrAlerta[0];

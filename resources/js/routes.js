@@ -36,9 +36,9 @@ const router = new VueRouter({
             meta: {guest: true}
         },
         {
-            path: '/auth/recuperar-password',
+            path: '/auth/recuperar-clave',
             component: recuperarPass,
-            name: 'recuperar-password',
+            name: 'recuperar-clave',
             meta: {guest: true}
         },
         {

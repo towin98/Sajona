@@ -49,7 +49,7 @@ class AuthController extends Controller
                 if ($request->closeSesion != "SI") {
                     return response()->json([
                         'message' => 'Ya existe una sesión iniciada',
-                        'errors'  => "¿Quieres iniciar sesión aquí?."
+                        'errors'  => "¿Quieres iniciar sesión aquí?"
                     ], 423);
                 }else{
                     // Si ya hay una sesion iniciada y se envia como parametro SI se cierra sesión.
