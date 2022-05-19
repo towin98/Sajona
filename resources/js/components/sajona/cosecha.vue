@@ -229,7 +229,6 @@ export default {
     },
     data() {
         return {
-            token               : localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading      : false,
             titleAccion         : 'Nuevo',
 
@@ -439,7 +438,6 @@ export default {
 
     },
     mounted() {
-        window.axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
     },
     async created(){
         // Se carga informacion de campos parametros.

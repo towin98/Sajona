@@ -414,12 +414,7 @@ export default {
             this.formModalParametros.nombre   = '';
             this.formModalParametros.descripcion   = '';
             this.formModalParametros.estado   = '';
-        },
-    },
-    mounted() {
-        window.axios.defaults.headers.common[
-            "Authorization"
-        ] = `Bearer ${this.token}`;
-    },
+        }
+    }
 };
 </script>

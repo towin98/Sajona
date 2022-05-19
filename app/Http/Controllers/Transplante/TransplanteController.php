@@ -315,9 +315,6 @@ class TransplanteController extends Controller
             ->get()
             ->toArray();
 
-        // Requerido, consultando rango de transplantes.
-        $this->fnconsultarRangosAlerta();
-
         $registros = ListarTransplanteCampoCollection::collection($registros);
 
         // Ordenamiento

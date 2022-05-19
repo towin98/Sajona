@@ -20,7 +20,6 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/password/change', [AuthController::class, 'passwordChange'])->middleware('auth:sanctum');
 
-
 /*Rutas Controlador PermissionController*/
 Route::get('/busca-nombre-rol-user/', [PermissionController::class, 'buscaNombreRolUser'])->middleware('auth:sanctum');
 Route::get('/permisos-usuario/', [PermissionController::class, 'buscaPermisosUsuario'])->middleware('auth:sanctum');

@@ -258,7 +258,6 @@ export default {
     },
     data() {
         return {
-            token: localStorage.getItem("TOKEN_SAJONA"),
             overlayLoading   : false,
             menuDateInicial  : false,
             menuDateFinal    : false,
@@ -360,7 +359,9 @@ export default {
                     this.overlayLoading = false;
                     this.loading = false;
                     this.dataSet = [];
-                    this.errors = errors.response.data.errors;
+                    if (errors.response.status == 422) {
+                        this.errors = errors.response.data.errors;
+                    }
                 });
         },
         filterSearch() {
