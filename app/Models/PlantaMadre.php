@@ -38,8 +38,8 @@ class PlantaMadre extends Model
         "pm_cantidad_semillas",
         "pm_cantidad_esquejes",
         "pm_estado",
-        "getTransplante",
-        "getTransplantes", // Utilizado para traer todos los transplantes, (Modulo transplante bolsa)
+        "getTrasplante",
+        "getTrasplantes", // Utilizado para traer todos los trasplantes, (Modulo trasplante bolsa)
         "getPropagacion" // utilizado para modulo de cosecha, tracking.
     ];
 
@@ -48,17 +48,17 @@ class PlantaMadre extends Model
      *
      * @return Illuminate\Support\Collection;
      */
-    public function getTransplante(){
-        return $this->belongsTo(Transplante::class,'pm_id', 'tp_pm_id');
+    public function getTrasplante(){
+        return $this->belongsTo(Trasplante::class,'pm_id', 'tp_pm_id');
     }
 
     /**
-     *  Obtiene los registros de transplantes que hacen parte de planta madres.
+     *  Obtiene los registros de trasplantes que hacen parte de planta madres.
      *
      * @return Illuminate\Support\Collection;
      */
-    public function getTransplantes(){
-        return $this->hasMany(Transplante::class,'tp_pm_id', 'pm_id');
+    public function getTrasplantes(){
+        return $this->hasMany(Trasplante::class,'tp_pm_id', 'pm_id');
     }
 
     /**
@@ -71,18 +71,18 @@ class PlantaMadre extends Model
     }
 
     /**
-     * Scope para realizar una búsqueda mixta en el módulo de Transplante.
+     * Scope para realizar una búsqueda mixta en el módulo de Trasplante.
      *
      * @param Illuminate\Database\Eloquent\Builder $query
      * @param string $buscar Valor a buscar
      * @return Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBuscarTransplante($query, $buscar) {
+    public function scopeBuscarTrasplante($query, $buscar) {
         if($buscar) {
             return $query
                 ->where('pm_pro_id_lote', 'LIKE', "%$buscar%")
                 ->orWhere('propagacion.pro_fecha', 'LIKE', "%$buscar%")
-                ->orWhere('transplante.tp_fecha', 'LIKE', "%$buscar%");
+                ->orWhere('trasplante.tp_fecha', 'LIKE', "%$buscar%");
         }
     }
 }

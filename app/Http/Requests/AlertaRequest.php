@@ -51,21 +51,21 @@ class AlertaRequest extends FormRequest
             'max_rang_propagacion.integer'   => 'El rango máximo de Propagación debe ser entero.',
             'max_rang_propagacion.min'       => 'El rango maximo de Propagación debe ser al menos 0.',
 
-            'min_rang_bolsa.required'        => 'El rango mínimo de Trans. Bolsa es requerido.',
-            'min_rang_bolsa.integer'         => 'El rango mínimo de Trans. Bolsa debe ser entero.',
-            'min_rang_bolsa.min'             => 'El rango mínimo de Trans. Bolsa debe ser al menos 0.',
+            'min_rang_bolsa.required'        => 'El rango mínimo de Tras. Bolsa es requerido.',
+            'min_rang_bolsa.integer'         => 'El rango mínimo de Tras. Bolsa debe ser entero.',
+            'min_rang_bolsa.min'             => 'El rango mínimo de Tras. Bolsa debe ser al menos 0.',
 
-            'max_rang_bolsa.required'        => 'El rango máximo de Trans. Bolsa es requerido.',
-            'max_rang_bolsa.integer'         => 'El rango máximo de Trans. Bolsa debe ser entero.',
-            'max_rang_bolsa.min'             => 'El rango máximo de Trans. Bolsa debe ser al menos 0.',
+            'max_rang_bolsa.required'        => 'El rango máximo de Tras. Bolsa es requerido.',
+            'max_rang_bolsa.integer'         => 'El rango máximo de Tras. Bolsa debe ser entero.',
+            'max_rang_bolsa.min'             => 'El rango máximo de Tras. Bolsa debe ser al menos 0.',
 
-            'min_rang_campo.required'        => 'El rango mínimo de Trans. Campo es requerido.',
-            'min_rang_campo.integer'         => 'El rango mínimo de Trans. Campo debe ser entero.',
-            'min_rang_campo.min'             => 'El rango mínimo de Trans. Campo debe ser al menos 0.',
+            'min_rang_campo.required'        => 'El rango mínimo de Tras. Campo es requerido.',
+            'min_rang_campo.integer'         => 'El rango mínimo de Tras. Campo debe ser entero.',
+            'min_rang_campo.min'             => 'El rango mínimo de Tras. Campo debe ser al menos 0.',
 
-            'max_rang_campo.required'        => 'El rango máximo de Trans. Campo es requerido.',
-            'max_rang_campo.integer'         => 'El rango máximo de Trans. Campo debe ser entero.',
-            'max_rang_campo.min'             => 'El rango máximo de Trans. Campo debe ser al menos 0.',
+            'max_rang_campo.required'        => 'El rango máximo de Tras. Campo es requerido.',
+            'max_rang_campo.integer'         => 'El rango máximo de Tras. Campo debe ser entero.',
+            'max_rang_campo.min'             => 'El rango máximo de Tras. Campo debe ser al menos 0.',
         ];
     }
 

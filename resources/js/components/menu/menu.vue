@@ -90,9 +90,9 @@
                         </v-list-item>
 
                         <v-list-item
-                            v-if="this.transplanteBolsa"
-                            :to="{ name: 'transplante-bolsa' }"
-                            v-on:click="titleProceso = 'Transplante Bolsa'"
+                            v-if="this.trasplanteBolsa"
+                            :to="{ name: 'trasplante-bolsa' }"
+                            v-on:click="titleProceso = 'Trasplante Bolsa'"
                         >
                             <v-list-item-icon>
                                 <v-icon>navigate_next</v-icon>
@@ -100,15 +100,15 @@
 
                             <v-list-item-content>
                                 <v-list-item-title
-                                    >Transplante a bolsa</v-list-item-title
+                                    >Trasplante a bolsa</v-list-item-title
                                 >
                             </v-list-item-content>
                         </v-list-item>
 
                         <v-list-item
-                            v-if="this.transplanteCampo"
-                            :to="{ name: 'transplante-campo' }"
-                            v-on:click="titleProceso = 'Transplante Campo'"
+                            v-if="this.trasplanteCampo"
+                            :to="{ name: 'trasplante-campo' }"
+                            v-on:click="titleProceso = 'Trasplante Campo'"
                         >
                             <v-list-item-icon>
                                 <v-icon>navigate_next</v-icon>
@@ -116,7 +116,7 @@
 
                             <v-list-item-content>
                                 <v-list-item-title
-                                    >Transplante a campos</v-list-item-title
+                                    >Trasplante a campos</v-list-item-title
                                 >
                             </v-list-item-content>
                         </v-list-item>
@@ -283,8 +283,8 @@ export default {
 
             propagacion      : false,
             plantaMadre      : false,
-            transplanteBolsa : false,
-            transplanteCampo : false,
+            trasplanteBolsa : false,
+            trasplanteCampo : false,
             cosecha          : false,
             postCosecha      : false,
             bajas            : false,
@@ -340,8 +340,8 @@ export default {
                 case 'inicio':
                 case 'propagacion':
                 case 'planta-madre':
-                case 'transplante-bolsa':
-                case 'transplante-campo':
+                case 'trasplante-bolsa':
+                case 'trasplante-campo':
                 case 'cosecha':
                 case 'post-cosecha':
                 case 'bajas':
@@ -370,8 +370,8 @@ export default {
             case "Agronomo":
                 this.propagacion      = true;
                 this.plantaMadre      = true;
-                this.transplanteBolsa = true;
-                this.transplanteCampo = true;
+                this.trasplanteBolsa = true;
+                this.trasplanteCampo = true;
                 this.cosecha          = true;
                 this.postCosecha      = true;
                 this.bajas            = true;
@@ -386,8 +386,8 @@ export default {
                 this.sistemaGroup     = true;
                 this.cambioClave      = true;
                 // this.plantaMadre       = true;
-                // this.transplanteBolsa  = true;
-                // this.transplanteCampo  = true;
+                // this.trasplanteBolsa  = true;
+                // this.trasplanteCampo  = true;
                 // this.cosecha           = true;
                 // this.postCosecha       = true;
                 // this.bajas             = true;

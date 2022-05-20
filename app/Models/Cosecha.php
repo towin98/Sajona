@@ -46,17 +46,17 @@ class Cosecha extends Model
         "cos_peso_verde",
         "cos_observacion",
         "cos_estado",
-        "getTransplanteCampo",
+        "getTrasplanteCampo",
         "getPostCosecha"
     ];
 
     /**
-     *  Obtiene los registros de transplantes que hacen parte de cosecha.
+     *  Obtiene los registros de trasplantes que hacen parte de cosecha.
      *
      * @return Illuminate\Support\Collection;
      */
-    public function getTransplanteCampo(){
-        return $this->belongsTo(Transplante::class,'cos_tp_id', 'tp_id');
+    public function getTrasplanteCampo(){
+        return $this->belongsTo(Trasplante::class,'cos_tp_id', 'tp_id');
     }
 
     /**
@@ -78,7 +78,7 @@ class Cosecha extends Model
     public function scopeBuscarPostCosecha($query, $buscar) {
         if($buscar) {
             return $query
-                ->whereHas('getTransplanteCampo', function ($query) use ($buscar) {
+                ->whereHas('getTrasplanteCampo', function ($query) use ($buscar) {
                     $query->whereHas('getPlantaMadre', function ($query) use ($buscar) {
                         $query->where('pm_pro_id_lote', 'LIKE', "%$buscar%");
                     });

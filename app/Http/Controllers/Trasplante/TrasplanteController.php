@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Transplante;
+namespace App\Http\Controllers\Trasplante;
 
 use Exception;
 use App\Traits\bajasTrait;
 use App\Models\PlantaMadre;
 use App\Models\Propagacion;
-use App\Models\Transplante;
+use App\Models\Trasplante;
 use App\Traits\alertaTrait;
 use Illuminate\Http\Request;
 use App\Traits\commonsTrait;
 use App\Traits\paginationTrait;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TransplanteStoreRequest;
-use App\Http\Requests\TransplanteBuscarRequest;
-use App\Http\Requests\TransplanteCampoStoreRequest;
-use App\Http\Resources\ListarTransplanteCampoCollection;
+use App\Http\Requests\TrasplanteStoreRequest;
+use App\Http\Requests\TrasplanteBuscarRequest;
+use App\Http\Requests\TrasplanteCampoStoreRequest;
+use App\Http\Resources\ListarTrasplanteCampoCollection;
 use Illuminate\Auth\Access\AuthorizationException;
 
-class TransplanteController extends Controller
+class TrasplanteController extends Controller
 {
     use paginationTrait;
     use bajasTrait;
@@ -28,18 +28,18 @@ class TransplanteController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['permission:LISTAR'])->only(['buscarTransplanteBolsa', 'buscarTransplanteCampo']);
-        $this->middleware(['permission:CREAR|EDITAR'])->only(['storeTransplanteBolsa', 'storeTransplanteCampo']);
-        $this->middleware(['permission:VER'])->only(['showTransplanteBolsa', 'showTransplanteCampo']);
+        $this->middleware(['permission:LISTAR'])->only(['buscarTrasplanteBolsa', 'buscarTrasplanteCampo']);
+        $this->middleware(['permission:CREAR|EDITAR'])->only(['storeTrasplanteBolsa', 'storeTrasplanteCampo']);
+        $this->middleware(['permission:VER'])->only(['showTrasplanteBolsa', 'showTrasplanteCampo']);
     }
 
     /**
-     * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de transplantes a bolsa.
+     * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de trasplantes a bolsa.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function buscarTransplanteBolsa(TransplanteBuscarRequest $request) {
+    public function buscarTrasplanteBolsa(TrasplanteBuscarRequest $request) {
 
         // Se válida si envian los parámetros length y start.
         if($request->has(['length', 'start'])){
@@ -57,12 +57,12 @@ class TransplanteController extends Controller
                         'propagacion.pro_id_lote',
                         'propagacion.pro_fecha',
                         'planta_madre.pm_fecha_esquejacion',
-                        'transplante.tp_fecha'
+                        'trasplante.tp_fecha'
                     )
             ->join('planta_madre', 'planta_madre.pm_pro_id_lote', '=', 'propagacion.pro_id_lote')
-            ->leftJoin('transplante', function ($join) {
-                $join->on('transplante.tp_pm_id', '=', 'planta_madre.pm_id')
-                    ->where('transplante.tp_tipo', '=', 'bolsa');
+            ->leftJoin('trasplante', function ($join) {
+                $join->on('trasplante.tp_pm_id', '=', 'planta_madre.pm_id')
+                    ->where('trasplante.tp_tipo', '=', 'bolsa');
             });
 
         // Buscando por rango de fechas si digitan.
@@ -75,7 +75,7 @@ class TransplanteController extends Controller
             $registros = $registros
                 ->where('propagacion.pro_id_lote', 'LIKE', "%$request->buscar%")
                 ->orWhere('propagacion.pro_fecha', 'LIKE', "%$request->buscar%")
-                ->orWhere('transplante.tp_fecha', 'LIKE', "%$request->buscar%");
+                ->orWhere('trasplante.tp_fecha', 'LIKE', "%$request->buscar%");
         }
 
         $totalRegistros = $registros->count();
@@ -89,7 +89,7 @@ class TransplanteController extends Controller
                 $registros = $registros->orderBy('propagacion.pro_fecha', $request->order);
             break;
             case 'tp_fecha':
-                $registros = $registros->orderBy('transplante.tp_fecha', $request->order);
+                $registros = $registros->orderBy('trasplante.tp_fecha', $request->order);
             break;
         }
 
@@ -100,7 +100,7 @@ class TransplanteController extends Controller
 
         $filtrados = $registros->count();
 
-        // Requerido, consultando rango de transplantes.
+        // Requerido, consultando rango de trasplantes.
         $this->fnconsultarRangosAlerta();
 
         $registros = $registros->map(function ($value, $key){
@@ -140,12 +140,12 @@ class TransplanteController extends Controller
     }
 
     /**
-     * Guarda o Actualiza transplante a Bolsa.
+     * Guarda o Actualiza trasplante a Bolsa.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeTransplanteBolsa(TransplanteStoreRequest $request) {
+    public function storeTrasplanteBolsa(TrasplanteStoreRequest $request) {
         $plantaMadre = PlantaMadre::select('planta_madre.pm_id',
                                             'planta_madre.pm_pro_id_lote',
                                             'propagacion.pro_cantidad_plantas_madres',
@@ -161,12 +161,12 @@ class TransplanteController extends Controller
             ], 404);
         }
 
-        $transplanteBolsa = Transplante::where([
+        $trasplanteBolsa = Trasplante::where([
                 'tp_pm_id' => $plantaMadre->pm_id,
                 'tp_tipo'  => 'bolsa'
         ]);
 
-        if ($transplanteBolsa->first()) {
+        if ($trasplanteBolsa->first()) {
             if (!$this->fnVerificaPermisoUsuario('EDITAR')) {
                 throw new AuthorizationException;
             }
@@ -177,7 +177,7 @@ class TransplanteController extends Controller
         }
         try {
             // Se Eliminan registro en caso de que exista en planta madre, para simular un update.
-            $transplanteBolsa->delete();
+            $trasplanteBolsa->delete();
 
         } catch (\Exception $e) {
             return response()->json([
@@ -186,7 +186,7 @@ class TransplanteController extends Controller
             ], 500);
         }
 
-        Transplante::create([
+        Trasplante::create([
             'tp_pm_id'          => $plantaMadre->pm_id,
             'tp_tipo'           => 'bolsa',
             'tp_tipo_lote'      => $request->tp_tipo_lote,
@@ -202,22 +202,22 @@ class TransplanteController extends Controller
     }
 
     /**
-     * Muestra un registro de transplante a bolsa.
+     * Muestra un registro de trasplante a bolsa.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showTransplanteBolsa($id) {
+    public function showTrasplanteBolsa($id) {
         $registro = DB::table('planta_madre')->select('planta_madre.pm_id',
                                         'planta_madre.pm_pro_id_lote',
                                         'planta_madre.pm_cantidad_semillas',
                                         'planta_madre.pm_cantidad_esquejes',
-                                        'transplante.tp_fecha',
-                                        'transplante.tp_tipo_lote',
-                                        'transplante.tp_ubicacion',
-                                        'transplante.tp_cantidad_area',
+                                        'trasplante.tp_fecha',
+                                        'trasplante.tp_tipo_lote',
+                                        'trasplante.tp_ubicacion',
+                                        'trasplante.tp_cantidad_area',
                                         'propagacion.pro_cantidad_plantas_madres')
-            ->leftjoin('transplante', 'planta_madre.pm_id', '=', 'transplante.tp_pm_id')
+            ->leftjoin('trasplante', 'planta_madre.pm_id', '=', 'trasplante.tp_pm_id')
             ->join('propagacion', 'planta_madre.pm_pro_id_lote', '=', 'propagacion.pro_id_lote')
             ->where('planta_madre.pm_id', $id)
             ->get();
@@ -235,8 +235,8 @@ class TransplanteController extends Controller
         $registro = $registro->map(function ($data) use ($sumaCantidadBajas){
             return [
                 'tp_pm_id'                     => $data->pm_id,
-                'tp_fecha'                     => $data->tp_fecha == '' || $data->tp_fecha == '0000-00-00 00:00:00' ?  '' : substr($data->tp_fecha,0,10), // Fecha transplante
-                'cantidad_transplante_bolsa'   => (($data->pm_cantidad_semillas + $data->pm_cantidad_esquejes) - $sumaCantidadBajas), // Cantidad Sembrada en bolsa
+                'tp_fecha'                     => $data->tp_fecha == '' || $data->tp_fecha == '0000-00-00 00:00:00' ?  '' : substr($data->tp_fecha,0,10), // Fecha trasplante
+                'cantidad_trasplante_bolsa'   => (($data->pm_cantidad_semillas + $data->pm_cantidad_esquejes) - $sumaCantidadBajas), // Cantidad Sembrada en bolsa
                 'tp_tipo_lote'                 => $data->tp_tipo_lote == '' ? '' : $data->tp_tipo_lote,       // Tipo Lote
                 'tp_ubicacion'                 => $data->tp_ubicacion == '' ? '' : $data->tp_ubicacion, // Ubicación
                 'tp_cantidad_area'             => $data->tp_cantidad_area == '' || $data->tp_cantidad_area == 0 ?  '' : $data->tp_cantidad_area
@@ -248,15 +248,15 @@ class TransplanteController extends Controller
         ], 200);
     }
 
-    /* -------------- Metodos transplante a Campo  ------------------ */
+    /* -------------- Metodos trasplante a Campo  ------------------ */
 
     /**
-     * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de transplantes a bolsa.
+     * Método que busca planta madre por un rango de fechas para mostrarlas en el datatable de trasplantes a bolsa.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function buscarTransplanteCampo(TransplanteBuscarRequest $request) {
+    public function buscarTrasplanteCampo(TrasplanteBuscarRequest $request) {
 
         // Se válida si envian los parámetros length y start.
         if($request->has(['length', 'start'])){
@@ -278,7 +278,7 @@ class TransplanteController extends Controller
                         'pm_cantidad_esquejes'
                     ])
                     ->with([
-                        'getTransplantes' => function ($query) use ($request){
+                        'getTrasplantes' => function ($query) use ($request){
                             $query->select([
                                 'tp_pm_id',
                                 'tp_fecha',
@@ -299,12 +299,12 @@ class TransplanteController extends Controller
         }
 
         $registros = $registros->whereHas('getPlantaMadre', function ($query) use ($request) {
-                $query->whereHas('getTransplantes', function ($query) use ($request) {
+                $query->whereHas('getTrasplantes', function ($query) use ($request) {
                     $query->where('tp_tipo', 'bolsa')
                         ->orWhere('tp_tipo', 'campo');
                 });
             })
-            ->BuscarTransplanteCampo($request->buscar);
+            ->BuscarTrasplanteCampo($request->buscar);
 
         // consulta para saber cuantos registros hay.
         $totalRegistros = $registros->count();
@@ -315,14 +315,14 @@ class TransplanteController extends Controller
             ->get()
             ->toArray();
 
-        $registros = ListarTransplanteCampoCollection::collection($registros);
+        $registros = ListarTrasplanteCampoCollection::collection($registros);
 
         // Ordenamiento
         if ($request->filled('orderColumn') && $request->filled('order')) {
             switch ($request->orderColumn) {
                 case 'id_lote':
-                case 'fecha_transplante_Campo':
-                case 'fecha_transplante_bolsa':
+                case 'fecha_trasplante_Campo':
+                case 'fecha_trasplante_bolsa':
                 case 'fecha_propagacion':
                     $registros = collect($registros)->sortBy([
                         [$request->orderColumn, strtolower($request->order)]
@@ -342,12 +342,12 @@ class TransplanteController extends Controller
     }
 
     /**
-     * Muestra fecha transplante a campo y cantidad transplante campo, (valor automatico)
+     * Muestra fecha trasplante a campo y cantidad trasplante campo, (valor automatico)
      *
      * @param integer $tp_pm_id id de planta madre
      * @return \Illuminate\Http\Response
      */
-    public function showTransplanteCampo($tp_pm_id) {
+    public function showTrasplanteCampo($tp_pm_id) {
 
         $data = [];
 
@@ -363,18 +363,18 @@ class TransplanteController extends Controller
 
             $sumaCantidadBajas = $this->cantidadBajas($plantaMadre->pm_pro_id_lote, ['esquejes','campo', 'bolsa']);
 
-            // Calculando cantidad transplante a campo.
+            // Calculando cantidad trasplante a campo.
             $data['pm_pro_id_lote'] = $plantaMadre->pm_pro_id_lote;
-            $data['cantidad_transplante_campo'] = (($plantaMadre->pm_cantidad_semillas + $plantaMadre->pm_cantidad_esquejes) - $sumaCantidadBajas);
+            $data['cantidad_trasplante_campo'] = (($plantaMadre->pm_cantidad_semillas + $plantaMadre->pm_cantidad_esquejes) - $sumaCantidadBajas);
 
-            $transplanteBolsa = Transplante::select('tp_fecha')
+            $trasplanteBolsa = Trasplante::select('tp_fecha')
                 ->where('tp_pm_id', $tp_pm_id)
                 ->where('tp_tipo', 'campo')
                 ->first();
 
-            // Tiene transplante a bolsa
-            if($transplanteBolsa){
-                $data['tp_fecha'] = substr($transplanteBolsa->tp_fecha,0,10) ;
+            // Tiene trasplante a bolsa
+            if($trasplanteBolsa){
+                $data['tp_fecha'] = substr($trasplanteBolsa->tp_fecha,0,10) ;
             }else{
                 $data['tp_fecha'] = "";
             }
@@ -386,12 +386,12 @@ class TransplanteController extends Controller
     }
 
     /**
-     * Método que guarda transplante a campo si no existe, de lo contrario se actualiza, fecha de transplante.
+     * Método que guarda trasplante a campo si no existe, de lo contrario se actualiza, fecha de trasplante.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function storeTransplanteCampo(TransplanteCampoStoreRequest $request){
+    public function storeTrasplanteCampo(TrasplanteCampoStoreRequest $request){
 
         $plantaMadre = PlantaMadre::select([
                 'pm_id',
@@ -401,13 +401,13 @@ class TransplanteController extends Controller
 
         if ($plantaMadre) {
 
-            $transplanteCampo = Transplante::select(['tp_id'])
+            $trasplanteCampo = Trasplante::select(['tp_id'])
                 ->where('tp_pm_id', $plantaMadre->pm_id)
                 ->where('tp_tipo', 'campo');
 
-            // Consultando Transplante a bolsa para crear registro de transplante a campo con los mismos registros
+            // Consultando Trasplante a bolsa para crear registro de trasplante a campo con los mismos registros
             // de 'tp_tipo_lote','tp_ubicacion', 'tp_cantidad_area'
-            $transplanteBolsa = Transplante::select([
+            $trasplanteBolsa = Trasplante::select([
                     'tp_tipo_lote',
                     'tp_ubicacion',
                     'tp_cantidad_area'
@@ -416,20 +416,20 @@ class TransplanteController extends Controller
                 ->where('tp_tipo', 'bolsa')
                 ->first();
 
-            // Si no existe transplante a campo se crea
-            if (count($transplanteCampo->get()) == 0) {
+            // Si no existe trasplante a campo se crea
+            if (count($trasplanteCampo->get()) == 0) {
 
                 if (!$this->fnVerificaPermisoUsuario('CREAR')) {
                     throw new AuthorizationException;
                 }
 
-                $transplanteCampo->create([
+                $trasplanteCampo->create([
                     'tp_pm_id'          => $plantaMadre->pm_id,
                     'tp_tipo'           => 'campo',
-                    'tp_tipo_lote'      => $transplanteBolsa->tp_tipo_lote,
+                    'tp_tipo_lote'      => $trasplanteBolsa->tp_tipo_lote,
                     'tp_fecha'          => $request->tp_fecha." ".date('H:i:s'),
-                    'tp_ubicacion'      => $transplanteBolsa->tp_ubicacion,
-                    'tp_cantidad_area'  => $transplanteBolsa->tp_cantidad_area,
+                    'tp_ubicacion'      => $trasplanteBolsa->tp_ubicacion,
+                    'tp_cantidad_area'  => $trasplanteBolsa->tp_cantidad_area,
                     'tp_estado'         => true
                 ]);
             }else{
@@ -438,8 +438,8 @@ class TransplanteController extends Controller
                     throw new AuthorizationException;
                 }
 
-                // Se actualiza transplante a campo.
-                $transplanteCampo->update([
+                // Se actualiza trasplante a campo.
+                $trasplanteCampo->update([
                     'tp_fecha'          => $request->tp_fecha." ".date('H:i:s'),
                 ]);
             }

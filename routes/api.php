@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PlantaMadre\PlantaMadreController;
 use App\Http\Controllers\Propagacion\PropagacionController;
-use App\Http\Controllers\Transplante\TransplanteController;
+use App\Http\Controllers\Trasplante\TrasplanteController;
 use App\Http\Controllers\Baja\BajaController;
 use App\Http\Controllers\Cosecha\CosechaController;
 use App\Http\Controllers\Parametro\ParametroController;
@@ -46,22 +46,22 @@ Route::group(['prefix' => 'planta-madre', 'middleware' => 'auth:sanctum'] , func
     Route::get('/{Propagacion}', [PlantaMadreController::class, 'show']);
 });
 
-Route::group(['prefix' => 'transplante-bolsa', 'middleware' => 'auth:sanctum'] , function(){
-    Route::post('/',  [TransplanteController::class,'storeTransplanteBolsa']);
-    Route::get('/buscar', [TransplanteController::class, 'buscarTransplanteBolsa']);
-    Route::get('/{id}', [TransplanteController::class, 'showTransplanteBolsa']);
+Route::group(['prefix' => 'trasplante-bolsa', 'middleware' => 'auth:sanctum'] , function(){
+    Route::post('/',  [TrasplanteController::class,'storeTrasplanteBolsa']);
+    Route::get('/buscar', [TrasplanteController::class, 'buscarTrasplanteBolsa']);
+    Route::get('/{id}', [TrasplanteController::class, 'showTrasplanteBolsa']);
 });
 
-Route::group(['prefix' => 'transplante-campo', 'middleware' => 'auth:sanctum'] , function(){
-    Route::post('/',  [TransplanteController::class, 'storeTransplanteCampo']);
-    Route::get('/buscar', [TransplanteController::class, 'buscarTransplanteCampo']);
-    Route::get('/{id}', [TransplanteController::class, 'showTransplanteCampo']);
+Route::group(['prefix' => 'trasplante-campo', 'middleware' => 'auth:sanctum'] , function(){
+    Route::post('/',  [TrasplanteController::class, 'storeTrasplanteCampo']);
+    Route::get('/buscar', [TrasplanteController::class, 'buscarTrasplanteCampo']);
+    Route::get('/{id}', [TrasplanteController::class, 'showTrasplanteCampo']);
 });
 
 Route::group(['prefix' => 'cosecha', 'middleware' => 'auth:sanctum'] , function(){
     Route::post('/',  [CosechaController::class, 'storeCosecha']);
     Route::get('/buscar', [CosechaController::class, 'buscarCosechas']);
-    Route::get('/{id_transplante}', [CosechaController::class, 'showCosecha']);
+    Route::get('/{id_trasplante}', [CosechaController::class, 'showCosecha']);
     Route::post('/delete', [CosechaController::class, 'deleteCosecha']);
 });
 

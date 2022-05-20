@@ -1,7 +1,7 @@
 <template>
     <div>
         <loadingGeneral v-bind:overlayLoading="overlayLoading" />
-        <h4>Transplante Bolsa</h4>
+        <h4>Trasplante Bolsa</h4>
         <v-container fluid>
             <v-card elevation="2">
                 <v-card-title class="rounded-sm py-2">
@@ -10,7 +10,7 @@
                 <v-divider></v-divider>
 
                 <v-form
-                    v-on:submit.prevent="buscarTransplantes"
+                    v-on:submit.prevent="buscarTrasplantes"
                     ref="form"
                     lazy-validation
                 >
@@ -159,7 +159,7 @@
                                 </v-chip>
                             </template>
                             <template v-slot:item.consultar="{ item }" v-if="$can(['VER'])">
-                                <a @click="consultarTransplante(item)">Clic</a>
+                                <a @click="consultarTrasplante(item)">Clic</a>
                             </template>
                         </v-data-table>
                     </v-col>
@@ -168,7 +168,7 @@
             </v-card>
         </v-container>
 
-        <!-- Modal Transplante -->
+        <!-- Modal Trasplante -->
         <v-dialog v-model="modal" persistent width="800px">
             <v-card>
                 <v-card-title class="text-h5 py-2">
@@ -184,11 +184,11 @@
                 <v-card-text>
                     <v-row>
                         <v-col cols="6" sm="3" class="pa-0 pt-4">
-                            <v-subheader>Fecha Transplante</v-subheader>
+                            <v-subheader>Fecha Trasplante</v-subheader>
                         </v-col>
                         <v-col cols="6" sm="3" class="pa-0 pt-4">
                             <v-menu
-                                v-model="calendarioFechaTransplante"
+                                v-model="calendarioFechaTrasplante"
                                 :close-on-content-click="false"
                                 :nudge-right="40"
                                 transition="scale-transition"
@@ -210,7 +210,7 @@
                                 </template>
                                 <v-date-picker
                                     v-model="modalInfo.tp_fecha"
-                                    @input="calendarioFechaTransplante = false"
+                                    @input="calendarioFechaTrasplante = false"
                                     locale="es-CO"
                                 >
                                 </v-date-picker>
@@ -218,13 +218,13 @@
                         </v-col>
 
                         <v-col cols="6" sm="3" class="pa-0 pt-4">
-                            <v-subheader>Cantidad Transplante Bolsa</v-subheader>
+                            <v-subheader>Cantidad Trasplante Bolsa</v-subheader>
                         </v-col>
                         <v-col cols="6" sm="3" class="pa-0 pt-4">
                             <v-text-field
                                 type="number"
-                                v-model="modalInfo.cantidad_transplante_bolsa"
-                                ref="cantidad_transplante_bolsa"
+                                v-model="modalInfo.cantidad_trasplante_bolsa"
+                                ref="cantidad_trasplante_bolsa"
                                 dense
                                 disabled
                             ></v-text-field>
@@ -282,7 +282,7 @@
                                 color="success"
                                 class="white--text text-none"
                                 tile
-                                v-on:click="guardarTransplante"
+                                v-on:click="guardarTrasplante"
                                 :disabled="!$can(['CREAR', 'EDITAR'])"
                             >
                                 <v-icon> save </v-icon>Guardar
@@ -331,7 +331,7 @@ export default {
             headers: [
                 { text: "Id Lote", align: "start", value: "id_lote" },
                 { text: "Fecha Propagación", value: "fecha_propagacion" },
-                { text: "Fecha Transplante a Bolsa", value: "tp_fecha" },
+                { text: "Fecha Trasplante a Bolsa", value: "tp_fecha" },
                 { text: "Estado", value: "estado_lote", sortable: false },
                 { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
                 { text: "Acción", value: "accion" },
@@ -343,13 +343,13 @@ export default {
             /* end variables Table. */
 
             /* Variables modal*/
-            calendarioFechaTransplante : false,
+            calendarioFechaTrasplante : false,
             modal     : false,
             modalInfo : {
-                tp_tipo          : 'Transplante Bolsa',
+                tp_tipo          : 'Trasplante Bolsa',
                 tp_pm_id         : '',
                 tp_fecha         : '',
-                cantidad_transplante_bolsa  : '',
+                cantidad_trasplante_bolsa  : '',
                 tp_tipo_lote     : '',
                 tp_ubicacion     : '',
                 tp_cantidad_area : ''
@@ -371,7 +371,7 @@ export default {
         deep: true,
     },
     methods: {
-        buscarTransplantes() {
+        buscarTrasplantes() {
             this.overlayLoading = true;
             this.loading = true;
             let { page, itemsPerPage, sortBy, sortDesc } = this.options;
@@ -393,7 +393,7 @@ export default {
 
             axios
                 .get(
-                    `/sajona/transplante-bolsa/buscar?fecha_inicial=${this.form.fecha_inicial}&fecha_final=${this.form.fecha_final}&length=${this.length}&start=${this.start}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${this.buscar}`
+                    `/sajona/trasplante-bolsa/buscar?fecha_inicial=${this.form.fecha_inicial}&fecha_final=${this.form.fecha_final}&length=${this.length}&start=${this.start}&orderColumn=${sortBy}&order=${sortDesc}&buscar=${this.buscar}`
                 )
                 .then((response) => {
                     this.loading = false;
@@ -422,14 +422,14 @@ export default {
                 this.overlayLoading = true;
                 clearTimeout(this.debounce);
                 this.debounce = setTimeout(() => {
-                    this.buscarTransplantes(this.buscar);
+                    this.buscarTrasplantes(this.buscar);
                 }, 600);
         },
-        consultarTransplante(item) {
+        consultarTrasplante(item) {
             this.modalErrors = '';
             this.overlayLoading = true;
             axios
-                .get(`/sajona/transplante-bolsa/${item.pm_id}`)
+                .get(`/sajona/trasplante-bolsa/${item.pm_id}`)
                 .then((response) => {
                     this.modal = true;
 
@@ -438,7 +438,7 @@ export default {
 
                     // Cargando Data.
                     this.modalInfo.tp_pm_id = response.data.data.tp_pm_id;
-                    this.modalInfo.cantidad_transplante_bolsa = response.data.data.cantidad_transplante_bolsa; // label
+                    this.modalInfo.cantidad_trasplante_bolsa = response.data.data.cantidad_trasplante_bolsa; // label
                     this.modalInfo.tp_tipo_lote = response.data.data.tp_tipo_lote;
                     this.modalInfo.tp_ubicacion = response.data.data.tp_ubicacion;
                     this.modalInfo.tp_cantidad_area = response.data.data.tp_cantidad_area;
@@ -450,10 +450,10 @@ export default {
                     this.fnResponseError(errores);
                 });
         },
-        guardarTransplante(){
+        guardarTrasplante(){
             this.overlayLoading = true;
             axios
-                .post(`/sajona/transplante-bolsa`, this.modalInfo)
+                .post(`/sajona/trasplante-bolsa`, this.modalInfo)
                 .then((response) => {
                     this.$swal(
                         response.data.message,
@@ -463,7 +463,7 @@ export default {
                     this.overlayLoading = false;
                     this.modal = false;
                     this.modalErrors = '';
-                    this.buscarTransplantes();
+                    this.buscarTrasplantes();
                 })
                 .catch((errores) => {
                     this.overlayLoading = false;

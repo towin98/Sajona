@@ -2332,7 +2332,6 @@ __webpack_require__.r(__webpack_exports__);
       this.overlayLoading = true;
       axios.post("/sajona/password/email", this.form).then(function (response) {
         _this.overlayLoading = false;
-        console.log(response.data);
 
         _this.$swal('Datos de Acceso', response.data.message, 'success');
 
@@ -3560,8 +3559,8 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
       },
       propagacion: false,
       plantaMadre: false,
-      transplanteBolsa: false,
-      transplanteCampo: false,
+      trasplanteBolsa: false,
+      trasplanteCampo: false,
       cosecha: false,
       postCosecha: false,
       bajas: false,
@@ -3621,7 +3620,7 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
 
               _this2.titleProceso = _this2.$route.name.replace("-", " ");
               _context2.t0 = _this2.$route.name;
-              _context2.next = _context2.t0 === 'parametros' ? 6 : _context2.t0 === 'alerta' ? 6 : _context2.t0 === 'cambio-clave' ? 6 : _context2.t0 === 'alerta' ? 8 : _context2.t0 === 'inicio' ? 8 : _context2.t0 === 'propagacion' ? 8 : _context2.t0 === 'planta-madre' ? 8 : _context2.t0 === 'transplante-bolsa' ? 8 : _context2.t0 === 'transplante-campo' ? 8 : _context2.t0 === 'cosecha' ? 8 : _context2.t0 === 'post-cosecha' ? 8 : _context2.t0 === 'bajas' ? 8 : _context2.t0 === 'reportes' ? 8 : 10;
+              _context2.next = _context2.t0 === 'parametros' ? 6 : _context2.t0 === 'alerta' ? 6 : _context2.t0 === 'cambio-clave' ? 6 : _context2.t0 === 'alerta' ? 8 : _context2.t0 === 'inicio' ? 8 : _context2.t0 === 'propagacion' ? 8 : _context2.t0 === 'planta-madre' ? 8 : _context2.t0 === 'trasplante-bolsa' ? 8 : _context2.t0 === 'trasplante-campo' ? 8 : _context2.t0 === 'cosecha' ? 8 : _context2.t0 === 'post-cosecha' ? 8 : _context2.t0 === 'bajas' ? 8 : _context2.t0 === 'reportes' ? 8 : 10;
               break;
 
             case 6:
@@ -3674,8 +3673,8 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
             case 23:
               _this2.propagacion = true;
               _this2.plantaMadre = true;
-              _this2.transplanteBolsa = true;
-              _this2.transplanteCampo = true;
+              _this2.trasplanteBolsa = true;
+              _this2.trasplanteCampo = true;
               _this2.cosecha = true;
               _this2.postCosecha = true;
               _this2.bajas = true;
@@ -3690,8 +3689,8 @@ Vue.mixin(_commons_commons_js__WEBPACK_IMPORTED_MODULE_2__.commons);
               _this2.propagacion = true;
               _this2.sistemaGroup = true;
               _this2.cambioClave = true; // this.plantaMadre       = true;
-              // this.transplanteBolsa  = true;
-              // this.transplanteCampo  = true;
+              // this.trasplanteBolsa  = true;
+              // this.trasplanteCampo  = true;
               // this.cosecha           = true;
               // this.postCosecha       = true;
               // this.bajas             = true;
@@ -4449,7 +4448,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         text: "Cantidad Planta Madre",
         value: "pro_cantidad_plantas_madres"
       }, {
-        text: "Fecha transplante Bolsa",
+        text: "Fecha trasplante Bolsa",
         value: "tp_fecha"
       }, {
         text: "Fecha de cosecha",
@@ -4606,8 +4605,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     fnDiasDeFloracionCalculo: function fnDiasDeFloracionCalculo() {
       if (this.form.cos_fecha_cosecha != "") {
         var fechaCosecha = new Date(this.form.cos_fecha_cosecha);
-        var fechaTransTerreno = new Date(this.form.tp_fecha);
-        var diff = Math.abs(fechaCosecha - fechaTransTerreno);
+        var fechaTrasTerreno = new Date(this.form.tp_fecha);
+        var diff = Math.abs(fechaCosecha - fechaTrasTerreno);
         this.form.cos_dias_floracion = diff / (1000 * 3600 * 24);
       }
     },
@@ -6293,10 +6292,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteBolsa.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteBolsa.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6649,7 +6648,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         text: "Fecha Propagación",
         value: "fecha_propagacion"
       }, {
-        text: "Fecha Transplante a Bolsa",
+        text: "Fecha Trasplante a Bolsa",
         value: "tp_fecha"
       }, {
         text: "Estado",
@@ -6674,13 +6673,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /* end variables Table. */
 
       /* Variables modal*/
-      calendarioFechaTransplante: false,
+      calendarioFechaTrasplante: false,
       modal: false,
       modalInfo: {
-        tp_tipo: 'Transplante Bolsa',
+        tp_tipo: 'Trasplante Bolsa',
         tp_pm_id: '',
         tp_fecha: '',
-        cantidad_transplante_bolsa: '',
+        cantidad_trasplante_bolsa: '',
         tp_tipo_lote: '',
         tp_ubicacion: '',
         tp_cantidad_area: ''
@@ -6702,7 +6701,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deep: true
   },
   methods: {
-    buscarTransplantes: function buscarTransplantes() {
+    buscarTrasplantes: function buscarTrasplantes() {
       var _this = this;
 
       this.overlayLoading = true;
@@ -6727,7 +6726,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         sortDesc = "";
       }
 
-      axios.get("/sajona/transplante-bolsa/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&length=").concat(this.length, "&start=").concat(this.start, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
+      axios.get("/sajona/trasplante-bolsa/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&length=").concat(this.length, "&start=").concat(this.start, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
         _this.loading = false;
         _this.dataSet = response.data.data;
         _this.totalRegistros = response.data.total;
@@ -6755,21 +6754,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.overlayLoading = true;
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
-        _this2.buscarTransplantes(_this2.buscar);
+        _this2.buscarTrasplantes(_this2.buscar);
       }, 600);
     },
-    consultarTransplante: function consultarTransplante(item) {
+    consultarTrasplante: function consultarTrasplante(item) {
       var _this3 = this;
 
       this.modalErrors = '';
       this.overlayLoading = true;
-      axios.get("/sajona/transplante-bolsa/".concat(item.pm_id)).then(function (response) {
+      axios.get("/sajona/trasplante-bolsa/".concat(item.pm_id)).then(function (response) {
         _this3.modal = true;
         _this3.modalInfo.tp_fecha = response.data.data.tp_fecha != '' ? response.data.data.tp_fecha : '';
         _this3.title_modal = item.accion == "Finalizado" ? "Actualizar" : "Nuevo"; // Cargando Data.
 
         _this3.modalInfo.tp_pm_id = response.data.data.tp_pm_id;
-        _this3.modalInfo.cantidad_transplante_bolsa = response.data.data.cantidad_transplante_bolsa; // label
+        _this3.modalInfo.cantidad_trasplante_bolsa = response.data.data.cantidad_trasplante_bolsa; // label
 
         _this3.modalInfo.tp_tipo_lote = response.data.data.tp_tipo_lote;
         _this3.modalInfo.tp_ubicacion = response.data.data.tp_ubicacion;
@@ -6781,18 +6780,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this3.fnResponseError(errores);
       });
     },
-    guardarTransplante: function guardarTransplante() {
+    guardarTrasplante: function guardarTrasplante() {
       var _this4 = this;
 
       this.overlayLoading = true;
-      axios.post("/sajona/transplante-bolsa", this.modalInfo).then(function (response) {
+      axios.post("/sajona/trasplante-bolsa", this.modalInfo).then(function (response) {
         _this4.$swal(response.data.message, '', 'success');
 
         _this4.overlayLoading = false;
         _this4.modal = false;
         _this4.modalErrors = '';
 
-        _this4.buscarTransplantes();
+        _this4.buscarTrasplantes();
       })["catch"](function (errores) {
         _this4.overlayLoading = false;
         _this4.modalErrors = _this4.fnResponseError(errores);
@@ -6834,10 +6833,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteCampo.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteCampo.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteCampo.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteCampo.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7136,14 +7135,14 @@ __webpack_require__.r(__webpack_exports__);
         text: "Fecha Propagación",
         value: "fecha_propagacion"
       }, {
-        text: "Fecha Transplante Bolsa",
-        value: "fecha_transplante_bolsa"
+        text: "Fecha Trasplante Bolsa",
+        value: "fecha_trasplante_bolsa"
       }, {
-        text: "Fecha Transplante Campo",
-        value: "fecha_transplante_Campo"
+        text: "Fecha Trasplante Campo",
+        value: "fecha_trasplante_Campo"
       }, {
-        text: "Cantidad Transplante Campo",
-        value: "cantidad_transplante_campo"
+        text: "Cantidad Trasplante Campo",
+        value: "cantidad_trasplante_campo"
       }, {
         text: "Estado",
         value: "estado_lote",
@@ -7153,8 +7152,8 @@ __webpack_require__.r(__webpack_exports__);
         value: "dias_transcurridos",
         sortable: false
       }, {
-        text: "Transplante Campo",
-        value: "transplante_campo_accion",
+        text: "Trasplante Campo",
+        value: "trasplante_campo_accion",
         sortable: false
       }],
       dataSet: [],
@@ -7164,7 +7163,7 @@ __webpack_require__.r(__webpack_exports__);
       /* end variables Table. */
 
       /* Variables modal*/
-      calendarioFechaTransplante: false,
+      calendarioFechaTrasplante: false,
       modal: false,
       modalInfo: {
         id_lote: '',
@@ -7184,7 +7183,7 @@ __webpack_require__.r(__webpack_exports__);
     deep: true
   },
   methods: {
-    buscarTransplantes: function buscarTransplantes() {
+    buscarTrasplantes: function buscarTrasplantes() {
       var _this = this;
 
       this.overlayLoading = true;
@@ -7209,7 +7208,7 @@ __webpack_require__.r(__webpack_exports__);
         sortDesc = "";
       }
 
-      axios.get("/sajona/transplante-campo/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&length=").concat(this.length, "&start=").concat(this.start, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
+      axios.get("/sajona/trasplante-campo/buscar?fecha_inicial=".concat(this.form.fecha_inicial, "&fecha_final=").concat(this.form.fecha_final, "&length=").concat(this.length, "&start=").concat(this.start, "&orderColumn=").concat(sortBy, "&order=").concat(sortDesc, "&buscar=").concat(this.buscar)).then(function (response) {
         _this.loading = false;
         _this.dataSet = response.data.data;
         _this.totalRegistros = response.data.total;
@@ -7237,15 +7236,15 @@ __webpack_require__.r(__webpack_exports__);
       this.overlayLoading = true;
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
-        _this2.buscarTransplantes(_this2.buscar);
+        _this2.buscarTrasplantes(_this2.buscar);
       }, 600);
     },
-    consultarTransplante: function consultarTransplante(item) {
+    consultarTrasplante: function consultarTrasplante(item) {
       var _this3 = this;
 
       this.modalErrors = '';
       this.overlayLoading = true;
-      axios.get("/sajona/transplante-campo/".concat(item.pm_id)).then(function (response) {
+      axios.get("/sajona/trasplante-campo/".concat(item.pm_id)).then(function (response) {
         _this3.modal = true;
 
         if (response.data.data.tp_fecha != '') {
@@ -7256,7 +7255,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
         _this3.modalInfo.id_lote = response.data.data.pm_pro_id_lote;
-        _this3.modalInfo.cantidad_transplante_campo = response.data.data.cantidad_transplante_campo; // label
+        _this3.modalInfo.cantidad_trasplante_campo = response.data.data.cantidad_trasplante_campo; // label
 
         _this3.overlayLoading = false;
       })["catch"](function (errores) {
@@ -7264,18 +7263,18 @@ __webpack_require__.r(__webpack_exports__);
         _this3.overlayLoading = false;
       });
     },
-    guardarTransplante: function guardarTransplante() {
+    guardarTrasplante: function guardarTrasplante() {
       var _this4 = this;
 
       this.overlayLoading = true;
-      axios.post("/sajona/transplante-campo", this.modalInfo).then(function (response) {
+      axios.post("/sajona/trasplante-campo", this.modalInfo).then(function (response) {
         _this4.$swal(response.data.message, '', 'success');
 
         _this4.overlayLoading = false;
         _this4.modal = false;
         _this4.modalErrors = '';
 
-        _this4.buscarTransplantes();
+        _this4.buscarTrasplantes();
       })["catch"](function (errores) {
         _this4.modalErrors = _this4.fnResponseError(errores);
         _this4.overlayLoading = false;
@@ -7624,8 +7623,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_sajona_inicio_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/sajona/inicio.vue */ "./resources/js/components/sajona/inicio.vue");
 /* harmony import */ var _components_sajona_propagacion_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/sajona/propagacion.vue */ "./resources/js/components/sajona/propagacion.vue");
 /* harmony import */ var _components_sajona_plantaMadre_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/sajona/plantaMadre.vue */ "./resources/js/components/sajona/plantaMadre.vue");
-/* harmony import */ var _components_sajona_transplanteBolsa_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/sajona/transplanteBolsa.vue */ "./resources/js/components/sajona/transplanteBolsa.vue");
-/* harmony import */ var _components_sajona_transplanteCampo_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/sajona/transplanteCampo.vue */ "./resources/js/components/sajona/transplanteCampo.vue");
+/* harmony import */ var _components_sajona_trasplanteBolsa_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/sajona/trasplanteBolsa.vue */ "./resources/js/components/sajona/trasplanteBolsa.vue");
+/* harmony import */ var _components_sajona_trasplanteCampo_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/sajona/trasplanteCampo.vue */ "./resources/js/components/sajona/trasplanteCampo.vue");
 /* harmony import */ var _components_sajona_cosecha_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/sajona/cosecha.vue */ "./resources/js/components/sajona/cosecha.vue");
 /* harmony import */ var _components_sajona_postCosecha_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/sajona/postCosecha.vue */ "./resources/js/components/sajona/postCosecha.vue");
 /* harmony import */ var _components_sajona_bajas_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/sajona/bajas.vue */ "./resources/js/components/sajona/bajas.vue");
@@ -7694,13 +7693,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       component: _components_sajona_plantaMadre_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
       name: 'planta-madre'
     }, {
-      path: 'transplante-bolsa',
-      component: _components_sajona_transplanteBolsa_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
-      name: 'transplante-bolsa'
+      path: 'trasplante-bolsa',
+      component: _components_sajona_trasplanteBolsa_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
+      name: 'trasplante-bolsa'
     }, {
-      path: 'transplante-campo',
-      component: _components_sajona_transplanteCampo_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
-      name: 'transplante-campo'
+      path: 'trasplante-campo',
+      component: _components_sajona_trasplanteCampo_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+      name: 'trasplante-campo'
     }, {
       path: 'cosecha',
       component: _components_sajona_cosecha_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
@@ -7887,7 +7886,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7935,7 +7934,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\r\n    color :white !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\n    color :white !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -27429,10 +27428,10 @@ component.options.__file = "resources/js/components/sajona/reportes.vue"
 
 /***/ }),
 
-/***/ "./resources/js/components/sajona/transplanteBolsa.vue":
-/*!*************************************************************!*\
-  !*** ./resources/js/components/sajona/transplanteBolsa.vue ***!
-  \*************************************************************/
+/***/ "./resources/js/components/sajona/trasplanteBolsa.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/sajona/trasplanteBolsa.vue ***!
+  \************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -27440,8 +27439,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _transplanteBolsa_vue_vue_type_template_id_2ac2e8d9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./transplanteBolsa.vue?vue&type=template&id=2ac2e8d9& */ "./resources/js/components/sajona/transplanteBolsa.vue?vue&type=template&id=2ac2e8d9&");
-/* harmony import */ var _transplanteBolsa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./transplanteBolsa.vue?vue&type=script&lang=js& */ "./resources/js/components/sajona/transplanteBolsa.vue?vue&type=script&lang=js&");
+/* harmony import */ var _trasplanteBolsa_vue_vue_type_template_id_1b6bffe5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./trasplanteBolsa.vue?vue&type=template&id=1b6bffe5& */ "./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=template&id=1b6bffe5&");
+/* harmony import */ var _trasplanteBolsa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./trasplanteBolsa.vue?vue&type=script&lang=js& */ "./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -27451,9 +27450,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _transplanteBolsa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _transplanteBolsa_vue_vue_type_template_id_2ac2e8d9___WEBPACK_IMPORTED_MODULE_0__.render,
-  _transplanteBolsa_vue_vue_type_template_id_2ac2e8d9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _trasplanteBolsa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _trasplanteBolsa_vue_vue_type_template_id_1b6bffe5___WEBPACK_IMPORTED_MODULE_0__.render,
+  _trasplanteBolsa_vue_vue_type_template_id_1b6bffe5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -27463,15 +27462,15 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/sajona/transplanteBolsa.vue"
+component.options.__file = "resources/js/components/sajona/trasplanteBolsa.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/sajona/transplanteCampo.vue":
-/*!*************************************************************!*\
-  !*** ./resources/js/components/sajona/transplanteCampo.vue ***!
-  \*************************************************************/
+/***/ "./resources/js/components/sajona/trasplanteCampo.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/sajona/trasplanteCampo.vue ***!
+  \************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -27479,8 +27478,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _transplanteCampo_vue_vue_type_template_id_4143de1a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./transplanteCampo.vue?vue&type=template&id=4143de1a& */ "./resources/js/components/sajona/transplanteCampo.vue?vue&type=template&id=4143de1a&");
-/* harmony import */ var _transplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./transplanteCampo.vue?vue&type=script&lang=js& */ "./resources/js/components/sajona/transplanteCampo.vue?vue&type=script&lang=js&");
+/* harmony import */ var _trasplanteCampo_vue_vue_type_template_id_31ecf526___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./trasplanteCampo.vue?vue&type=template&id=31ecf526& */ "./resources/js/components/sajona/trasplanteCampo.vue?vue&type=template&id=31ecf526&");
+/* harmony import */ var _trasplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./trasplanteCampo.vue?vue&type=script&lang=js& */ "./resources/js/components/sajona/trasplanteCampo.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -27490,9 +27489,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _transplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _transplanteCampo_vue_vue_type_template_id_4143de1a___WEBPACK_IMPORTED_MODULE_0__.render,
-  _transplanteCampo_vue_vue_type_template_id_4143de1a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _trasplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _trasplanteCampo_vue_vue_type_template_id_31ecf526___WEBPACK_IMPORTED_MODULE_0__.render,
+  _trasplanteCampo_vue_vue_type_template_id_31ecf526___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -27502,7 +27501,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/sajona/transplanteCampo.vue"
+component.options.__file = "resources/js/components/sajona/trasplanteCampo.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -27785,10 +27784,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/sajona/transplanteBolsa.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************!*\
-  !*** ./resources/js/components/sajona/transplanteBolsa.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************/
+/***/ "./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -27796,15 +27795,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteBolsa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./transplanteBolsa.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteBolsa.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteBolsa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteBolsa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./trasplanteBolsa.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteBolsa_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/sajona/transplanteCampo.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************!*\
-  !*** ./resources/js/components/sajona/transplanteCampo.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************/
+/***/ "./resources/js/components/sajona/trasplanteCampo.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/sajona/trasplanteCampo.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -27812,8 +27811,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./transplanteCampo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteCampo.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./trasplanteCampo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteCampo.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteCampo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -28161,36 +28160,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/sajona/transplanteBolsa.vue?vue&type=template&id=2ac2e8d9&":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/components/sajona/transplanteBolsa.vue?vue&type=template&id=2ac2e8d9& ***!
-  \********************************************************************************************/
+/***/ "./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=template&id=1b6bffe5&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=template&id=1b6bffe5& ***!
+  \*******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteBolsa_vue_vue_type_template_id_2ac2e8d9___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteBolsa_vue_vue_type_template_id_2ac2e8d9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteBolsa_vue_vue_type_template_id_1b6bffe5___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteBolsa_vue_vue_type_template_id_1b6bffe5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteBolsa_vue_vue_type_template_id_2ac2e8d9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./transplanteBolsa.vue?vue&type=template&id=2ac2e8d9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteBolsa.vue?vue&type=template&id=2ac2e8d9&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteBolsa_vue_vue_type_template_id_1b6bffe5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./trasplanteBolsa.vue?vue&type=template&id=1b6bffe5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=template&id=1b6bffe5&");
 
 
 /***/ }),
 
-/***/ "./resources/js/components/sajona/transplanteCampo.vue?vue&type=template&id=4143de1a&":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/components/sajona/transplanteCampo.vue?vue&type=template&id=4143de1a& ***!
-  \********************************************************************************************/
+/***/ "./resources/js/components/sajona/trasplanteCampo.vue?vue&type=template&id=31ecf526&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/sajona/trasplanteCampo.vue?vue&type=template&id=31ecf526& ***!
+  \*******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteCampo_vue_vue_type_template_id_4143de1a___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteCampo_vue_vue_type_template_id_4143de1a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteCampo_vue_vue_type_template_id_31ecf526___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteCampo_vue_vue_type_template_id_31ecf526___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_transplanteCampo_vue_vue_type_template_id_4143de1a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./transplanteCampo.vue?vue&type=template&id=4143de1a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteCampo.vue?vue&type=template&id=4143de1a&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_trasplanteCampo_vue_vue_type_template_id_31ecf526___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./trasplanteCampo.vue?vue&type=template&id=31ecf526& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteCampo.vue?vue&type=template&id=31ecf526&");
 
 
 /***/ }),
@@ -28744,7 +28743,7 @@ var render = function () {
                     [
                       _c("div", { staticClass: "text-center" }, [
                         _vm._v(
-                          "Rango alerta en días para el módulo Trans. Bolsa"
+                          "Rango alerta en días para el módulo Tras. Bolsa"
                         ),
                       ]),
                       _vm._v(" "),
@@ -28789,7 +28788,7 @@ var render = function () {
                     [
                       _c("div", { staticClass: "text-center" }, [
                         _vm._v(
-                          "Rango alerta en días para el módulo Trans. Campo"
+                          "Rango alerta en días para el módulo Tras. Campo"
                         ),
                       ]),
                       _vm._v(" "),
@@ -30024,14 +30023,14 @@ var render = function () {
                               )
                             : _vm._e(),
                           _vm._v(" "),
-                          this.transplanteBolsa
+                          this.trasplanteBolsa
                             ? _c(
                                 "v-list-item",
                                 {
-                                  attrs: { to: { name: "transplante-bolsa" } },
+                                  attrs: { to: { name: "trasplante-bolsa" } },
                                   on: {
                                     click: function ($event) {
-                                      _vm.titleProceso = "Transplante Bolsa"
+                                      _vm.titleProceso = "Trasplante Bolsa"
                                     },
                                   },
                                 },
@@ -30046,7 +30045,7 @@ var render = function () {
                                     "v-list-item-content",
                                     [
                                       _c("v-list-item-title", [
-                                        _vm._v("Transplante a bolsa"),
+                                        _vm._v("Trasplante a bolsa"),
                                       ]),
                                     ],
                                     1
@@ -30056,14 +30055,14 @@ var render = function () {
                               )
                             : _vm._e(),
                           _vm._v(" "),
-                          this.transplanteCampo
+                          this.trasplanteCampo
                             ? _c(
                                 "v-list-item",
                                 {
-                                  attrs: { to: { name: "transplante-campo" } },
+                                  attrs: { to: { name: "trasplante-campo" } },
                                   on: {
                                     click: function ($event) {
-                                      _vm.titleProceso = "Transplante Campo"
+                                      _vm.titleProceso = "Trasplante Campo"
                                     },
                                   },
                                 },
@@ -30078,7 +30077,7 @@ var render = function () {
                                     "v-list-item-content",
                                     [
                                       _c("v-list-item-title", [
-                                        _vm._v("Transplante a campos"),
+                                        _vm._v("Trasplante a campos"),
                                       ]),
                                     ],
                                     1
@@ -30932,7 +30931,7 @@ var render = function () {
                   _c(
                     "v-col",
                     { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
-                    [_c("v-subheader", [_vm._v("Fecha Transplante Terreno")])],
+                    [_c("v-subheader", [_vm._v("Fecha Trasplante Terreno")])],
                     1
                   ),
                   _vm._v(" "),
@@ -31105,7 +31104,7 @@ var render = function () {
                       _c("v-text-field", {
                         ref: "cos_dias_floracion",
                         attrs: {
-                          label: "(Fecha Trans. Terreno - Fecha Cosecha)",
+                          label: "(Fecha Tras. Terreno - Fecha Cosecha)",
                           dense: "",
                           "error-messages": _vm.errors.cos_dias_floracion,
                           readonly: "",
@@ -33432,10 +33431,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteBolsa.vue?vue&type=template&id=2ac2e8d9&":
-/*!***********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteBolsa.vue?vue&type=template&id=2ac2e8d9& ***!
-  \***********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=template&id=1b6bffe5&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteBolsa.vue?vue&type=template&id=1b6bffe5& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -33453,7 +33452,7 @@ var render = function () {
     [
       _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
       _vm._v(" "),
-      _c("h4", [_vm._v("Transplante Bolsa")]),
+      _c("h4", [_vm._v("Trasplante Bolsa")]),
       _vm._v(" "),
       _c(
         "v-container",
@@ -33479,7 +33478,7 @@ var render = function () {
                   on: {
                     submit: function ($event) {
                       $event.preventDefault()
-                      return _vm.buscarTransplantes.apply(null, arguments)
+                      return _vm.buscarTrasplantes.apply(null, arguments)
                     },
                   },
                 },
@@ -33844,7 +33843,7 @@ var render = function () {
                                         {
                                           on: {
                                             click: function ($event) {
-                                              return _vm.consultarTransplante(
+                                              return _vm.consultarTrasplante(
                                                 item
                                               )
                                             },
@@ -33938,7 +33937,7 @@ var render = function () {
                           staticClass: "pa-0 pt-4",
                           attrs: { cols: "6", sm: "3" },
                         },
-                        [_c("v-subheader", [_vm._v("Fecha Transplante")])],
+                        [_c("v-subheader", [_vm._v("Fecha Trasplante")])],
                         1
                       ),
                       _vm._v(" "),
@@ -34004,11 +34003,11 @@ var render = function () {
                                 },
                               ]),
                               model: {
-                                value: _vm.calendarioFechaTransplante,
+                                value: _vm.calendarioFechaTrasplante,
                                 callback: function ($$v) {
-                                  _vm.calendarioFechaTransplante = $$v
+                                  _vm.calendarioFechaTrasplante = $$v
                                 },
-                                expression: "calendarioFechaTransplante",
+                                expression: "calendarioFechaTrasplante",
                               },
                             },
                             [
@@ -34017,7 +34016,7 @@ var render = function () {
                                 attrs: { locale: "es-CO" },
                                 on: {
                                   input: function ($event) {
-                                    _vm.calendarioFechaTransplante = false
+                                    _vm.calendarioFechaTrasplante = false
                                   },
                                 },
                                 model: {
@@ -34043,7 +34042,7 @@ var render = function () {
                         },
                         [
                           _c("v-subheader", [
-                            _vm._v("Cantidad Transplante Bolsa"),
+                            _vm._v("Cantidad Trasplante Bolsa"),
                           ]),
                         ],
                         1
@@ -34057,19 +34056,18 @@ var render = function () {
                         },
                         [
                           _c("v-text-field", {
-                            ref: "cantidad_transplante_bolsa",
+                            ref: "cantidad_trasplante_bolsa",
                             attrs: { type: "number", dense: "", disabled: "" },
                             model: {
-                              value: _vm.modalInfo.cantidad_transplante_bolsa,
+                              value: _vm.modalInfo.cantidad_trasplante_bolsa,
                               callback: function ($$v) {
                                 _vm.$set(
                                   _vm.modalInfo,
-                                  "cantidad_transplante_bolsa",
+                                  "cantidad_trasplante_bolsa",
                                   $$v
                                 )
                               },
-                              expression:
-                                "modalInfo.cantidad_transplante_bolsa",
+                              expression: "modalInfo.cantidad_trasplante_bolsa",
                             },
                           }),
                         ],
@@ -34191,7 +34189,7 @@ var render = function () {
                                 tile: "",
                                 disabled: !_vm.$can(["CREAR", "EDITAR"]),
                               },
-                              on: { click: _vm.guardarTransplante },
+                              on: { click: _vm.guardarTrasplante },
                             },
                             [
                               _c("v-icon", [_vm._v(" save ")]),
@@ -34225,10 +34223,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteCampo.vue?vue&type=template&id=4143de1a&":
-/*!***********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/transplanteCampo.vue?vue&type=template&id=4143de1a& ***!
-  \***********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteCampo.vue?vue&type=template&id=31ecf526&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/sajona/trasplanteCampo.vue?vue&type=template&id=31ecf526& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -34246,7 +34244,7 @@ var render = function () {
     [
       _c("loadingGeneral", { attrs: { overlayLoading: _vm.overlayLoading } }),
       _vm._v(" "),
-      _c("h4", [_vm._v("Transplante a Campo")]),
+      _c("h4", [_vm._v("Trasplante a Campo")]),
       _vm._v(" "),
       _c(
         "v-container",
@@ -34272,7 +34270,7 @@ var render = function () {
                   on: {
                     submit: function ($event) {
                       $event.preventDefault()
-                      return _vm.buscarTransplantes.apply(null, arguments)
+                      return _vm.buscarTrasplantes.apply(null, arguments)
                     },
                   },
                 },
@@ -34627,7 +34625,7 @@ var render = function () {
                             },
                             _vm.$can(["VER"])
                               ? {
-                                  key: "item.transplante_campo_accion",
+                                  key: "item.trasplante_campo_accion",
                                   fn: function (ref) {
                                     var item = ref.item
                                     return [
@@ -34636,7 +34634,7 @@ var render = function () {
                                         {
                                           on: {
                                             click: function ($event) {
-                                              return _vm.consultarTransplante(
+                                              return _vm.consultarTrasplante(
                                                 item
                                               )
                                             },
@@ -34730,7 +34728,7 @@ var render = function () {
                           staticClass: "pa-0 pt-4",
                           attrs: { cols: "6", sm: "3" },
                         },
-                        [_c("v-subheader", [_vm._v("Fecha Transplante")])],
+                        [_c("v-subheader", [_vm._v("Fecha Trasplante")])],
                         1
                       ),
                       _vm._v(" "),
@@ -34796,11 +34794,11 @@ var render = function () {
                                 },
                               ]),
                               model: {
-                                value: _vm.calendarioFechaTransplante,
+                                value: _vm.calendarioFechaTrasplante,
                                 callback: function ($$v) {
-                                  _vm.calendarioFechaTransplante = $$v
+                                  _vm.calendarioFechaTrasplante = $$v
                                 },
-                                expression: "calendarioFechaTransplante",
+                                expression: "calendarioFechaTrasplante",
                               },
                             },
                             [
@@ -34809,7 +34807,7 @@ var render = function () {
                                 attrs: { locale: "es-CO" },
                                 on: {
                                   input: function ($event) {
-                                    _vm.calendarioFechaTransplante = false
+                                    _vm.calendarioFechaTrasplante = false
                                   },
                                 },
                                 model: {
@@ -34835,7 +34833,7 @@ var render = function () {
                         },
                         [
                           _c("v-subheader", [
-                            _vm._v("Cantidad Transplante Campo"),
+                            _vm._v("Cantidad Trasplante Campo"),
                           ]),
                         ],
                         1
@@ -34849,19 +34847,18 @@ var render = function () {
                         },
                         [
                           _c("v-text-field", {
-                            ref: "cantidad_transplante_campo",
+                            ref: "cantidad_trasplante_campo",
                             attrs: { type: "number", dense: "", disabled: "" },
                             model: {
-                              value: _vm.modalInfo.cantidad_transplante_campo,
+                              value: _vm.modalInfo.cantidad_trasplante_campo,
                               callback: function ($$v) {
                                 _vm.$set(
                                   _vm.modalInfo,
-                                  "cantidad_transplante_campo",
+                                  "cantidad_trasplante_campo",
                                   $$v
                                 )
                               },
-                              expression:
-                                "modalInfo.cantidad_transplante_campo",
+                              expression: "modalInfo.cantidad_trasplante_campo",
                             },
                           }),
                         ],
@@ -34886,7 +34883,7 @@ var render = function () {
                                 tile: "",
                                 disabled: !_vm.$can(["CREAR", "EDITAR"]),
                               },
-                              on: { click: _vm.guardarTransplante },
+                              on: { click: _vm.guardarTrasplante },
                             },
                             [
                               _c("v-icon", [_vm._v(" save ")]),
@@ -96520,7 +96517,7 @@ module.exports = JSON.parse('{"_from":"axios@^0.21","_id":"axios@0.21.4","_inBun
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('[{"modulo":"Propagación","campos":[{"campo":"Tipo de Propagación","value":"pr_tipo_propagacion"},{"campo":"Variedad","value":"pr_variedad"},{"campo":"Tipo de Incorporación","value":"pr_tipo_incorporacion"}]},{"modulo":"Transplante Bolsa","campos":[{"campo":"Tipo Lote","value":"pr_tipo_lote"},{"campo":"Ubicación","value":"pr_ubicacion"}]},{"modulo":"Cosecha","campos":[{"campo":"Estado Cosecha","value":"pr_estado_cosecha"}]},{"modulo":"Bajas","campos":[{"campo":"Fases del Cultivo","value":"pr_fase_cultivo"},{"campo":"Motivo perdida","value":"pr_motivo_perdida"}]}]');
+module.exports = JSON.parse('[{"modulo":"Propagación","campos":[{"campo":"Tipo de Propagación","value":"pr_tipo_propagacion"},{"campo":"Variedad","value":"pr_variedad"},{"campo":"Tipo de Incorporación","value":"pr_tipo_incorporacion"}]},{"modulo":"Trasplante Bolsa","campos":[{"campo":"Tipo Lote","value":"pr_tipo_lote"},{"campo":"Ubicación","value":"pr_ubicacion"}]},{"modulo":"Cosecha","campos":[{"campo":"Estado Cosecha","value":"pr_estado_cosecha"}]},{"modulo":"Bajas","campos":[{"campo":"Fases del Cultivo","value":"pr_fase_cultivo"},{"campo":"Motivo perdida","value":"pr_motivo_perdida"}]}]');
 
 /***/ })
 

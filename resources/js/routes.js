@@ -12,8 +12,8 @@ import menuSajona from './components/menu/menu.vue'
 import inicio from './components/sajona/inicio.vue'
 import propagacion from './components/sajona/propagacion.vue'
 import plantaMadre from './components/sajona/plantaMadre.vue'
-import transplanteBolsa from './components/sajona/transplanteBolsa.vue'
-import transplanteCampo from './components/sajona/transplanteCampo.vue'
+import trasplanteBolsa from './components/sajona/trasplanteBolsa.vue'
+import trasplanteCampo from './components/sajona/trasplanteCampo.vue'
 import cosecha from './components/sajona/cosecha.vue'
 import postCosecha from './components/sajona/postCosecha.vue'
 import bajas from './components/sajona/bajas.vue'
@@ -63,14 +63,14 @@ const router = new VueRouter({
                     name: 'planta-madre',
                 },
                 {
-                    path: 'transplante-bolsa',
-                    component: transplanteBolsa,
-                    name: 'transplante-bolsa',
+                    path: 'trasplante-bolsa',
+                    component: trasplanteBolsa,
+                    name: 'trasplante-bolsa',
                 },
                 {
-                    path: 'transplante-campo',
-                    component: transplanteCampo,
-                    name: 'transplante-campo',
+                    path: 'trasplante-campo',
+                    component: trasplanteCampo,
+                    name: 'trasplante-campo',
                 },
                 {
                     path: 'cosecha',

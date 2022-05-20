@@ -26,7 +26,7 @@ class CreateCosechaTable extends Migration
             $table->boolean("cos_estado");
             $table->timestamps();
 
-            $table->foreign('cos_tp_id')->references('tp_id')->on('transplante');
+            $table->foreign('cos_tp_id')->references('tp_id')->on('trasplante');
         });
     }
 

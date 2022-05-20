@@ -47,7 +47,7 @@ class cosechaRequest extends FormRequest
             'cos_fecha_cosecha.required'             => 'El campo fecha Cosecha es requerido.',
             'cos_fecha_cosecha.date_format'          => 'El tipo de formato del campo fecha Cosecha debe ser ej: Y-m-d.',
             'cos_fecha_cosecha.before_or_equal'      => 'La fecha de cosecha no puede ser mayor a la de hoy.',
-            'cos_fecha_cosecha.after_or_equal'       =>"La fecha de cosecha debe ser una fecha posterior o igual a la Fecha Trans. Terreno.",
+            'cos_fecha_cosecha.after_or_equal'       =>"La fecha de cosecha debe ser una fecha posterior o igual a la Fecha Tras. Terreno.",
             'cos_numero_plantas.required'            => 'El numero de plantas es requerido.',
             'cos_numero_plantas.integer'             => 'El numero de plantas debe ser númerico.',
             'cos_estado_cosecha.required'            => 'El estado de la cosecha es requerido.',

@@ -39,7 +39,7 @@
                         </v-row>
                     </v-col>
                     <v-col cols="12" sm="4">
-                        <div class="text-center">Rango alerta en días para el módulo Trans. Bolsa</div>
+                        <div class="text-center">Rango alerta en días para el módulo Tras. Bolsa</div>
 
                         <v-row class="mt-4">
                             <!-- <v-col cols="6">
@@ -68,7 +68,7 @@
 
                     </v-col>
                     <v-col cols="12" sm="4">
-                        <div class="text-center">Rango alerta en días para el módulo Trans. Campo</div>
+                        <div class="text-center">Rango alerta en días para el módulo Tras. Campo</div>
 
                         <v-row class="mt-4">
                             <!-- <v-col cols="6">
