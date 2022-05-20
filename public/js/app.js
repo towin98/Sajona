@@ -2195,8 +2195,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.$router.push("/modulos/dashboard");
 
         _this.overlayLoading = false;
-
-        _this.$swal("Bienvenido");
       })["catch"](function (errors) {
         if (errors.response.status == 500) {
           _this.overlayLoading = false;
