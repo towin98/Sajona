@@ -113,7 +113,6 @@ export default {
                     localStorage.setItem("TOKEN_SAJONA", response.data.access_token);
                     this.$router.push("/modulos/dashboard");
                     this.overlayLoading = false;
-                    this.$swal("Bienvenido");
                 })
                 .catch((errors) => {
                     if (errors.response.status == 500) {

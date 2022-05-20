@@ -78,7 +78,6 @@ export default {
                 .post("/sajona/password/email", this.form)
                 .then((response) => {
                     this.overlayLoading = false;
-                    console.log(response.data);
                     this.$swal(
                         'Datos de Acceso',
                         response.data.message,
