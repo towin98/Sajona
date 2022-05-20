@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Transplante extends Model
+class Trasplante extends Model
 {
     use HasFactory;
 
-    protected $table = 'transplante';
+    protected $table = 'trasplante';
     protected $primaryKey = 'tp_id';
 
     /**
@@ -57,7 +57,7 @@ class Transplante extends Model
     }
 
     /**
-     *  Obtiene los registros de cosecha que hacen parte de transplante a bolsa.
+     *  Obtiene los registros de cosecha que hacen parte de trasplante a bolsa.
      *
      * @return Illuminate\Support\Collection;
      */

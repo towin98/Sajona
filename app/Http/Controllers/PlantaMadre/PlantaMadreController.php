@@ -12,7 +12,7 @@ use App\Traits\commonsTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlantaMadreBuscarRequest;
 use App\Http\Requests\PlantaMadreStoreRequest;
-use App\Models\Transplante;
+use App\Models\Trasplante;
 
 class PlantaMadreController extends Controller
 {
@@ -65,7 +65,7 @@ class PlantaMadreController extends Controller
 
         $registros = $registros->paginate($length);
 
-        // Requerido, consultando rango de transplantes.
+        // Requerido, consultando rango de trasplantes.
         $this->fnconsultarRangosAlerta();
 
         $registros->getCollection()->transform(function($data, $key) {
@@ -79,7 +79,7 @@ class PlantaMadreController extends Controller
             return [
                 'pro_id_lote'                   => $data->pro_id_lote,              // ( Id lote )
                 'pro_fecha'                     => $data->pro_fecha,                // ( Fecha propagación )
-                'pm_fecha_esquejacion'          => optional($data->getPlantaMadre)->pm_fecha_esquejacion, // plantas madres ( Fecha Transplante )
+                'pm_fecha_esquejacion'          => optional($data->getPlantaMadre)->pm_fecha_esquejacion, // plantas madres ( Fecha Trasplante )
                 'pro_cantidad_plantas_madres'   => $data->pro_cantidad_plantas_madres,
                 'estado_lote'                   => $evento,
                 'dias_transcurridos'            => $diasTranscurridos,
@@ -124,18 +124,18 @@ class PlantaMadreController extends Controller
 
             $plantaMadreConsulta = $plantaMadre->first();
 
-            // consultando si el lote ya tiene procesos en linea como transplante a bolsa.
-            // Si tiene transplante a bolsa se restringe que no pueda actualizar el registro,
+            // consultando si el lote ya tiene procesos en linea como trasplante a bolsa.
+            // Si tiene trasplante a bolsa se restringe que no pueda actualizar el registro,
             // de lo contrario si no tiene procesos si puede editar.
-            $transplantebolsa = Transplante::select(['tp_id', 'tp_pm_id'])->where([
+            $trasplantebolsa = Trasplante::select(['tp_id', 'tp_pm_id'])->where([
                     'tp_pm_id'  => $plantaMadreConsulta->pm_id,
                     'tp_tipo'   => "campo",
                     'tp_estado' => 1,
                 ])->first();
-            if ($transplantebolsa) {
+            if ($trasplantebolsa) {
                 return response()->json([
                     'message' => 'Validación de Datos',
-                    'errors' => "El Lote[$plantaMadreConsulta->pm_pro_id_lote] ya tiene Transplante a Bolsa, no se puede editar si ya tiene procesos en Curso.",
+                    'errors' => "El Lote[$plantaMadreConsulta->pm_pro_id_lote] ya tiene Trasplante a Bolsa, no se puede editar si ya tiene procesos en Curso.",
                 ], 409);
             }
 

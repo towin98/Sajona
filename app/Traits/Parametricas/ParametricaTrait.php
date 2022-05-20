@@ -43,7 +43,7 @@ trait ParametricaTrait {
         // Cosecha
         'pr_estado_cosecha'                      => EstadoCosecha::class,
 
-        // Trans. Bolsa
+        // Tras. Bolsa
         'pr_tipo_lote'                           => TipoLote::class,
         'pr_ubicacion'                           => Ubicacion::class,
 
@@ -67,7 +67,7 @@ trait ParametricaTrait {
         // Cosecha
         'pr_estado_cosecha'                      => 'Estado de Cosecha',
 
-        // Trans. Bolsa
+        // Tras. Bolsa
         'pr_tipo_lote'                           => 'Tipo de Lote',
         'pr_ubicacion'                           => 'Ubicación',
 

@@ -69,7 +69,7 @@ class Baja extends Model
      * @param string $buscar Valor a buscar
      * @return Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBuscarTransplante($query, $buscar) {
+    public function scopeBuscarTrasplante($query, $buscar) {
         if($buscar) {
             return $query
                 ->where('pm_pro_id_lote', 'LIKE', "%$buscar%")

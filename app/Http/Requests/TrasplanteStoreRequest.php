@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class TransplanteStoreRequest extends FormRequest
+class TrasplanteStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -45,14 +45,14 @@ class TransplanteStoreRequest extends FormRequest
         return [
             'tp_pm_id.required'                      => 'El id del lote es requerido.',
             'tp_pm_id.integer'                       => 'El id del lote debe ser un dato númerico.',
-            'tp_tipo.required'                       => 'El tipo de transplante es requerido.',
-            // 'tp_tipo.string'                         => 'El tipo de transplante debe ser un string.',
-            'tp_tipo.max'                            => 'El tipo de transplante no debe superar los 20 carácteres.',
+            'tp_tipo.required'                       => 'El tipo de trasplante es requerido.',
+            // 'tp_tipo.string'                         => 'El tipo de trasplante debe ser un string.',
+            'tp_tipo.max'                            => 'El tipo de trasplante no debe superar los 20 carácteres.',
             'tp_tipo_lote.required'                  => 'El tipo de lote es requerido.',
             // 'tp_tipo_lote.string'                    => 'El tipo de lote debe ser un string.',
             'tp_tipo_lote.max'                       => 'El tipo de lote no debe superar los 20 carácteres.',
-            'tp_fecha.required'                      => 'La fecha de transplante es requerida.',
-            'tp_fecha.date_format'                   => 'La fecha de Transplante debe cumplir el formato: Y-m-d.',
+            'tp_fecha.required'                      => 'La fecha de trasplante es requerida.',
+            'tp_fecha.date_format'                   => 'La fecha de Trasplante debe cumplir el formato: Y-m-d.',
             'tp_ubicacion.required'                  => 'La ubicación es requerida.',
             // 'tp_ubicacion.string'                    => 'La ubicación debe ser un string',
             'tp_ubicacion.max'                       => 'La ubicación no debe superar los 20 carácteres.',

@@ -84,19 +84,19 @@ class Propagacion extends Model
     }
 
     /**
-     * Scope para realizar una búsqueda mixta en el módulo de Transplante Bolsa.
+     * Scope para realizar una búsqueda mixta en el módulo de Trasplante Bolsa.
      *
      * @param Illuminate\Database\Eloquent\Builder $query
      * @param string $buscar Valor a buscar
      * @return Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBuscarTransplanteBolsa($query, $buscar) {
+    public function scopeBuscarTrasplanteBolsa($query, $buscar) {
         if($buscar) {
             return $query
                 ->where('pro_id_lote', 'LIKE', "%$buscar%")
                 ->orWhere('pro_fecha', 'LIKE', "%$buscar%")
                 ->orWhereHas('getPlantaMadre', function ($query) use ($buscar) {
-                    $query->whereHas('getTransplante', function ($query) use ($buscar) {
+                    $query->whereHas('getTrasplante', function ($query) use ($buscar) {
                         $query->where('tp_fecha', 'LIKE', "%$buscar%");
                     });
                 });
@@ -104,19 +104,19 @@ class Propagacion extends Model
     }
 
     /**
-     * Scope para realizar una búsqueda mixta en el módulo de Transplante Campo.
+     * Scope para realizar una búsqueda mixta en el módulo de Trasplante Campo.
      *
      * @param Illuminate\Database\Eloquent\Builder $query
      * @param string $buscar Valor a buscar
      * @return Illuminate\Database\Eloquent\Builder
      */
-    public function scopeBuscarTransplanteCampo($query, $buscar) {
+    public function scopeBuscarTrasplanteCampo($query, $buscar) {
         if($buscar) {
             return $query
                 ->where('pro_id_lote', 'LIKE', "%$buscar%")
                 ->orWhere('pro_fecha', 'LIKE', "%$buscar%")
                 ->orWhereHas('getPlantaMadre', function ($query) use ($buscar) {
-                    $query->whereHas('getTransplantes', function ($query) use ($buscar) {
+                    $query->whereHas('getTrasplantes', function ($query) use ($buscar) {
                         $query->where('tp_fecha', 'LIKE', "%$buscar%");
                     });
                 });
@@ -142,14 +142,14 @@ class Propagacion extends Model
     }
 
     /**
-     * Scope para ordenar una lista de transplante a bolsa por una columna determinada.
+     * Scope para ordenar una lista de trasplante a bolsa por una columna determinada.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param mixed $columna Nombnre de la columna de la tabla
      * @param mixed $orden Tipo de ordenamiento ASC|DESC
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOrdenamientoTransplanteBolsa($query, $columna, $orden){
+    public function scopeOrdenamientoTrasplanteBolsa($query, $columna, $orden){
         if($columna && $orden){
             switch ($columna) {
                 case 'id_lote':

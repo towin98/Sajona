@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\Feature\http\Controllers\Transplante;
+namespace Tests\Feature\http\Controllers\Trasplante;
 
 use App\Models\PlantaMadre;
 use App\Models\Propagacion;
-use App\Models\Transplante;
+use App\Models\Trasplante;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Feature\Http\Controllers\Traits\AutenticacionTrait;
 use Tests\TestCase;
 
-class TransplanteControllerTest extends TestCase
+class TrasplanteControllerTest extends TestCase
 {
     use RefreshDatabase;
     use AutenticacionTrait;
@@ -20,7 +20,7 @@ class TransplanteControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_listar_registros_de_transplante_a_bolsa_por_un_rango_de_fechas_correctamente()
+    public function test_listar_registros_de_trasplante_a_bolsa_por_un_rango_de_fechas_correctamente()
     {
         $this->withoutExceptionHandling();
 
@@ -39,7 +39,7 @@ class TransplanteControllerTest extends TestCase
         }
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('/sajona/transplante-bolsa/buscar?fecha_inicial=2021-12-01&fecha_final=2022-03-01',
+        $response = $this->get('/sajona/trasplante-bolsa/buscar?fecha_inicial=2021-12-01&fecha_final=2022-03-01',
             [
                 "Authorization" => "Bearer $token"
             ]
@@ -72,14 +72,14 @@ class TransplanteControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_validaciones_al_listar_registros_de_transplante_a_bolsa_por_un_rango_de_fechas()
+    public function test_validaciones_al_listar_registros_de_trasplante_a_bolsa_por_un_rango_de_fechas()
     {
         $this->withoutExceptionHandling();
 
         $token = $this->Autenticacion('cristian@gmail.com','admin123');
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('/sajona/transplante-bolsa/buscar?fecha_inicial=2021--12-01&fecha_final=2022--03-01',
+        $response = $this->get('/sajona/trasplante-bolsa/buscar?fecha_inicial=2021--12-01&fecha_final=2022--03-01',
             [
                 "Authorization" => "Bearer $token"
             ]
@@ -90,11 +90,11 @@ class TransplanteControllerTest extends TestCase
     }
 
     /**
-     * Test para visualizar un registro de la tabla de transplante.
+     * Test para visualizar un registro de la tabla de trasplante.
      *
      * @return void
      */
-    public function test_para_visualizar_un_transplante_a_bolsa_en_especifico_correctamente()
+    public function test_para_visualizar_un_trasplante_a_bolsa_en_especifico_correctamente()
     {
         $this->withoutExceptionHandling();
 
@@ -121,9 +121,9 @@ class TransplanteControllerTest extends TestCase
         ]);
 
         // Crando registro para prueba.
-        Transplante::create([
+        Trasplante::create([
             'tp_pm_id'          => 10,
-            'tp_tipo'           => 'transplante_bolsa',
+            'tp_tipo'           => 'trasplante_bolsa',
             'tp_tipo_lote'      => 'Planta Madre',
             'tp_fecha'          => '2022-01-14',
             'tp_ubicacion'      => 'Casa malla',
@@ -132,7 +132,7 @@ class TransplanteControllerTest extends TestCase
         ]);
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('sajona/transplante-bolsa/10',
+        $response = $this->get('sajona/trasplante-bolsa/10',
             [
                 "Authorization" => "Bearer $token"
             ]
@@ -145,7 +145,7 @@ class TransplanteControllerTest extends TestCase
             'data'=> [
                 'tp_pm_id',
                 'tp_fecha',
-                'cantidad_transplante_bolsa',
+                'cantidad_trasplante_bolsa',
                 'tp_tipo_lote',
                 'tp_ubicacion',
                 'tp_cantidad_area'
@@ -154,36 +154,36 @@ class TransplanteControllerTest extends TestCase
     }
 
     /**
-     * Validación al visualizar un transplante, en este caso el id del transplante a bolsa o campo no
+     * Validación al visualizar un trasplante, en este caso el id del trasplante a bolsa o campo no
      * existe en base de datos.
      *
      * @return void
      */
-    public function test_de_validaciones_al_visualizar_un_transplante()
+    public function test_de_validaciones_al_visualizar_un_trasplante()
     {
         $token = $this->Autenticacion('cristian@gmail.com','admin123');
 
         // Creando registros temporales en memoria para realizar consulta.
-        $response = $this->get('sajona/transplante-bolsa/100u2338273', [
+        $response = $this->get('sajona/trasplante-bolsa/100u2338273', [
                 "Authorization" => "Bearer $token"
             ]
         );
-        // El transplante no existe en base de datos.
+        // El trasplante no existe en base de datos.
         $response->assertStatus(404);
     }
 
     /**
-     * Test de validaciones al guardar transplante a bolsa o campo.
+     * Test de validaciones al guardar trasplante a bolsa o campo.
      *
      * @return void
      */
-    public function test_de_validaciones_al_guardar_transplante_a_bolsa_o_campo()
+    public function test_de_validaciones_al_guardar_trasplante_a_bolsa_o_campo()
     {
         $this->withoutExceptionHandling();
 
         $token = $this->Autenticacion('cristian@gmail.com','admin123');
 
-        $response = $this->post('sajona/transplante-bolsa',[],
+        $response = $this->post('sajona/trasplante-bolsa',[],
             [
                 "Authorization" => "Bearer $token"
             ]
@@ -193,11 +193,11 @@ class TransplanteControllerTest extends TestCase
     }
 
     /**
-     * Test para comprobar que se guarda correctamente transplante a bolsa o campo.
+     * Test para comprobar que se guarda correctamente trasplante a bolsa o campo.
      *
      * @return void
      */
-    public function test_para_comprobar_que_se_guarda_transplante_bolsa_o_campo_correctamente()
+    public function test_para_comprobar_que_se_guarda_trasplante_bolsa_o_campo_correctamente()
     {
         $this->withoutExceptionHandling();
 
@@ -223,9 +223,9 @@ class TransplanteControllerTest extends TestCase
             'pm_estado'             => true,
         ]);
 
-        $response = $this->post('sajona/transplante-bolsa',[
+        $response = $this->post('sajona/trasplante-bolsa',[
                 'tp_pm_id'          => 10,
-                'tp_tipo'           => 'transplante_bolsa',
+                'tp_tipo'           => 'trasplante_bolsa',
                 'tp_tipo_lote'      => 'bolsa',
                 'tp_fecha'          => '2022-01-14',
                 'tp_ubicacion'      => 'Casa malla',

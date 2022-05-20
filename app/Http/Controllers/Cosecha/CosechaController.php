@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Cosecha;
 
 use Exception;
 use App\Models\Cosecha;
-use App\Models\Transplante;
+use App\Models\Trasplante;
 use App\Traits\bajasTrait;
 use Illuminate\Http\Request;
 use App\Traits\commonsTrait;
@@ -38,20 +38,20 @@ class CosechaController extends Controller
     public function storeCosecha(cosechaRequest $request)
     {
 
-        $transplanteCampo = Transplante::select(['tp_id', 'tp_fecha'])
+        $trasplanteCampo = Trasplante::select(['tp_id', 'tp_fecha'])
             ->where('tp_id', $request->tp_id)
             ->where('tp_tipo', 'campo')
             ->first();
 
-        if ($transplanteCampo) {
+        if ($trasplanteCampo) {
 
             $cosecha = Cosecha::select(['cos_id'])
                 ->where('cos_estado', 1)
                 ->where('cos_tp_id', $request->tp_id);
 
-            // Dias transcurridos desde la fecha de transplante campo hasta la fecha de cosecha.
+            // Dias transcurridos desde la fecha de trasplante campo hasta la fecha de cosecha.
             $fechaCosecha = date_create($request->cos_fecha_cosecha ." ".date('H:i:s'));
-            $diasTranscurridosFloracion = date_diff(date_create($transplanteCampo->tp_fecha),$fechaCosecha)->format('%a');
+            $diasTranscurridosFloracion = date_diff(date_create($trasplanteCampo->tp_fecha),$fechaCosecha)->format('%a');
 
             try {
 
@@ -63,7 +63,7 @@ class CosechaController extends Controller
                 if (count($cosecha->get()) == 0) {
                     $cosecha->create([
                         "cos_tp_id"             => $request->tp_id,
-                        "cos_fecha_suelo"       => $transplanteCampo->tp_fecha,
+                        "cos_fecha_suelo"       => $trasplanteCampo->tp_fecha,
                         "cos_fecha_cosecha"     => $request->cos_fecha_cosecha ." ".date('H:i:s'),
                         "cos_numero_plantas"    => $request->cos_numero_plantas,
                         "cos_estado_cosecha"    => $request->cos_estado_cosecha,
@@ -99,7 +99,7 @@ class CosechaController extends Controller
 
         }else{
             return response()->json([
-                'errors' => "Para poder crear cosecha debe primero haber tenido transplante a Campo el lote, Verifique.",
+                'errors' => "Para poder crear cosecha debe primero haber tenido trasplante a Campo el lote, Verifique.",
                 'code' => 422
             ], 409);
         }
@@ -127,8 +127,8 @@ class CosechaController extends Controller
             $start  = 0;
         }
 
-        // Se buscan todos los transplantes a bolsa.
-        $registros = Transplante::select(['tp_id', 'tp_pm_id', 'tp_fecha'])
+        // Se buscan todos los trasplantes a bolsa.
+        $registros = Trasplante::select(['tp_id', 'tp_pm_id', 'tp_fecha'])
             ->where('tp_tipo', 'campo')
             ->with([
                 'getPlantaMadre' => function ($query){
@@ -196,11 +196,11 @@ class CosechaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showCosecha($id_transplante)
+    public function showCosecha($id_trasplante)
     {
 
-        $cosecha = Transplante::select(['tp_id','tp_pm_id','tp_fecha', 'tp_ubicacion'])
-            ->where('tp_id', $id_transplante)
+        $cosecha = Trasplante::select(['tp_id','tp_pm_id','tp_fecha', 'tp_ubicacion'])
+            ->where('tp_id', $id_trasplante)
             ->where('tp_tipo', 'campo')
             ->with([
                 'getPlantaMadre' => function ($query){
@@ -235,7 +235,7 @@ class CosechaController extends Controller
             $sumaCantidadBajas = $this->cantidadBajas(optional($value->getPlantaMadre)->pm_pro_id_lote, ['esquejes','campo', 'bolsa','cosecha']);
             $cos_numero_plantas = ((optional($value->getPlantaMadre)->pm_cantidad_semillas + optional($value->getPlantaMadre)->pm_cantidad_esquejes) - $sumaCantidadBajas);
 
-            // Dias transcurridos desde la fecha de transplante campo hasta la fecha actual.
+            // Dias transcurridos desde la fecha de trasplante campo hasta la fecha actual.
             $today = date_create();
             $diasTranscurridos = date_diff(date_create($value->tp_fecha),$today)->format('%a');
 
@@ -256,7 +256,7 @@ class CosechaController extends Controller
         if (count($cosecha) == 0) {
             return response()->json([
                 'errors' => [
-                    "No existe registros con el Id[$id_transplante] proporcionado."
+                    "No existe registros con el Id[$id_trasplante] proporcionado."
                 ],
             ], 404);
         }
@@ -277,7 +277,7 @@ class CosechaController extends Controller
         try {
 
             // Consultando para obtener id del lote.
-            $transplante = Transplante::select(['tp_id','tp_pm_id'])
+            $trasplante = Trasplante::select(['tp_id','tp_pm_id'])
             ->where('tp_id', $request->tp_id)
             ->where('tp_tipo', 'campo')
             ->with([
@@ -301,7 +301,7 @@ class CosechaController extends Controller
                 ], 404);
             }else{
                 return response()->json([
-                    'message' => "Se elimino cosecha para el lote ".$transplante->getPlantaMadre->pm_pro_id_lote.".",
+                    'message' => "Se elimino cosecha para el lote ".$trasplante->getPlantaMadre->pm_pro_id_lote.".",
                 ], 200);
             }
         }catch (Exception $e) {

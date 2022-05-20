@@ -46,7 +46,7 @@ class PostCosechaController extends Controller
         $registrosPostCosecha = Cosecha::select(['cos_id', 'cos_tp_id'])
             ->where('cos_estado', 1)
             ->with([
-                'getTransplanteCampo' => function ($query){
+                'getTrasplanteCampo' => function ($query){
                     $query->select([
                         'tp_id',
                         'tp_pm_id'
@@ -61,7 +61,7 @@ class PostCosechaController extends Controller
                     ]);
                 }
             ])
-            ->whereHas('getTransplanteCampo', function ($query) {
+            ->whereHas('getTrasplanteCampo', function ($query) {
                 $query->where('tp_tipo', 'campo');
             })
             ->with([
@@ -220,7 +220,7 @@ class PostCosechaController extends Controller
             ->where('cos_id', $id_cosecha)
             ->where('cos_estado', 1) // Registro no eliminados
             ->with([
-                'getTransplanteCampo' => function ($query){
+                'getTrasplanteCampo' => function ($query){
                     $query->select([
                         'tp_id',
                         'tp_pm_id'
@@ -268,7 +268,7 @@ class PostCosechaController extends Controller
                     $porcentajeRendimiento = 0;
                 }
                 return [
-                    'id_lote'                       => $value->getTransplanteCampo?->getPlantaMadre?->pm_pro_id_lote,
+                    'id_lote'                       => $value->getTrasplanteCampo?->getPlantaMadre?->pm_pro_id_lote,
                     'cos_id'                        => $value->cos_id,
                     'cos_numero_plantas'            => $value->cos_numero_plantas,
                     'cos_estado_cosecha'            => $value->cos_estado_cosecha,
@@ -326,7 +326,7 @@ class PostCosechaController extends Controller
                 ->where('cos_estado', 1)
                 ->where('cos_id', $id_cosecha->post_cos_id)
                 ->with([
-                    'getTransplanteCampo' => function ($query){
+                    'getTrasplanteCampo' => function ($query){
                         $query->select([
                             'tp_id',
                             'tp_pm_id'
@@ -344,7 +344,7 @@ class PostCosechaController extends Controller
                 ->first();
 
                 return response()->json([
-                    'message' => "Se elimino la Post Cosecha para el lote ".$id_lote->getTransplanteCampo->getPlantaMadre->pm_pro_id_lote.".",
+                    'message' => "Se elimino la Post Cosecha para el lote ".$id_lote->getTrasplanteCampo->getPlantaMadre->pm_pro_id_lote.".",
                 ], 200);
             }
 

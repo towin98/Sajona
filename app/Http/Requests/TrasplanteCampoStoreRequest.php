@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class TransplanteCampoStoreRequest extends FormRequest
+class TrasplanteCampoStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -38,8 +38,8 @@ class TransplanteCampoStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'tp_fecha.required'                      => 'La fecha de transplante a Campo es requerida.',
-            'tp_fecha.date_format'                   => 'La fecha de Transplante a Campo debe cumplir el formato: Y-m-d.',
+            'tp_fecha.required'                      => 'La fecha de trasplante a Campo es requerida.',
+            'tp_fecha.date_format'                   => 'La fecha de Trasplante a Campo debe cumplir el formato: Y-m-d.',
         ];
     }
 

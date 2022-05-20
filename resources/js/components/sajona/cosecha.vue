@@ -9,7 +9,7 @@
                 </v-card-title>
                 <v-row class="pl-4 pr-4">
                     <v-col cols="6" sm="2" class="py-0 pl-0">
-                        <v-subheader>Fecha Transplante Terreno</v-subheader>
+                        <v-subheader>Fecha Trasplante Terreno</v-subheader>
                     </v-col>
                     <v-col cols="6" sm="4" class="py-0 pl-0">
                         <v-text-field
@@ -85,14 +85,14 @@
                         ></v-select>
                     </v-col>
 
-                    <!-- Automatico, dias desde que se transplanto a campo hasta hoy.  -->
+                    <!-- Automatico, dias desde que se trasplanto a campo hasta hoy.  -->
                     <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-subheader>Días de Floración</v-subheader>
                     </v-col>
                     <v-col cols="6" sm="4" class="py-0 pl-0">
                         <v-text-field
                             v-model="form.cos_dias_floracion"
-                            label="(Fecha Trans. Terreno - Fecha Cosecha)"
+                            label="(Fecha Tras. Terreno - Fecha Cosecha)"
                             ref="cos_dias_floracion"
                             dense
                             :error-messages="errors.cos_dias_floracion"
@@ -260,7 +260,7 @@ export default {
             headers             : [
                 { text: "Id Lote", align: "start", value: "id_lote" },
                 { text: "Cantidad Planta Madre", value: "pro_cantidad_plantas_madres" },
-                { text: "Fecha transplante Bolsa", value: "tp_fecha" },
+                { text: "Fecha trasplante Bolsa", value: "tp_fecha" },
                 { text: "Fecha de cosecha", value: "cos_fecha_cosecha" },
                 { text: "Estado", value: "estado" },
                 { text: "Acciones", value: "actions" }
@@ -416,9 +416,9 @@ export default {
         fnDiasDeFloracionCalculo(){
             if (this.form.cos_fecha_cosecha != "") {
                 let fechaCosecha        = new Date(this.form.cos_fecha_cosecha);
-                let fechaTransTerreno   = new Date(this.form.tp_fecha);
+                let fechaTrasTerreno   = new Date(this.form.tp_fecha);
 
-                const diff = Math.abs(fechaCosecha-fechaTransTerreno);
+                const diff = Math.abs(fechaCosecha-fechaTrasTerreno);
                 this.form.cos_dias_floracion = diff/(1000 * 3600 * 24)
             }
         },

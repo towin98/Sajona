@@ -39,8 +39,8 @@ class cosechaDeleteRequest extends FormRequest
     public function messages()
     {
         return [
-            'tp_id.required'                => 'El Id transplante a campo es requerido.',
-            'tp_id.integer'                 => 'El Id transplante a campo debe ser númerico.',
+            'tp_id.required'                => 'El Id trasplante a campo es requerido.',
+            'tp_id.integer'                 => 'El Id trasplante a campo debe ser númerico.',
 
         ];
     }
