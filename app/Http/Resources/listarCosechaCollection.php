@@ -14,13 +14,20 @@ class listarCosechaCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        $fechaCosecha = $this['get_cosecha'] != null ? $this['get_cosecha']['cos_fecha_cosecha'] : '';
+        if ($fechaCosecha == "") {
+            $estado = "Pendiente";
+        }else{
+            $estado = "Finalizado";
+        }
+
         return [
             'id_lote'                       => $this['get_planta_madre']['pm_pro_id_lote'],
             'tp_id'                         => $this['tp_id'],
             'pro_cantidad_plantas_madres'   => $this['get_planta_madre']['get_propagacion']['pro_cantidad_plantas_madres'],
             'tp_fecha'                      => $this['tp_fecha'],
             'cos_fecha_cosecha'             => $this['get_cosecha'] != null ? $this['get_cosecha']['cos_fecha_cosecha'] : '',
-            'estado'                        => 'ESTADO'
+            'estado'                        => $estado
         ];
     }
 }

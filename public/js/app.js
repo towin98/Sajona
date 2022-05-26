@@ -2223,6 +2223,11 @@ __webpack_require__.r(__webpack_exports__);
             });
           } else if (errors.response.status == 409 || errors.response.status == 422) {
             _this.errors = errors.response.data.errors;
+          } else if (errors.response.status == 500) {
+            _this.$swal({
+              icon: "error",
+              title: "Intentalo más tarde."
+            });
           }
         }
       });
@@ -4408,6 +4413,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4477,7 +4483,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     filterSearch: function filterSearch() {
       var _this = this;
 
-      this.loading = true;
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
         _this.buscarCosechas(_this.buscar);
@@ -5087,7 +5092,6 @@ __webpack_require__.r(__webpack_exports__);
     filterSearch: function filterSearch() {
       var _this2 = this;
 
-      this.overlayLoading = true;
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
         _this2.buscarLotes(_this2.buscar);
@@ -5494,6 +5498,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5569,7 +5579,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     filterSearch: function filterSearch() {
       var _this = this;
 
-      this.loading = true;
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
         _this.buscarPostCosechas(_this.buscar);
@@ -6751,7 +6760,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     filterSearch: function filterSearch() {
       var _this2 = this;
 
-      this.overlayLoading = true;
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
         _this2.buscarTrasplantes(_this2.buscar);
@@ -7233,7 +7241,6 @@ __webpack_require__.r(__webpack_exports__);
     filterSearch: function filterSearch() {
       var _this2 = this;
 
-      this.overlayLoading = true;
       clearTimeout(this.debounce);
       this.debounce = setTimeout(function () {
         _this2.buscarTrasplantes(_this2.buscar);
@@ -7886,7 +7893,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -7934,7 +7941,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\n    color :white !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.v-list-item--active {\r\n    background: rgba(82, 82, 82, 0.479);\n}\n.v-list-item--active {\r\n    color :white !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -31043,6 +31050,7 @@ var render = function () {
                           "error-messages": _vm.errors.cos_numero_plantas,
                           readonly: "",
                           disabled: _vm.titleAccion == "Nuevo",
+                          title: "Cantidad Planta Madre Sembradas",
                         },
                         model: {
                           value: _vm.form.cos_numero_plantas,
@@ -32242,6 +32250,7 @@ var render = function () {
                           dense: "",
                           "error-messages": _vm.errors.post_fecha_ini_secado,
                           disabled: _vm.titleAccion == "Nuevo",
+                          title: "Fecha Inicio Secado",
                         },
                         model: {
                           value: _vm.form.post_fecha_ini_secado,
@@ -32273,6 +32282,7 @@ var render = function () {
                           "error-messages": _vm.errors.post_fecha_fin_secado,
                           dense: "",
                           disabled: _vm.titleAccion == "Nuevo",
+                          title: "Fecha Fin Secado",
                         },
                         model: {
                           value: _vm.form.post_fecha_fin_secado,
@@ -32337,6 +32347,7 @@ var render = function () {
                           "error-messages": _vm.errors.cos_numero_plantas,
                           readonly: "",
                           disabled: _vm.titleAccion == "Nuevo",
+                          title: "Cantidad Planta Madre Sembradas",
                         },
                         model: {
                           value: _vm.form.cos_numero_plantas,
@@ -32403,6 +32414,8 @@ var render = function () {
                           "error-messages": _vm.errors.cos_dias_floracion,
                           readonly: "",
                           disabled: _vm.titleAccion == "Nuevo",
+                          title:
+                            "Dias entre Fecha Trasplante Terreno y la Fecha de Cosecha, en el mdoulo de Cosecha.",
                         },
                         model: {
                           value: _vm.form.cos_dias_floracion,
@@ -32419,7 +32432,12 @@ var render = function () {
                   _c(
                     "v-col",
                     { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
-                    [_c("v-subheader", [_vm._v("Peso verde campo")])],
+                    [
+                      _c("v-subheader", [
+                        _vm._v("Peso verde campo "),
+                        _c("small", [_vm._v("(Gramos)")]),
+                      ]),
+                    ],
                     1
                   ),
                   _vm._v(" "),
@@ -32435,6 +32453,7 @@ var render = function () {
                           dense: "",
                           "error-messages": _vm.errors.cos_peso_verde,
                           disabled: _vm.titleAccion == "Nuevo",
+                          title: "Valor desde Cosecha.",
                         },
                         model: {
                           value: _vm.form.cos_peso_verde,
@@ -32451,7 +32470,12 @@ var render = function () {
                   _c(
                     "v-col",
                     { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
-                    [_c("v-subheader", [_vm._v("Peso flor verde")])],
+                    [
+                      _c("v-subheader", [
+                        _vm._v("Peso flor verde "),
+                        _c("small", [_vm._v("(Gramos)")]),
+                      ]),
+                    ],
                     1
                   ),
                   _vm._v(" "),
@@ -32487,7 +32511,12 @@ var render = function () {
                   _c(
                     "v-col",
                     { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
-                    [_c("v-subheader", [_vm._v("Peso flor seco")])],
+                    [
+                      _c("v-subheader", [
+                        _vm._v("Peso flor seco"),
+                        _c("small", [_vm._v(" (Gramos)")]),
+                      ]),
+                    ],
                     1
                   ),
                   _vm._v(" "),
@@ -32575,6 +32604,8 @@ var render = function () {
                           disabled: _vm.titleAccion == "Nuevo",
                           suffix: "%",
                           readonly: "",
+                          title:
+                            "Porcentaje Rendimiento = (Peso flor seco / Peso flor verde)*100",
                         },
                         model: {
                           value: _vm.form.post_porcentaje_rendimiento,

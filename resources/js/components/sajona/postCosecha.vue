@@ -34,6 +34,7 @@
                             dense
                             :error-messages="errors.post_fecha_ini_secado"
                             :disabled="titleAccion == 'Nuevo'"
+                            title="Fecha Inicio Secado"
                         ></v-text-field>
                     </v-col>
                     <v-col cols="6" sm="2" class="py-0 pl-0">
@@ -47,6 +48,7 @@
                             :error-messages="errors.post_fecha_fin_secado"
                             dense
                             :disabled="titleAccion == 'Nuevo'"
+                            title="Fecha Fin Secado"
                         ></v-text-field>
                     </v-col>
 
@@ -78,6 +80,7 @@
                             :error-messages="errors.cos_numero_plantas"
                             readonly
                             :disabled="titleAccion == 'Nuevo'"
+                            title="Cantidad Planta Madre Sembradas"
                         ></v-text-field>
                     </v-col>
 
@@ -112,12 +115,13 @@
                             :error-messages="errors.cos_dias_floracion"
                             readonly
                             :disabled="titleAccion == 'Nuevo'"
+                            title="Dias entre Fecha Trasplante Terreno y la Fecha de Cosecha, en el mdoulo de Cosecha."
                         ></v-text-field>
                     </v-col>
 
                     <!--  VALOR DE COSECHA -->
                     <v-col cols="6" sm="2" class="py-0 pl-0">
-                        <v-subheader>Peso verde campo</v-subheader>
+                        <v-subheader>Peso verde campo <small>(Gramos)</small></v-subheader>
                     </v-col>
                     <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-text-field
@@ -128,11 +132,12 @@
                             dense
                             :error-messages="errors.cos_peso_verde"
                             :disabled="titleAccion == 'Nuevo'"
+                            title="Valor desde Cosecha."
                         ></v-text-field>
                     </v-col>
 
                     <v-col cols="6" sm="2" class="py-0 pl-0">
-                        <v-subheader>Peso flor verde</v-subheader>
+                        <v-subheader>Peso flor verde <small>(Gramos)</small></v-subheader>
                     </v-col>
                     <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-text-field
@@ -147,7 +152,7 @@
                     </v-col>
 
                     <v-col cols="6" sm="2" class="py-0 pl-0">
-                        <v-subheader>Peso flor seco</v-subheader>
+                        <v-subheader>Peso flor seco<small> (Gramos)</small></v-subheader>
                     </v-col>
                     <v-col cols="6" sm="2" class="py-0 pl-0">
                         <v-text-field
@@ -191,6 +196,7 @@
                             :disabled="titleAccion == 'Nuevo'"
                             suffix="%"
                             readonly
+                            title="Porcentaje Rendimiento = (Peso flor seco / Peso flor verde)*100"
                         ></v-text-field>
                     </v-col>
 
@@ -392,7 +398,6 @@ export default {
     },
     methods: {
         filterSearch(){
-            this.loading = true;
             clearTimeout(this.debounce);
             this.debounce = setTimeout(() => {
                 this.buscarPostCosechas(this.buscar);

@@ -23,8 +23,6 @@ Route::post('/password/change', [AuthController::class, 'passwordChange'])->midd
 /*Rutas Controlador PermissionController*/
 Route::get('/busca-nombre-rol-user/', [PermissionController::class, 'buscaNombreRolUser'])->middleware('auth:sanctum');
 Route::get('/permisos-usuario/', [PermissionController::class, 'buscaPermisosUsuario'])->middleware('auth:sanctum');
-
-Route::get('/permission/{permissionName}', [PermissionController::class, 'buscaPermisosUsuario'])->middleware('auth:sanctum');
 Artisan::call('cache:clear');
 
 Route::post('/password/email', [AuthController::class, 'resetPassword']);

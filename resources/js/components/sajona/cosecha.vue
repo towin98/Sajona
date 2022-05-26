@@ -65,6 +65,7 @@
                             :error-messages="errors.cos_numero_plantas"
                             readonly
                             :disabled="titleAccion == 'Nuevo'"
+                            title="Cantidad Planta Madre Sembradas"
                         ></v-text-field>
                     </v-col>
 
@@ -281,7 +282,6 @@ export default {
     },
     methods: {
         filterSearch(){
-            this.loading = true;
             clearTimeout(this.debounce);
             this.debounce = setTimeout(() => {
                 this.buscarCosechas(this.buscar);
