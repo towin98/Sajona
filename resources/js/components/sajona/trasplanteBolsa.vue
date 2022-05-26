@@ -419,7 +419,6 @@ export default {
                 });
         },
         filterSearch() {
-                this.overlayLoading = true;
                 clearTimeout(this.debounce);
                 this.debounce = setTimeout(() => {
                     this.buscarTrasplantes(this.buscar);

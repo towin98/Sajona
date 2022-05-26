@@ -58,8 +58,8 @@ class User extends Authenticatable
         'email.max'                           => 'El correo electronico no puede superar los 50 carácteres.',
     ];
 
-        /**
-     * Reglas de validación para el recurso crear.
+    /**
+     * Mensajes de validación al cambiar contraseña.
      *
      * @var array
      */
@@ -72,6 +72,5 @@ class User extends Authenticatable
         'password.confirmed'                  => 'La confirmación de contraseña no coincide.',
         'password_confirmation.required'      => 'El campo de confirmación de contraseña es obligatorio',
         'password_confirmation.min'           => 'La contraseña de confirmación debe tener minimo 8 carácteres.',
-
     ];
 }

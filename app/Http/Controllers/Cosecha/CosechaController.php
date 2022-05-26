@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\cosechaRequest;
 use App\Http\Requests\cosechaDeleteRequest;
 use App\Http\Resources\listarCosechaCollection;
+use App\Models\PostCosecha;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class CosechaController extends Controller
@@ -290,19 +291,30 @@ class CosechaController extends Controller
             ])
             ->first();
 
-            // No se elimina, se coloca en estado 0.
-            $cosecha = Cosecha::where('cos_tp_id', $request->tp_id)->update([
-                'cos_estado' => 0
-            ]);
+            $cosecha = Cosecha::select(['cos_id', 'cos_estado'])->where('cos_tp_id', $request->tp_id)->where('cos_estado', 1)->first();
             if (!$cosecha) {
                 return response()->json([
                     'message' => "Error de validación de datos.",
                     'errors' => "No se encontro la cosecha.",
                 ], 404);
             }else{
-                return response()->json([
-                    'message' => "Se elimino cosecha para el lote ".$trasplante->getPlantaMadre->pm_pro_id_lote.".",
-                ], 200);
+                $postCosecha = PostCosecha::select('pos_id')->where('post_cos_id', $cosecha->cos_id)->where('post_estado', 1)->first();
+                if ($postCosecha) {
+                    // si hay un post cosecha para la cosecha en que se intenta eliminar se retorna error.
+                    return response()->json([
+                        'message' => "Validación del sistema",
+                        'errors' => "El lote ".$trasplante->getPlantaMadre->pm_pro_id_lote." ya tiene un proceso en el Módulo post cosecha.",
+                    ], 409);
+                }else{
+                    // No se elimina, se coloca en estado 0.
+                    $cosecha->update([
+                        'cos_estado' => 0
+                    ]);
+
+                    return response()->json([
+                        'message' => "Se elimino cosecha para el lote ".$trasplante->getPlantaMadre->pm_pro_id_lote.".",
+                    ], 200);
+                }
             }
         }catch (Exception $e) {
             return response()->json([

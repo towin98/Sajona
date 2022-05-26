@@ -140,6 +140,11 @@ export default {
                                 });
                         }else if(errors.response.status == 409 || errors.response.status == 422){
                             this.errors = errors.response.data.errors;
+                        }else if (errors.response.status == 500) {
+                            this.$swal({
+                                icon: "error",
+                                title: "Intentalo más tarde.",
+                            });
                         }
                     }
                 });
