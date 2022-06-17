@@ -28,12 +28,12 @@ class PrFaseCultivoSeeder extends Seeder
             [
                 "nombre"      => "CAMPO",
                 "descripcion" => "",
-                "estado"      => "INACTIVO"
+                "estado"      => "ACTIVO"
             ],
             [
                 "nombre"      => "COSECHA",
                 "descripcion" => "",
-                "estado"      => "INACTIVO"
+                "estado"      => "ACTIVO"
             ]
         ];
 

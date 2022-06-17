@@ -9,15 +9,17 @@ use App\Models\PlantaMadre;
 use App\Models\Propagacion;
 use App\Traits\alertaTrait;
 use App\Traits\commonsTrait;
+use App\Traits\bajasTrait;
+use App\Models\Trasplante;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlantaMadreBuscarRequest;
 use App\Http\Requests\PlantaMadreStoreRequest;
-use App\Models\Trasplante;
 
 class PlantaMadreController extends Controller
 {
     use alertaTrait;
     use commonsTrait;
+    use bajasTrait;
 
     public function __construct()
     {
@@ -98,10 +100,28 @@ class PlantaMadreController extends Controller
      */
     public function store(PlantaMadreStoreRequest $request)
     {
+        $propagacion = Propagacion::select(['pro_id_lote','pro_cantidad_material'])->where('pro_id_lote', $request->pm_pro_id_lote)->first();
+        if (!$propagacion) {
+            return response()->json([
+                'message' => 'Validación de Datos',
+                'errors' => "No existe el lote ingresado $request->pm_pro_id_lote.",
+            ], 404);
+        }
+
         $plantaMadre = PlantaMadre::where([
                 'pm_pro_id_lote' => $request->pm_pro_id_lote,
                 'pm_estado'      => 1
             ]);
+
+        $sumaCantidadBajas = $this->cantidadBajas($request->pm_pro_id_lote, ['ESQUEJES']);
+
+        $nCantidadPlantasPropagadas = ($request->pm_cantidad_semillas + $request->pm_cantidad_esquejes) - $sumaCantidadBajas;
+        if ($nCantidadPlantasPropagadas != $propagacion->pro_cantidad_material) {
+            return response()->json([
+                'message' => 'Validación de Datos',
+                'errors'  => "La suma (".$request->pm_cantidad_semillas + $request->pm_cantidad_esquejes.") de Cantidad Esquejes y Cantidad Semilllas debe ser igual a la Cantidad de Material ".($propagacion->pro_cantidad_material - $sumaCantidadBajas)
+            ], 409);
+        }
 
         if (count($plantaMadre->get()) == 0) {
 
@@ -163,10 +183,12 @@ class PlantaMadreController extends Controller
     {
         $plantaMadre = PlantaMadre::where('pm_pro_id_lote', $Propagacion->pro_id_lote)->get();
 
+        $sumaCantidadBajas = $this->cantidadBajas($Propagacion->pro_id_lote, ['ESQUEJES']);
+
         // Armando collection con data de propagacion y de plantas madres.
         $esquejeSemilla = collect([
             'pro_id_lote'                 => $Propagacion->pro_id_lote,
-            'pro_cantidad_plantas_madres' => $Propagacion->pro_cantidad_plantas_madres,
+            'pro_cantidad_material'       => ($Propagacion->pro_cantidad_material - $sumaCantidadBajas),
             'pm_fecha_esquejacion'        => $plantaMadre->isEmpty() ? '' : substr($plantaMadre[0]->pm_fecha_esquejacion,0,10) ,
             'pm_cantidad_esquejes'        => $plantaMadre->isEmpty() ? 0 : $plantaMadre[0]->pm_cantidad_esquejes,
             'pm_cantidad_semillas'        => $plantaMadre->isEmpty() ? 0 : $plantaMadre[0]->pm_cantidad_semillas

@@ -87,7 +87,7 @@
                                 filled
                                 label="Fecha de baja"
                                 dense
-                                :error-messages="(error.errores[index].bj_fecha != undefined) ? error.errores[index].bj_fecha : ''"
+                                :error-messages="(error.errores[index].bj_fecha != undefined && error.errores.length > 0) ? error.errores[index].bj_fecha : ''"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="2" sm="2">
@@ -96,7 +96,7 @@
                                 v-model="baja.bj_cantidad"
                                 ref="bj_cantidad"
                                 filled
-                                :error-messages="(error.errores[index].bj_cantidad != undefined) ? error.errores[index].bj_cantidad : ''"
+                                :error-messages="(error.errores[index].bj_cantidad != undefined && error.errores.length > 0) ? error.errores[index].bj_cantidad : ''"
                                 label="Cantidad Bajas"
                                 dense
                             ></v-text-field>
@@ -110,7 +110,7 @@
                                 item-value="id"
                                 item-text="nombre"
                                 no-data-text="Sin valores"
-                                :error-messages="(error.errores[index].bj_fase_cultivo != undefined) ? error.errores[index].bj_fase_cultivo : ''"
+                                :error-messages="(error.errores[index].bj_fase_cultivo != undefined && error.errores.length > 0) ? error.errores[index].bj_fase_cultivo : ''"
                                 filled
                                 dense
                                 label="Fase de Cultivo"
@@ -124,7 +124,7 @@
                                 item-value="id"
                                 item-text="nombre"
                                 no-data-text="Sin valores"
-                                :error-messages="(error.errores[index].bj_motivo_perdida != undefined) ? error.errores[index].bj_motivo_perdida : ''"
+                                :error-messages="(error.errores[index].bj_motivo_perdida != undefined && error.errores.length > 0) ? error.errores[index].bj_motivo_perdida : ''"
                                 filled
                                 dense
                                 label="Motivo Perdida"
@@ -134,7 +134,7 @@
                             <v-textarea
                                 v-model="baja.bj_observacion"
                                 ref="bj_observacion"
-                                :error-messages="(error.errores[index].bj_observacion != undefined) ? error.errores[index].bj_observacion : ''"
+                                :error-messages="(error.errores[index].bj_observacion != undefined && error.errores.length > 0) ? error.errores[index].bj_observacion : ''"
                                 label="Observaciones"
                                 rows="1"
                                 dense
@@ -356,9 +356,15 @@ export default {
                                 icon: 'error',
                                 title: `${mensaje}`,
                                 text: `${errors.response.data.errors}`,
-                            })
+                            });
+                            this.error.errores = [];
+                            for (let i = 0; i < this.dataBajasModal.bajas.length; i++) {
+                                this.fnErrorJson();
+                            }
                         }else{
-                            this.error.errores = errors.response.data.errors;
+                            if (errors.response.status == 422) {
+                                this.error.errores = errors.response.data.errors;
+                            }
                         }
                         this.overlayLoading = false;
                     });

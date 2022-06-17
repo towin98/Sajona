@@ -37,7 +37,7 @@
                             color="success"
                             dark
                             v-on:click="fnCambiaTitulo(radioGroupParametros, 'NUEVO')"
-                            v-if="radioGroupParametros != null"
+                            v-if="radioGroupParametros != null && radioGroupParametros != 'pr_fase_cultivo'"
                             :disabled="!$can(['CREAR'])"
                         >
                             <v-icon> add </v-icon>Nuevo
@@ -157,6 +157,7 @@
                         tile
                         v-on:click="fnAccion(accion)"
                         :disabled="!$can(['CREAR', 'EDITAR'])"
+                        v-if="radioGroupParametros != 'pr_fase_cultivo'"
                     >
                         <v-icon> save </v-icon>{{ accion }}
                     </v-btn>
@@ -303,16 +304,7 @@ export default {
                     this.modalParametros = false;
                 })
                 .catch((errores) => {
-                    this.errors = errores.response.data.errors;
-                    if (errores.response.status == 500) {
-                        if (errores.response.data.errors[0] != undefined) {
-                            this.$swal({
-                                icon: 'error',
-                                title: `${errores.response.data.message}`,
-                                text: `${errores.response.data.errors[0]}`,
-                            })
-                        }
-                    }
+                    this.errors = this.fnResponseError(errores);
                 });
         },
         /* Envia peticion con data para actualizar registro. */
@@ -332,14 +324,7 @@ export default {
                     this.limpiarCampos();
                 })
                 .catch((errores) => {
-                    this.errors = errores.response.data.errors;
-                    if (errores.response.data.errors[0] != undefined) {
-                        this.$swal({
-                            icon: 'error',
-                            title: `${errores.response.data.message}`,
-                            text: `${errores.response.data.errors[0]}`,
-                        })
-                    }
+                    this.errors = this.fnResponseError(errores);
                 });
         },
         /* Muestra un registro de un parametro */

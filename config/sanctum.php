@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'expiration' => 120, // Duracion del token 2 horas
+    'expiration' => 300, // Duracion del token 5 horas
 
     /*
     |--------------------------------------------------------------------------

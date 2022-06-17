@@ -220,13 +220,14 @@
                         <v-col cols="0" sm="3"></v-col>
 
                         <v-col cols="12" sm="4">
-                            <v-subheader>Cantidad Planta Madre</v-subheader>
+                            <v-subheader>Cantidad de Material</v-subheader>
                             <v-text-field
                                 type="number"
-                                v-model="modalInfo.pro_cantidad_plantas_madres"
-                                ref="pro_cantidad_plantas_madres"
+                                v-model="modalInfo.pro_cantidad_material"
+                                ref="pro_cantidad_material"
                                 dense
                                 disabled
+                                title="Cantidad Plantas Propagadas"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="4">
@@ -318,7 +319,7 @@ export default {
             modalInfo: {
                 pm_pro_id_lote: "",
                 pm_fecha_esquejacion: "",
-                pro_cantidad_plantas_madres: "",
+                pro_cantidad_material: "",
                 pm_cantidad_semillas: "",
                 pm_cantidad_esquejes: "",
             },
@@ -399,7 +400,7 @@ export default {
                         this.modalInfo.pm_fecha_esquejacion = '';
                     }
 
-                    this.modalInfo.pro_cantidad_plantas_madres = response.data.data.pro_cantidad_plantas_madres;
+                    this.modalInfo.pro_cantidad_material = response.data.data.pro_cantidad_material;
                     this.modalInfo.pm_cantidad_semillas = response.data.data.pm_cantidad_semillas;
                     this.modalInfo.pm_cantidad_esquejes = response.data.data.pm_cantidad_esquejes;
                     this.overlayLoading = false;

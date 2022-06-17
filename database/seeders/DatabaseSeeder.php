@@ -31,8 +31,8 @@ class DatabaseSeeder extends Seeder
             PlantaMadre::create([
                 'pm_pro_id_lote'        => $propagacion->pro_id_lote,
                 'pm_fecha_esquejacion'  => date('2022-03-02 10:10:12'),
-                'pm_cantidad_semillas'  => rand(0,20),
-                'pm_cantidad_esquejes'  => rand(0,20),
+                'pm_cantidad_semillas'  => 100,
+                'pm_cantidad_esquejes'  => 100,
                 'pm_estado'             => true,
             ]);
         }

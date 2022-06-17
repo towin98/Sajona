@@ -14,6 +14,7 @@ use App\Http\Requests\cosechaRequest;
 use App\Http\Requests\cosechaDeleteRequest;
 use App\Http\Resources\listarCosechaCollection;
 use App\Models\PostCosecha;
+use App\Models\Propagacion;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class CosechaController extends Controller
@@ -70,7 +71,7 @@ class CosechaController extends Controller
                         "cos_estado_cosecha"    => $request->cos_estado_cosecha,
                         "cos_dias_floracion"    => $diasTranscurridosFloracion,
                         "cos_peso_verde"        => $request->cos_peso_verde,
-                        "cos_observacion"       => $request->cos_observacion,
+                        "cos_observacion"       => strtoupper($request->cos_observacion),
                         "cos_estado"            => true
                     ]);
                 }else{
@@ -88,7 +89,7 @@ class CosechaController extends Controller
                         "cos_estado_cosecha"    => $request->cos_estado_cosecha,
                         "cos_dias_floracion"    => $diasTranscurridosFloracion,
                         "cos_peso_verde"        => $request->cos_peso_verde,
-                        "cos_observacion"       => $request->cos_observacion
+                        "cos_observacion"       => strtoupper($request->cos_observacion)
                     ]);
                 }
             }catch (Exception $e) {
@@ -231,9 +232,17 @@ class CosechaController extends Controller
             ])
             ->get();
 
+        if (count($cosecha) == 0) {
+            return response()->json([
+                'errors' => [
+                    "No existe registros con el recurso proporcionado."
+                ],
+            ], 404);
+        }
+
         $cosecha = $cosecha->map(function ($value, $key){
 
-            $sumaCantidadBajas = $this->cantidadBajas(optional($value->getPlantaMadre)->pm_pro_id_lote, ['esquejes','campo', 'bolsa','cosecha']);
+            $sumaCantidadBajas = $this->cantidadBajas(optional($value->getPlantaMadre)->pm_pro_id_lote, ['ESQUEJES','CAMPO', 'BOLSA','COSECHA']);
             $cos_numero_plantas = ((optional($value->getPlantaMadre)->pm_cantidad_semillas + optional($value->getPlantaMadre)->pm_cantidad_esquejes) - $sumaCantidadBajas);
 
             // Dias transcurridos desde la fecha de trasplante campo hasta la fecha actual.
@@ -253,14 +262,6 @@ class CosechaController extends Controller
                 "cos_observacion"    => optional($value->getCosecha)->cos_observacion
             ];
         });
-
-        if (count($cosecha) == 0) {
-            return response()->json([
-                'errors' => [
-                    "No existe registros con el Id[$id_trasplante] proporcionado."
-                ],
-            ], 404);
-        }
 
         return response()->json([
             'data' => $cosecha[0],

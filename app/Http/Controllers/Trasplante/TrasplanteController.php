@@ -230,7 +230,7 @@ class TrasplanteController extends Controller
         }
 
         // Obteniendo bajas del lote.
-        $sumaCantidadBajas = $this->cantidadBajas($registro[0]->pm_pro_id_lote, ['esquejes','bolsa']);
+        $sumaCantidadBajas = $this->cantidadBajas($registro[0]->pm_pro_id_lote, ['ESQUEJES','BOLSA']);
 
         $registro = $registro->map(function ($data) use ($sumaCantidadBajas){
             return [
@@ -331,9 +331,6 @@ class TrasplanteController extends Controller
             }
         }
 
-        // $registros = $registros->slice($start,$length);
-        // $data      = $registros->values();
-
         return response()->json([
             'data'      => $registros,
             'filtrados' => $registros->count(),
@@ -361,7 +358,7 @@ class TrasplanteController extends Controller
 
         if ($plantaMadre) {
 
-            $sumaCantidadBajas = $this->cantidadBajas($plantaMadre->pm_pro_id_lote, ['esquejes','campo', 'bolsa']);
+            $sumaCantidadBajas = $this->cantidadBajas($plantaMadre->pm_pro_id_lote, ['ESQUEJES','BOLSA','CAMPO']);
 
             // Calculando cantidad trasplante a campo.
             $data['pm_pro_id_lote'] = $plantaMadre->pm_pro_id_lote;
