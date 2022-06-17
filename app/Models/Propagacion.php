@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\parametros\TipoPropagacion;
+use App\Models\Parametros\TipoIncorporacion;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Propagacion extends Model
 {
@@ -43,7 +45,9 @@ class Propagacion extends Model
         "pro_cantidad_plantas_madres",
         "pro_estado",
         "getPlantaMadre",
-        "getBaja"
+        "getBaja",
+        "getTipoPropagacion",
+        "getTipoIncorporacion"
     ];
 
     /**
@@ -133,12 +137,30 @@ class Propagacion extends Model
     }
 
     /**
-     * Obtiene el registro de bajas asociados a propagación.
+     * Obtiene los registros de bajas asociados a propagación.
      *
      * @return Illuminate\Support\Collection;
      */
     public function getBaja(){
         return $this->hasMany(Baja::class,'bj_pro_id_lote', 'pro_id_lote');
+    }
+
+    /**
+     * Obtiene el registro de Tipo de Propagación asociado a propagación.
+     *
+     * @return Illuminate\Support\Collection;
+     */
+    public function getTipoPropagacion(){
+        return $this->belongsTo(TipoPropagacion::class,'pro_tipo_propagacion', 'id');
+    }
+
+    /**
+     * Obtiene el registro de Tipo incorporacion asociado a propagación
+     *
+     * @return Illuminate\Support\Collection;
+     */
+    public function getTipoIncorporacion(){
+        return $this->belongsTo(TipoIncorporacion::class,'pro_tipo_incorporacion', 'id');
     }
 
     /**

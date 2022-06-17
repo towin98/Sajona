@@ -16,10 +16,10 @@ class BajaController extends Controller
 
     public function __construct()
     {
-        // $this->middleware(['permission:LISTAR'])->only('buscarLotes');
-        // $this->middleware(['permission:CREAR|EDITAR'])->only('store');
-        // $this->middleware(['permission:EDITAR'])->only('update');
-        // $this->middleware(['permission:VER'])->only('show');
+        $this->middleware(['permission:LISTAR'])->only('buscarLotes');
+        $this->middleware(['permission:CREAR|EDITAR'])->only('store');
+        $this->middleware(['permission:EDITAR'])->only('update');
+        $this->middleware(['permission:VER'])->only('show');
     }
 
     /**
