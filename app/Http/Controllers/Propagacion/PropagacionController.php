@@ -22,7 +22,7 @@ class PropagacionController extends Controller
     }
 
     /**
-     * Muestra una lista del recurso.
+     * Muestra listado de propagaciones.
      *
      * @return \Illuminate\Http\Response
      */
@@ -40,12 +40,29 @@ class PropagacionController extends Controller
             $totalRegistros = Propagacion::Buscar($request->buscar)
                 ->orderBy($request->orderColumn, $request->order)
                 ->where('pro_estado',1)
+                ->with('getTipoPropagacion:id,nombre')
+                ->with('getTipoIncorporacion:id,nombre')
                 ->paginate($length);
         }else{
             $totalRegistros = Propagacion::Buscar($request->buscar)
                 ->where('pro_estado',1)
+                ->with('getTipoPropagacion:id,nombre')
+                ->with('getTipoIncorporacion:id,nombre')
                 ->paginate($length);
         }
+
+        $totalRegistros->getCollection()->transform(function($data, $key) {
+            return [
+                "pro_id_lote"                   => $data->pro_id_lote,
+                "pro_fecha"                     => $data->pro_fecha,
+                "pro_tipo_propagacion"          => $data->getTipoPropagacion->nombre,
+                "pro_variedad"                  => $data->pro_variedad,
+                "pro_tipo_incorporacion"        => $data->getTipoIncorporacion->nombre,
+                "pro_cantidad_material"         => $data->pro_cantidad_material,
+                "pro_cantidad_plantas_madres"   => $data->pro_cantidad_plantas_madres,
+                "pro_estado"                    => $data->pro_estado,
+            ];
+        });
 
         return response()->json($totalRegistros, 200);
     }
