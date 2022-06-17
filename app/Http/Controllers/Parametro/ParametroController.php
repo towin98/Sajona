@@ -71,6 +71,16 @@ class ParametroController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+
+        if ($request->parametrica == 'pr_fase_cultivo') {
+            // No se permite crear mas registros para la paramétrica porque los datos creados estan quemados en el sistema
+            //  y alterarian los descartes de las plantas propagadas.
+            return response()->json([
+                'message' => 'Error de Validación de Datos',
+                'errors'  => 'Para la paramétrica Fase de Cultivo no esta permitido Crear Registros, por favor comuníquese con el área de Tecnología Sajona.'
+            ], 409);
+        }
+
         try {
             $modelo  = $this->getModelo($request->parametrica);
 
@@ -161,6 +171,15 @@ class ParametroController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($request->parametrica == 'pr_fase_cultivo') {
+            // No se permite Actualizar registros para la paramétrica porque los datos creados estan quemados en el sistema
+            //  y alterarian los descartes de las plantas propagadas.
+            return response()->json([
+                'message' => 'Error de Validación de Datos',
+                'errors'  => 'Para la paramétrica Fase de Cultivo no esta permitido Actualizar Registros, por favor comuníquese con el área de Tecnología Sajona.'
+            ], 409);
+        }
+
         $modelo  = $this->getModelo($request->parametrica);
 
         $arrErrores = $this->validarDatos($request->parametrica, $modelo, 'update', $request);

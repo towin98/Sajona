@@ -44,7 +44,7 @@ class ListarTrasplanteCampoCollection extends ResourceCollection
             $this->registrosTrasplante($this['get_planta_madre']['get_trasplantes']);
         }
 
-        $sumaCantidadBajas = $this->cantidadBajas($this['pro_id_lote'], ['esquejes','campo', 'bolsa']);
+        $sumaCantidadBajas = $this->cantidadBajas($this['pro_id_lote'], ['ESQUEJES','CAMPO', 'BOLSA']);
         $cantidadTrasplarCampo = (($this['get_planta_madre']['pm_cantidad_semillas'] + $this['get_planta_madre']['pm_cantidad_esquejes']) - $sumaCantidadBajas);
 
         return [

@@ -153,7 +153,7 @@ class PostCosechaController extends Controller
                     "post_porcentaje_humedad"   => $request->post_porcentaje_humedad,
                     "post_cbd"                  => $request->post_cbd,
                     "post_thc"                  => $request->post_thc,
-                    "post_observacion"          => $request->post_observacion,
+                    "post_observacion"          => strtoupper($request->post_observacion),
                     "post_estado"               => 1,
                 ]);
 
@@ -175,7 +175,7 @@ class PostCosechaController extends Controller
                     "post_porcentaje_humedad"   => $request->post_porcentaje_humedad,
                     "post_cbd"                  => $request->post_cbd,
                     "post_thc"                  => $request->post_thc,
-                    "post_observacion"          => $request->post_observacion,
+                    "post_observacion"          => strtoupper($request->post_observacion),
                     "post_estado"               => 1,
                 ]);
             }

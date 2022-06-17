@@ -8,6 +8,7 @@ use App\Models\PlantaMadre;
 use App\Models\Propagacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Parametros\FaseCultivo;
 use Illuminate\Support\Facades\Validator;
 
 class BajaController extends Controller
@@ -15,10 +16,10 @@ class BajaController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['permission:LISTAR'])->only('buscarLotes');
-        $this->middleware(['permission:CREAR|EDITAR'])->only('store');
-        $this->middleware(['permission:EDITAR'])->only('update');
-        $this->middleware(['permission:VER'])->only('show');
+        // $this->middleware(['permission:LISTAR'])->only('buscarLotes');
+        // $this->middleware(['permission:CREAR|EDITAR'])->only('store');
+        // $this->middleware(['permission:EDITAR'])->only('update');
+        // $this->middleware(['permission:VER'])->only('show');
     }
 
     /**
@@ -146,7 +147,7 @@ class BajaController extends Controller
     }
 
     /**
-     * Actualiza la bajas de una lote.
+     * Guarda - Actualiza la bajas de una lote.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -163,12 +164,29 @@ class BajaController extends Controller
         foreach ($bajas as $baja) {
 
             $validator = Validator::make($baja, Baja::$rules, Baja::$messages);
+
+            if ($baja['bj_fase_cultivo'] != "") {
+                // Validando que lote tenga esquejación, porque si ya tiene no se puede hacer descartes por la fase de cultivo tipo (ESQUEJES).
+                // Los descartes para la FASE DE CULTIVO (ESQUEJES) se debe hacer es antes de realizar la esquejacion no despues.
+                $faseCultivo = FaseCultivo::findOrFail($baja['bj_fase_cultivo']);
+
+                if ($faseCultivo->nombre == "ESQUEJES") {
+                    $plantaMadre = PlantaMadre::select('pm_id')->where('pm_pro_id_lote',$id_lote)->first();
+                    if ($plantaMadre) {
+                        $validator->after(function ($validator) {
+                                $validator->errors()->add('bj_fase_cultivo', 'El lote ya tiene ESQUEJACION.');
+                        });
+                    }
+                }
+            }
+
             if ($validator->fails()) {
                 $errores[] = $validator->errors();
                 $contadorErrores++;
             } else {
                 $errores[] = json_decode("{}");
             }
+
         }
 
         if ($contadorErrores > 0) {
@@ -198,7 +216,7 @@ class BajaController extends Controller
             if ($totalDescartes > $totalSemillasEsquejes) {
                 return response()->json([
                     'message' => 'Error de Validación de Datos',
-                    'errors' => "El total de descartes ($totalDescartes) para el lote $request->id_lote no puede superar la cantidad siembra ($totalSemillasEsquejes)."
+                    'errors' => "El total de Descartes ($totalDescartes) para el lote $request->id_lote no puede superar la cantidad siembra ($totalSemillasEsquejes)."
                 ], 409);
             }
         }

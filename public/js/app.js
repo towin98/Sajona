@@ -2902,6 +2902,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3049,17 +3050,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this3.modalParametros = false;
       })["catch"](function (errores) {
-        _this3.errors = errores.response.data.errors;
-
-        if (errores.response.status == 500) {
-          if (errores.response.data.errors[0] != undefined) {
-            _this3.$swal({
-              icon: 'error',
-              title: "".concat(errores.response.data.message),
-              text: "".concat(errores.response.data.errors[0])
-            });
-          }
-        }
+        _this3.errors = _this3.fnResponseError(errores);
       });
     },
 
@@ -3078,15 +3069,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this4.limpiarCampos();
       })["catch"](function (errores) {
-        _this4.errors = errores.response.data.errors;
-
-        if (errores.response.data.errors[0] != undefined) {
-          _this4.$swal({
-            icon: 'error',
-            title: "".concat(errores.response.data.message),
-            text: "".concat(errores.response.data.errors[0])
-          });
-        }
+        _this4.errors = _this4.fnResponseError(errores);
       });
     },
 
@@ -4111,8 +4094,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               title: "".concat(mensaje),
               text: "".concat(errors.response.data.errors)
             });
+
+            _this4.error.errores = [];
+
+            for (var i = 0; i < _this4.dataBajasModal.bajas.length; i++) {
+              _this4.fnErrorJson();
+            }
           } else {
-            _this4.error.errores = errors.response.data.errors;
+            if (errors.response.status == 422) {
+              _this4.error.errores = errors.response.data.errors;
+            }
           }
 
           _this4.overlayLoading = false;
@@ -4964,6 +4955,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5029,7 +5021,7 @@ __webpack_require__.r(__webpack_exports__);
       modalInfo: {
         pm_pro_id_lote: "",
         pm_fecha_esquejacion: "",
-        pro_cantidad_plantas_madres: "",
+        pro_cantidad_material: "",
         pm_cantidad_semillas: "",
         pm_cantidad_esquejes: ""
       },
@@ -5112,7 +5104,7 @@ __webpack_require__.r(__webpack_exports__);
           _this3.modalInfo.pm_fecha_esquejacion = '';
         }
 
-        _this3.modalInfo.pro_cantidad_plantas_madres = response.data.data.pro_cantidad_plantas_madres;
+        _this3.modalInfo.pro_cantidad_material = response.data.data.pro_cantidad_material;
         _this3.modalInfo.pm_cantidad_semillas = response.data.data.pm_cantidad_semillas;
         _this3.modalInfo.pm_cantidad_esquejes = response.data.data.pm_cantidad_esquejes;
         _this3.overlayLoading = false;
@@ -7893,7 +7885,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\n    padding-left: 10px !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -29217,7 +29209,8 @@ var render = function () {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm.radioGroupParametros != null
+                      _vm.radioGroupParametros != null &&
+                      _vm.radioGroupParametros != "pr_fase_cultivo"
                         ? _c(
                             "v-btn",
                             {
@@ -29505,29 +29498,31 @@ var render = function () {
                 [
                   _c("v-spacer"),
                   _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "white--text text-none",
-                      attrs: {
-                        type: "submit",
-                        small: "",
-                        color: "success",
-                        tile: "",
-                        disabled: !_vm.$can(["CREAR", "EDITAR"]),
-                      },
-                      on: {
-                        click: function ($event) {
-                          return _vm.fnAccion(_vm.accion)
+                  _vm.radioGroupParametros != "pr_fase_cultivo"
+                    ? _c(
+                        "v-btn",
+                        {
+                          staticClass: "white--text text-none",
+                          attrs: {
+                            type: "submit",
+                            small: "",
+                            color: "success",
+                            tile: "",
+                            disabled: !_vm.$can(["CREAR", "EDITAR"]),
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.fnAccion(_vm.accion)
+                            },
+                          },
                         },
-                      },
-                    },
-                    [
-                      _c("v-icon", [_vm._v(" save ")]),
-                      _vm._v(_vm._s(_vm.accion) + "\n                "),
-                    ],
-                    1
-                  ),
+                        [
+                          _c("v-icon", [_vm._v(" save ")]),
+                          _vm._v(_vm._s(_vm.accion) + "\n                "),
+                        ],
+                        1
+                      )
+                    : _vm._e(),
                 ],
                 1
               ),
@@ -30630,7 +30625,8 @@ var render = function () {
                                 label: "Fecha de baja",
                                 dense: "",
                                 "error-messages":
-                                  _vm.error.errores[index].bj_fecha != undefined
+                                  _vm.error.errores[index].bj_fecha !=
+                                    undefined && _vm.error.errores.length > 0
                                     ? _vm.error.errores[index].bj_fecha
                                     : "",
                               },
@@ -30658,7 +30654,7 @@ var render = function () {
                                 filled: "",
                                 "error-messages":
                                   _vm.error.errores[index].bj_cantidad !=
-                                  undefined
+                                    undefined && _vm.error.errores.length > 0
                                     ? _vm.error.errores[index].bj_cantidad
                                     : "",
                                 label: "Cantidad Bajas",
@@ -30690,7 +30686,7 @@ var render = function () {
                                 "no-data-text": "Sin valores",
                                 "error-messages":
                                   _vm.error.errores[index].bj_fase_cultivo !=
-                                  undefined
+                                    undefined && _vm.error.errores.length > 0
                                     ? _vm.error.errores[index].bj_fase_cultivo
                                     : "",
                                 filled: "",
@@ -30723,7 +30719,7 @@ var render = function () {
                                 "no-data-text": "Sin valores",
                                 "error-messages":
                                   _vm.error.errores[index].bj_motivo_perdida !=
-                                  undefined
+                                    undefined && _vm.error.errores.length > 0
                                     ? _vm.error.errores[index].bj_motivo_perdida
                                     : "",
                                 filled: "",
@@ -30752,7 +30748,7 @@ var render = function () {
                               attrs: {
                                 "error-messages":
                                   _vm.error.errores[index].bj_observacion !=
-                                  undefined
+                                    undefined && _vm.error.errores.length > 0
                                     ? _vm.error.errores[index].bj_observacion
                                     : "",
                                 label: "Observaciones",
@@ -32025,22 +32021,26 @@ var render = function () {
                         "v-col",
                         { attrs: { cols: "12", sm: "4" } },
                         [
-                          _c("v-subheader", [_vm._v("Cantidad Planta Madre")]),
+                          _c("v-subheader", [_vm._v("Cantidad de Material")]),
                           _vm._v(" "),
                           _c("v-text-field", {
-                            ref: "pro_cantidad_plantas_madres",
-                            attrs: { type: "number", dense: "", disabled: "" },
+                            ref: "pro_cantidad_material",
+                            attrs: {
+                              type: "number",
+                              dense: "",
+                              disabled: "",
+                              title: "Cantidad Plantas Propagadas",
+                            },
                             model: {
-                              value: _vm.modalInfo.pro_cantidad_plantas_madres,
+                              value: _vm.modalInfo.pro_cantidad_material,
                               callback: function ($$v) {
                                 _vm.$set(
                                   _vm.modalInfo,
-                                  "pro_cantidad_plantas_madres",
+                                  "pro_cantidad_material",
                                   $$v
                                 )
                               },
-                              expression:
-                                "modalInfo.pro_cantidad_plantas_madres",
+                              expression: "modalInfo.pro_cantidad_material",
                             },
                           }),
                         ],
