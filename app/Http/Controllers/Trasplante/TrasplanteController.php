@@ -106,7 +106,8 @@ class TrasplanteController extends Controller
         $registros = $registros->map(function ($value, $key){
             // Se armana data como la requiere, tipo object.
             $data = new Request([
-                'pro_fecha' => $value->pro_fecha,
+                'pro_id_lote'    => $value->pro_id_lote,
+                'pro_fecha'      => $value->pro_fecha,
                 'getPlantaMadre' => new Request([
                     'pm_id' => $value->pm_id
                 ])
@@ -186,15 +187,22 @@ class TrasplanteController extends Controller
             ], 500);
         }
 
-        Trasplante::create([
-            'tp_pm_id'          => $plantaMadre->pm_id,
-            'tp_tipo'           => 'bolsa',
-            'tp_tipo_lote'      => $request->tp_tipo_lote,
-            'tp_fecha'          => $request->tp_fecha." ".date('H:i:s'),
-            'tp_ubicacion'      => $request->tp_ubicacion,
-            'tp_cantidad_area'  => $request->tp_cantidad_area,
-            'tp_estado'         => true,
-        ]);
+        try {
+            Trasplante::create([
+                'tp_pm_id'          => $plantaMadre->pm_id,
+                'tp_tipo'           => 'bolsa',
+                'tp_tipo_lote'      => $request->tp_tipo_lote,
+                'tp_fecha'          => $request->tp_fecha." ".date('H:i:s'),
+                'tp_ubicacion'      => $request->tp_ubicacion,
+                'tp_cantidad_area'  => $request->tp_cantidad_area,
+                'tp_estado'         => true,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Error inesperado.',
+                'errors'  => "Error al guardar trasplante a bolsa."
+            ], 500);
+        }
 
         return response()->json([
             'message'       => 'Datos Guardados.',

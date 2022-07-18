@@ -11,7 +11,7 @@ class RecuperarPassMailable extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subject = "Este es el asunto de recuperar pass";
+    public $subject = "Restauración contraseña plataforma Sajona.";
     private $password = "";
     private $user;
 

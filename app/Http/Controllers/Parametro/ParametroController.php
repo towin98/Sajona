@@ -122,7 +122,7 @@ class ParametroController extends Controller
             $nombreCampoParametro  = $this->getCampoParametro($request->parametrica);
 
             return response()->json([
-                'message' => "Datos Guardados, para el campo parámetro $nombreCampoParametro.",
+                'message' => "Datos guardados, para el campo parámetro $nombreCampoParametro.",
             ], 201);
 
         } catch (\Exception $e) {
@@ -210,7 +210,7 @@ class ParametroController extends Controller
         $nombreCampoParametro  = $this->getCampoParametro($request->parametrica);
 
         return response()->json([
-            'message' => "Datos Actualizados para el campo parámetro[$nombreCampoParametro].",
+            'message' => "Datos Actualizados para el campo parámetro $nombreCampoParametro.",
         ], 201);
     }
 

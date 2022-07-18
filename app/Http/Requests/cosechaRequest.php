@@ -27,7 +27,8 @@ class cosechaRequest extends FormRequest
     public function rules()
     {
         return [
-            'cos_fecha_cosecha'          => "required|date_format:Y-m-d|before_or_equal:".Date('Y-m-d')."|after_or_equal:tp_fecha", // Se envia en el request fecha actual en el campo hoy
+             // Se envia en el request tp_fecha, pero este campo no se valida.
+            'cos_fecha_cosecha'          => "required|date_format:Y-m-d|after_or_equal:tp_fecha", // before_or_equal:".Date('Y-m-d')."
             'cos_numero_plantas'         => 'required|integer',
             'cos_estado_cosecha'         => 'required',
             'cos_dias_floracion'         => 'required|integer',
@@ -47,7 +48,7 @@ class cosechaRequest extends FormRequest
             'cos_fecha_cosecha.required'             => 'El campo fecha Cosecha es requerido.',
             'cos_fecha_cosecha.date_format'          => 'El tipo de formato del campo fecha Cosecha debe ser ej: Y-m-d.',
             'cos_fecha_cosecha.before_or_equal'      => 'La fecha de cosecha no puede ser mayor a la de hoy.',
-            'cos_fecha_cosecha.after_or_equal'       =>"La fecha de cosecha debe ser una fecha posterior o igual a la Fecha Tras. Terreno.",
+            'cos_fecha_cosecha.after_or_equal'       => 'La fecha de cosecha debe ser una fecha posterior o igual a la Fecha Tras. Terreno.',
             'cos_numero_plantas.required'            => 'El numero de plantas es requerido.',
             'cos_numero_plantas.integer'             => 'El numero de plantas debe ser númerico.',
             'cos_estado_cosecha.required'            => 'El estado de la cosecha es requerido.',
