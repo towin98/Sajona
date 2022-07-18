@@ -344,7 +344,7 @@ class PostCosechaController extends Controller
                 ->first();
 
                 return response()->json([
-                    'message' => "Se elimino la Post Cosecha para el lote ".$id_lote->getTrasplanteCampo->getPlantaMadre->pm_pro_id_lote.".",
+                    'message' => "Se elimino la post cosecha para el lote ".$id_lote->getTrasplanteCampo->getPlantaMadre->pm_pro_id_lote.".",
                 ], 200);
             }
 

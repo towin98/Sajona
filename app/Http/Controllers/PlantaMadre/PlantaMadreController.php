@@ -125,6 +125,8 @@ class PlantaMadreController extends Controller
 
         if (count($plantaMadre->get()) == 0) {
 
+            $mensaje = "guardados";
+
             if (!$this->fnVerificaPermisoUsuario('CREAR')) {
                 throw new AuthorizationException;
             }
@@ -141,6 +143,8 @@ class PlantaMadreController extends Controller
             if (!$this->fnVerificaPermisoUsuario('EDITAR')) {
                 throw new AuthorizationException;
             }
+
+            $mensaje = "actualizados";
 
             $plantaMadreConsulta = $plantaMadre->first();
 
@@ -169,7 +173,7 @@ class PlantaMadreController extends Controller
         }
 
         return response()->json([
-            'message' => 'Datos Guardados.',
+            'message' => "Datos $mensaje, para el lote $request->pm_pro_id_lote",
         ], 201);
     }
 

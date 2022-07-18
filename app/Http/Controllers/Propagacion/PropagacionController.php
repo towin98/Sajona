@@ -105,7 +105,7 @@ class PropagacionController extends Controller
     public function store(PropationRequest $request)
     {
         $id = $this->buscarUltimoIdLote(true);
-        Propagacion::create([
+        $Propagacion = Propagacion::create([
             "pro_id_lote"                   => $id,
             "pro_fecha"                     => $request->pro_fecha." ".date("H:i:s"),
             "pro_tipo_propagacion"          => $request->pro_tipo_propagacion,
@@ -117,7 +117,7 @@ class PropagacionController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Datos Guardados',
+            'message' => "Se ha creado propagación para el lote $Propagacion->pro_id_lote",
         ], 201);
 
     }
@@ -170,7 +170,7 @@ class PropagacionController extends Controller
         }
 
         return response()->json([
-            'message' => "Datos Actualizados con exito.",
+            'message' => "Datos Actualizados para el lote $propagacion->pro_id_lote.",
         ], 201);
 
     }
