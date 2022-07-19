@@ -3,6 +3,7 @@ namespace App\Traits;
 
 use App\Models\Alerta;
 use App\Models\Cosecha;
+use App\Models\PostCosecha;
 use App\Models\Trasplante;
 
 trait alertaTrait {
@@ -10,6 +11,8 @@ trait alertaTrait {
     private $max_rang_propagacion;
     private $max_rang_bolsa;
     private $max_rang_campo;
+    private $max_rang_cosecha;
+    private $max_rang_post_cosecha;
 
     /**
       * Alerta estado de lotes.
@@ -29,7 +32,7 @@ trait alertaTrait {
             ->where('tp_pm_id', optional($data->getPlantaMadre)->pm_id )
             ->where('tp_tipo', 'bolsa')
             ->get();
-        if (count($trasplanteBolsa) == 0) {
+        if (count($trasplanteBolsa) == 0) { // Propagación
             $diasTranscurridos = date_diff(date_create($data->pro_fecha),$today)->format('%a');
 
             if ($diasTranscurridos <= ($this->max_rang_propagacion-2) ) {// rang max propagacion -2
@@ -52,7 +55,7 @@ trait alertaTrait {
                 ->where('tp_tipo', 'campo')
                 ->first();
 
-            if (!$trasplanteCampo) {
+            if (!$trasplanteCampo) { // Trasplante bolsa
                 $diasTranscurridos = date_diff(date_create($trasplanteBolsa[0]->tp_fecha),$today)->format('%a');
                 if ($diasTranscurridos < ($this->max_rang_bolsa-1) ) { // rang max tras. bolsa (menos - 1 dia)
                     $arrAlerta[0] = "En Bolsa";
@@ -76,7 +79,7 @@ trait alertaTrait {
                     ->where('cos_estado',1)
                     ->first();
 
-                if (!$cosecha) {
+                if (!$cosecha) { // Trasplante campo
                     // Validaciones para trasplante a campo.
                     $diasTranscurridos = date_diff(date_create($trasplanteCampo->tp_fecha),$today)->format('%a');
                     if ($diasTranscurridos < ($this->max_rang_campo-1)) { // rang max tras. Campo (menos - 1 dia)
@@ -92,16 +95,67 @@ trait alertaTrait {
 
                     }else if($diasTranscurridos > ($this->max_rang_campo)){ // rang max tras. Campo
                         // Si no hay registros en Cosecha.
-                        $arrAlerta[0] = "Listo para Cosecha";
+                        $arrAlerta[0] = "Listo para cosecha";
                         $arrAlerta[1] = "#FF0000";
                     }
                     $arrAlerta[2] = $diasTranscurridos;
                 }else{
-                    // Validaciones para Alertas Cosecha.
-                    $diasTranscurridos = date_diff(date_create($cosecha->cos_fecha_cosecha),$today)->format('%a');
-                    $arrAlerta[0] = "Cosechado";
-                    $arrAlerta[1] = "#008F39";
-                    $arrAlerta[2] = $diasTranscurridos;
+
+                    // Consultando si el lote esta en el proceso de Post Cosecha.
+                    $postCosecha = PostCosecha::select([
+                            'pos_id',
+                            'post_fecha_ini_secado'
+                        ])
+                        ->where('post_cos_id', $cosecha->cos_id)
+                        ->where('post_estado',1)
+                        ->first();
+
+                    if (!$postCosecha) { // cosecha alerta
+                        // Validaciones para Alertas Cosecha.
+                        // Dias transcurridos desde la fecha de cosecha hasta hoy.
+                        $diasTranscurridos = date_diff(date_create($cosecha->cos_fecha_cosecha),$today)->format('%a');
+
+                        if ($diasTranscurridos < ($this->max_rang_cosecha) - 1) {
+
+                            $arrAlerta[0] = "En cosecha";
+                            $arrAlerta[1] = "#008F39";
+
+                        }else if($diasTranscurridos >= ($this->max_rang_cosecha-1) && $diasTranscurridos <= ($this->max_rang_cosecha)){
+
+                            $arrAlerta[0] = "Casi listo para post cosecha";
+                            $arrAlerta[1] = "#ff8000";
+
+                        }else if($diasTranscurridos > ($this->max_rang_cosecha)){
+
+                            $arrAlerta[0] = "Listo para post cosecha";
+                            $arrAlerta[1] = "#FF0000";
+
+                        }
+                        $arrAlerta[2] = $diasTranscurridos;
+                    }else{ // Post cosecha alerta
+                        // Validaciones para Alertas post Cosecha.
+                        // Dias transcurridos desde la fecha de post cosecha inicia secado hasta hoy.
+                        $diasTranscurridos = date_diff(date_create($postCosecha->post_fecha_ini_secado),$today)->format('%a');
+
+                        if ($diasTranscurridos < ($this->max_rang_post_cosecha) - 1) {
+
+                            $arrAlerta[0] = "En post cosecha";
+                            $arrAlerta[1] = "#008F39";
+
+                        }else if($diasTranscurridos >= ($this->max_rang_post_cosecha-1) && $diasTranscurridos <= ($this->max_rang_post_cosecha)){
+
+                            $arrAlerta[0] = "El lote pronto a terminar procesos.";
+                            $arrAlerta[1] = "#ff8000";
+
+                        }else if($diasTranscurridos > ($this->max_rang_post_cosecha)){
+
+                            $arrAlerta[0] = "Procesos completos";
+                            $arrAlerta[1] = "#FFC300";
+
+                        }
+                        $arrAlerta[2] = $diasTranscurridos;
+                    }
+
                 }
             }
 
@@ -113,9 +167,11 @@ trait alertaTrait {
     {
         $alerta = Alerta::first();
 
-        $this->max_rang_propagacion = $alerta->max_rang_propagacion;
-        $this->max_rang_bolsa       = $alerta->max_rang_bolsa;
-        $this->max_rang_campo       = $alerta->max_rang_campo;
+        $this->max_rang_propagacion     = $alerta->max_rang_propagacion;
+        $this->max_rang_bolsa           = $alerta->max_rang_bolsa;
+        $this->max_rang_campo           = $alerta->max_rang_campo;
+        $this->max_rang_cosecha         = $alerta->max_rang_cosecha;
+        $this->max_rang_post_cosecha    = $alerta->max_rang_post_cosecha;
     }
 }
 ?>

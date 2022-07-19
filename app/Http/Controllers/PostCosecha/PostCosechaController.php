@@ -6,11 +6,11 @@ use Exception;
 use App\Models\Cosecha;
 use App\Models\PostCosecha;
 use Illuminate\Http\Request;
+use App\Traits\commonsTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCosechasDeleteRequest;
 use App\Http\Requests\PostCosechasStoreRequest;
 use App\Http\Resources\ListarPostCosechaCollection;
-use App\Traits\commonsTrait;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class PostCosechaController extends Controller
@@ -81,9 +81,9 @@ class PostCosechaController extends Controller
         $totalRegistros = $registrosPostCosecha->count();
 
         $registrosPostCosecha = $registrosPostCosecha->skip($start)
-        ->take($length)
-        ->get()
-        ->toArray();
+            ->take($length)
+            ->get()
+            ->toArray();
 
         $registrosPostCosecha = ListarPostCosechaCollection::collection($registrosPostCosecha);
 

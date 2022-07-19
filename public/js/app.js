@@ -2464,32 +2464,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -2499,12 +2473,11 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: {
         id: '',
-        // min_rang_propagacion : 0,
-        max_rang_propagacion: 0,
-        // min_rang_bolsa : 0,
-        max_rang_bolsa: 0,
-        // min_rang_campo : 0,
-        max_rang_campo: 0
+        max_rang_propagacion: '',
+        max_rang_bolsa: '',
+        max_rang_campo: '',
+        max_rang_cosecha: '',
+        max_rang_post_cosecha: ''
       },
       errors: {},
       // Variable loading
@@ -2521,13 +2494,12 @@ __webpack_require__.r(__webpack_exports__);
         var data = response.data.data;
 
         if (data.length == 0) {} else {
-          _this.form.id = data.id; // this.form.min_rang_propagacion = data.min_rang_propagacion;
-
-          _this.form.max_rang_propagacion = data.max_rang_propagacion; // this.form.min_rang_bolsa       = data.min_rang_bolsa;
-
-          _this.form.max_rang_bolsa = data.max_rang_bolsa; // this.form.min_rang_campo       = data.min_rang_campo;
-
+          _this.form.id = data.id;
+          _this.form.max_rang_propagacion = data.max_rang_propagacion;
+          _this.form.max_rang_bolsa = data.max_rang_bolsa;
           _this.form.max_rang_campo = data.max_rang_campo;
+          _this.form.max_rang_cosecha = data.max_rang_cosecha;
+          _this.form.max_rang_post_cosecha = data.max_rang_post_cosecha;
         }
 
         _this.overlayLoading = false;
@@ -2553,6 +2525,8 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.errors = {};
         _this2.overlayLoading = false;
+
+        _this2.$router.go(0);
       })["catch"](function (errores) {
         _this2.errors = _this2.fnResponseError(errores);
         _this2.overlayLoading = false;
@@ -4405,6 +4379,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4438,11 +4440,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       loading: true,
       options: {},
       headers: [{
-        text: "Id Lote",
+        text: "Id lote",
         align: "start",
         value: "id_lote"
       }, {
-        text: "Cantidad Planta Madre",
+        text: "Cantidad planta madre",
         value: "pro_cantidad_plantas_madres"
       }, {
         text: "Fecha trasplante Bolsa",
@@ -4452,6 +4454,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         value: "cos_fecha_cosecha"
       }, {
         text: "Estado",
+        value: "estado_lote",
+        sortable: false
+      }, {
+        text: "Días transcurridos",
+        value: "dias_transcurridos",
+        sortable: false
+      }, {
+        text: "Estado cosecha",
         value: "estado"
       }, {
         text: "Acciones",
@@ -5496,6 +5506,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -5549,6 +5587,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         value: "post_fecha_fin_secado"
       }, {
         text: "Estado",
+        value: "estado_lote",
+        sortable: false
+      }, {
+        text: "Días transcurridos",
+        value: "dias_transcurridos",
+        sortable: false
+      }, {
+        text: "Estado post cosecha",
         value: "estado"
       }, {
         text: "Acciones",
@@ -7886,6 +7932,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\ninput {\r\n    padding-left: 10px !important;\n}\r\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.altura_label{\n    height: 90px;\n}\n/* Extra small devices (phones, 600px and down) */\n@media only screen and (max-width: 600px) {\n.altura_label{\n        height: 0px;\n        padding-bottom: 15px;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26423,6 +26493,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./alerta.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/404.vue?vue&type=style&index=0&id=c01741c2&scoped=true&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/errors/404.vue?vue&type=style&index=0&id=c01741c2&scoped=true&lang=css& ***!
@@ -26892,15 +26992,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alerta.vue?vue&type=template&id=5530c4b7& */ "./resources/js/components/config/alerta.vue?vue&type=template&id=5530c4b7&");
 /* harmony import */ var _alerta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./alerta.vue?vue&type=script&lang=js& */ "./resources/js/components/config/alerta.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _alerta_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alerta.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _alerta_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__.render,
   _alerta_vue_vue_type_template_id_5530c4b7___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -27844,6 +27946,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_alerta_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./alerta.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/config/alerta.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/errors/404.vue?vue&type=style&index=0&id=c01741c2&scoped=true&lang=css&":
 /*!*********************************************************************************************************!*\
   !*** ./resources/js/components/errors/404.vue?vue&type=style&index=0&id=c01741c2&scoped=true&lang=css& ***!
@@ -28688,140 +28803,153 @@ var render = function () {
                 [
                   _c(
                     "v-col",
-                    { attrs: { cols: "12", sm: "4" } },
+                    { attrs: { cols: "12", sm: "3" } },
                     [
-                      _c("div", { staticClass: "text-center" }, [
+                      _c("div", { staticClass: "altura_label" }, [
                         _vm._v(
                           "Rango alerta en días para el módulo propagación"
                         ),
                       ]),
                       _vm._v(" "),
-                      _c(
-                        "v-row",
-                        { staticClass: "mt-4" },
-                        [
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "6" } },
-                            [
-                              _c("v-text-field", {
-                                ref: "max_rang_propagacion",
-                                attrs: {
-                                  type: "number",
-                                  dense: "",
-                                  label: "Rag. max",
-                                  "error-messages":
-                                    _vm.errors.max_rang_propagacion,
-                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
-                                },
-                                model: {
-                                  value: _vm.form.max_rang_propagacion,
-                                  callback: function ($$v) {
-                                    _vm.$set(
-                                      _vm.form,
-                                      "max_rang_propagacion",
-                                      $$v
-                                    )
-                                  },
-                                  expression: "form.max_rang_propagacion",
-                                },
-                              }),
-                            ],
-                            1
-                          ),
-                        ],
-                        1
-                      ),
+                      _c("v-text-field", {
+                        ref: "max_rang_propagacion",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          label: "Rag. max",
+                          "error-messages": _vm.errors.max_rang_propagacion,
+                          disabled: !_vm.$can(["CREAR", "EDITAR"]),
+                        },
+                        model: {
+                          value: _vm.form.max_rang_propagacion,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "max_rang_propagacion", $$v)
+                          },
+                          expression: "form.max_rang_propagacion",
+                        },
+                      }),
                     ],
                     1
                   ),
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { cols: "12", sm: "4" } },
+                    { attrs: { cols: "12", sm: "2" } },
                     [
-                      _c("div", { staticClass: "text-center" }, [
+                      _c("div", { staticClass: "altura_label" }, [
                         _vm._v(
                           "Rango alerta en días para el módulo Tras. Bolsa"
                         ),
                       ]),
                       _vm._v(" "),
-                      _c(
-                        "v-row",
-                        { staticClass: "mt-4" },
-                        [
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "6" } },
-                            [
-                              _c("v-text-field", {
-                                ref: "max_rang_bolsa",
-                                attrs: {
-                                  type: "number",
-                                  dense: "",
-                                  label: "Rag. Max",
-                                  "error-messages": _vm.errors.max_rang_bolsa,
-                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
-                                },
-                                model: {
-                                  value: _vm.form.max_rang_bolsa,
-                                  callback: function ($$v) {
-                                    _vm.$set(_vm.form, "max_rang_bolsa", $$v)
-                                  },
-                                  expression: "form.max_rang_bolsa",
-                                },
-                              }),
-                            ],
-                            1
-                          ),
-                        ],
-                        1
-                      ),
+                      _c("v-text-field", {
+                        ref: "max_rang_bolsa",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          label: "Rag. Max",
+                          "error-messages": _vm.errors.max_rang_bolsa,
+                          disabled: !_vm.$can(["CREAR", "EDITAR"]),
+                        },
+                        model: {
+                          value: _vm.form.max_rang_bolsa,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "max_rang_bolsa", $$v)
+                          },
+                          expression: "form.max_rang_bolsa",
+                        },
+                      }),
                     ],
                     1
                   ),
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { cols: "12", sm: "4" } },
+                    { attrs: { cols: "12", sm: "2" } },
                     [
-                      _c("div", { staticClass: "text-center" }, [
+                      _c("div", { staticClass: "altura_label" }, [
                         _vm._v(
                           "Rango alerta en días para el módulo Tras. Campo"
                         ),
                       ]),
                       _vm._v(" "),
-                      _c(
-                        "v-row",
-                        { staticClass: "mt-4" },
-                        [
-                          _c(
-                            "v-col",
-                            { attrs: { cols: "6" } },
-                            [
-                              _c("v-text-field", {
-                                ref: "max_rang_campo",
-                                attrs: {
-                                  type: "number",
-                                  dense: "",
-                                  label: "Rag. max",
-                                  "error-messages": _vm.errors.max_rang_campo,
-                                  disabled: !_vm.$can(["CREAR", "EDITAR"]),
-                                },
-                                model: {
-                                  value: _vm.form.max_rang_campo,
-                                  callback: function ($$v) {
-                                    _vm.$set(_vm.form, "max_rang_campo", $$v)
-                                  },
-                                  expression: "form.max_rang_campo",
-                                },
-                              }),
-                            ],
-                            1
-                          ),
-                        ],
-                        1
-                      ),
+                      _c("v-text-field", {
+                        ref: "max_rang_campo",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          label: "Rag. max",
+                          "error-messages": _vm.errors.max_rang_campo,
+                          disabled: !_vm.$can(["CREAR", "EDITAR"]),
+                        },
+                        model: {
+                          value: _vm.form.max_rang_campo,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "max_rang_campo", $$v)
+                          },
+                          expression: "form.max_rang_campo",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "2" } },
+                    [
+                      _c("div", { staticClass: "altura_label" }, [
+                        _vm._v("Rango alerta en días para el módulo cosecha"),
+                      ]),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        ref: "max_rang_cosecha",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          label: "Rag. max",
+                          "error-messages": _vm.errors.max_rang_cosecha,
+                          disabled: !_vm.$can(["CREAR", "EDITAR"]),
+                        },
+                        model: {
+                          value: _vm.form.max_rang_cosecha,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "max_rang_cosecha", $$v)
+                          },
+                          expression: "form.max_rang_cosecha",
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-col",
+                    { attrs: { cols: "12", sm: "3" } },
+                    [
+                      _c("div", { staticClass: "altura_label" }, [
+                        _vm._v(
+                          "Rango alerta en días para el módulo post cosecha"
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("v-text-field", {
+                        ref: "max_rang_post_cosecha",
+                        attrs: {
+                          type: "number",
+                          dense: "",
+                          label: "Rag. max",
+                          "error-messages": _vm.errors.max_rang_post_cosecha,
+                          disabled: !_vm.$can(["CREAR", "EDITAR"]),
+                        },
+                        model: {
+                          value: _vm.form.max_rang_post_cosecha,
+                          callback: function ($$v) {
+                            _vm.$set(_vm.form, "max_rang_post_cosecha", $$v)
+                          },
+                          expression: "form.max_rang_post_cosecha",
+                        },
+                      }),
                     ],
                     1
                   ),
@@ -31046,7 +31174,7 @@ var render = function () {
                           "error-messages": _vm.errors.cos_numero_plantas,
                           readonly: "",
                           disabled: _vm.titleAccion == "Nuevo",
-                          title: "Cantidad Planta Madre Sembradas",
+                          title: "Cantidad planta madre sembradas",
                         },
                         model: {
                           value: _vm.form.cos_numero_plantas,
@@ -31077,7 +31205,7 @@ var render = function () {
                           items: _vm.itemsEstadoCosecha,
                           "item-value": "id",
                           "item-text": "nombre",
-                          "no-data-text": "'Sin Datos'",
+                          "no-data-text": "'Sin datos'",
                           dense: "",
                           "error-messages": _vm.errors.cos_estado_cosecha,
                           disabled: _vm.titleAccion == "Nuevo",
@@ -31097,7 +31225,7 @@ var render = function () {
                   _c(
                     "v-col",
                     { staticClass: "py-0 pl-0", attrs: { cols: "6", sm: "2" } },
-                    [_c("v-subheader", [_vm._v("Días de Floración")])],
+                    [_c("v-subheader", [_vm._v("Días de floración")])],
                     1
                   ),
                   _vm._v(" "),
@@ -31108,7 +31236,7 @@ var render = function () {
                       _c("v-text-field", {
                         ref: "cos_dias_floracion",
                         attrs: {
-                          label: "(Fecha Tras. Terreno - Fecha Cosecha)",
+                          label: "(Fecha tras. terreno - Fecha cosecha)",
                           dense: "",
                           "error-messages": _vm.errors.cos_dias_floracion,
                           readonly: "",
@@ -31143,7 +31271,7 @@ var render = function () {
                           items: _vm.itemsUbicacion,
                           "item-value": "id",
                           "item-text": "nombre",
-                          "no-data-text": "'Sin Datos'",
+                          "no-data-text": "'Sin datos'",
                           readonly: "",
                           dense: "",
                           "error-messages": _vm.errors.tp_ubicacion,
@@ -31232,6 +31360,27 @@ var render = function () {
                       attrs: { cols: "12" },
                     },
                     [
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mr-3 text-none",
+                          attrs: {
+                            type: "button",
+                            small: "",
+                            color: "grey",
+                            icon: "",
+                            title: "Recargar Registros",
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.buscarCosechas()
+                            },
+                          },
+                        },
+                        [_c("v-icon", [_vm._v(" refresh ")])],
+                        1
+                      ),
+                      _vm._v(" "),
                       _vm.form.id_lote != ""
                         ? _c(
                             "v-btn",
@@ -31242,7 +31391,7 @@ var render = function () {
                                 small: "",
                                 color: "success",
                                 tile: "",
-                                title: "Guardar Datos actuales de la cosecha.",
+                                title: "Guardar datos actuales de la cosecha.",
                                 disabled: !_vm.$can(["CREAR", "EDITAR"]),
                               },
                               on: { click: _vm.guardarCosecha },
@@ -31260,7 +31409,7 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { cols: "12" } },
+                    { staticClass: "pt-0", attrs: { cols: "12" } },
                     [
                       _c(
                         "v-card-title",
@@ -31299,7 +31448,7 @@ var render = function () {
                           "items-per-page": 5,
                           "item-key": "id_lote",
                           "footer-props": {
-                            "items-per-page-options": [3, 5, 10, 15],
+                            "items-per-page-options": [5, 10, 15, 30],
                           },
                           "sort-by": "id_lote",
                           "sort-desc": true,
@@ -31313,6 +31462,48 @@ var render = function () {
                         },
                         scopedSlots: _vm._u([
                           {
+                            key: "item.cos_fecha_cosecha",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                item.cos_fecha_cosecha != ""
+                                  ? _c(
+                                      "v-chip",
+                                      {
+                                        attrs: { color: item.color, dark: "" },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                " +
+                                            _vm._s(item.cos_fecha_cosecha) +
+                                            "\n                            "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                              ]
+                            },
+                          },
+                          {
+                            key: "item.dias_transcurridos",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  { attrs: { color: item.color, dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(item.dias_transcurridos) +
+                                        "\n                                "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                          {
                             key: "item.actions",
                             fn: function (ref) {
                               var item = ref.item
@@ -31325,7 +31516,7 @@ var render = function () {
                                         attrs: {
                                           small: "",
                                           title:
-                                            "Agregar o Edita Datos de cosecha.",
+                                            "Agregar o edita datos de cosecha.",
                                         },
                                         on: {
                                           click: function ($event) {
@@ -31335,7 +31526,7 @@ var render = function () {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                            mdi-pencil\n                        "
+                                          "\n                                mdi-pencil\n                            "
                                         ),
                                       ]
                                     )
@@ -31347,7 +31538,7 @@ var render = function () {
                                       {
                                         attrs: {
                                           small: "",
-                                          title: "Eliminar Datos de la cosecha",
+                                          title: "Eliminar datos de la cosecha",
                                         },
                                         on: {
                                           click: function ($event) {
@@ -31357,7 +31548,7 @@ var render = function () {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                            mdi-delete\n                        "
+                                          "\n                                mdi-delete\n                            "
                                         ),
                                       ]
                                     )
@@ -32753,15 +32944,36 @@ var render = function () {
                     1
                   ),
                   _vm._v(" "),
-                  _vm.form.id_lote != ""
-                    ? _c(
-                        "v-col",
+                  _c(
+                    "v-col",
+                    {
+                      staticClass: "d-flex justify-end",
+                      attrs: { cols: "12" },
+                    },
+                    [
+                      _c(
+                        "v-btn",
                         {
-                          staticClass: "d-flex justify-end",
-                          attrs: { cols: "12" },
+                          staticClass: "mr-3 text-none",
+                          attrs: {
+                            type: "button",
+                            small: "",
+                            color: "grey",
+                            icon: "",
+                            title: "Recargar Registros",
+                          },
+                          on: {
+                            click: function ($event) {
+                              return _vm.buscarPostCosechas()
+                            },
+                          },
                         },
-                        [
-                          _c(
+                        [_c("v-icon", [_vm._v(" refresh ")])],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm.form.id_lote != ""
+                        ? _c(
                             "v-btn",
                             {
                               staticClass: "white--text text-none",
@@ -32779,11 +32991,11 @@ var render = function () {
                               _vm._v("Guardar\n                    "),
                             ],
                             1
-                          ),
-                        ],
-                        1
-                      )
-                    : _vm._e(),
+                          )
+                        : _vm._e(),
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
                     "v-col",
@@ -32839,6 +33051,57 @@ var render = function () {
                           },
                         },
                         scopedSlots: _vm._u([
+                          {
+                            key: "item.post_fecha_ini_secado",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  {
+                                    attrs: {
+                                      color:
+                                        item.post_fecha_ini_secado !=
+                                        "Sin Fecha"
+                                          ? item.color
+                                          : "#FFF",
+                                      dark:
+                                        item.post_fecha_ini_secado !=
+                                        "Sin Fecha"
+                                          ? true
+                                          : false,
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.post_fecha_ini_secado) +
+                                        "\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                          {
+                            key: "item.dias_transcurridos",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  { attrs: { color: item.color, dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.dias_transcurridos) +
+                                        "\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
                           {
                             key: "item.actions",
                             fn: function (ref) {

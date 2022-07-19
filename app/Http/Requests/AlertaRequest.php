@@ -26,12 +26,11 @@ class AlertaRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'min_rang_propagacion'  => 'required|integer|min:0',
             'max_rang_propagacion'  => 'required|integer|min:0',
-            // 'min_rang_bolsa'        => 'required|integer|min:0',
             'max_rang_bolsa'        => 'required|integer|min:0',
-            // 'min_rang_campo'        => 'required|integer|min:0',
             'max_rang_campo'        => 'required|integer|min:0',
+            'max_rang_cosecha'      => 'required|integer|min:0',
+            'max_rang_post_cosecha' => 'required|integer|min:0'
         ];
     }
 
@@ -43,29 +42,26 @@ class AlertaRequest extends FormRequest
     public function messages()
     {
         return [
-            'min_rang_propagacion.required'  => 'El rango mínimo de Propagación es requerido.',
-            'min_rang_propagacion.integer'   => 'El rango mínimo de Propagación debe ser entero.',
-            'min_rang_propagacion.min'       => 'El rango mínimo de Propagación debe ser al menos 0.',
 
-            'max_rang_propagacion.required'  => 'El rango máximo de Propagación es requerido.',
-            'max_rang_propagacion.integer'   => 'El rango máximo de Propagación debe ser entero.',
-            'max_rang_propagacion.min'       => 'El rango maximo de Propagación debe ser al menos 0.',
+            'max_rang_propagacion.required'     => 'El rango máximo en días para Propagación es requerido.',
+            'max_rang_propagacion.integer'      => 'El rango máximo en días para Propagación debe ser entero.',
+            'max_rang_propagacion.min'          => 'El rango maximo en días para Propagación debe ser al menos 0.',
 
-            'min_rang_bolsa.required'        => 'El rango mínimo de Tras. Bolsa es requerido.',
-            'min_rang_bolsa.integer'         => 'El rango mínimo de Tras. Bolsa debe ser entero.',
-            'min_rang_bolsa.min'             => 'El rango mínimo de Tras. Bolsa debe ser al menos 0.',
+            'max_rang_bolsa.required'           => 'El rango máximo en días para Tras. Bolsa es requerido.',
+            'max_rang_bolsa.integer'            => 'El rango máximo en días para Tras. Bolsa debe ser entero.',
+            'max_rang_bolsa.min'                => 'El rango máximo en días para Tras. Bolsa debe ser al menos 0.',
 
-            'max_rang_bolsa.required'        => 'El rango máximo de Tras. Bolsa es requerido.',
-            'max_rang_bolsa.integer'         => 'El rango máximo de Tras. Bolsa debe ser entero.',
-            'max_rang_bolsa.min'             => 'El rango máximo de Tras. Bolsa debe ser al menos 0.',
+            'max_rang_campo.required'           => 'El rango máximo en días para Tras. Campo es requerido.',
+            'max_rang_campo.integer'            => 'El rango máximo en días para Tras. Campo debe ser entero.',
+            'max_rang_campo.min'                => 'El rango máximo en días para Tras. Campo debe ser al menos 0.',
 
-            'min_rang_campo.required'        => 'El rango mínimo de Tras. Campo es requerido.',
-            'min_rang_campo.integer'         => 'El rango mínimo de Tras. Campo debe ser entero.',
-            'min_rang_campo.min'             => 'El rango mínimo de Tras. Campo debe ser al menos 0.',
+            'max_rang_cosecha.required'         => 'El rango máximo en días para cosecha es requerido.',
+            'max_rang_cosecha.integer'          => 'El rango máximo en días para cosecha debe ser entero.',
+            'max_rang_cosecha.min'              => 'El rango máximo en días para cosecha debe ser al menos 0.',
 
-            'max_rang_campo.required'        => 'El rango máximo de Tras. Campo es requerido.',
-            'max_rang_campo.integer'         => 'El rango máximo de Tras. Campo debe ser entero.',
-            'max_rang_campo.min'             => 'El rango máximo de Tras. Campo debe ser al menos 0.',
+            'max_rang_post_cosecha.required'    => 'El rango máximo en días para post cosecha es requerido.',
+            'max_rang_post_cosecha.integer'     => 'El rango máximo en días para post cosecha debe ser entero.',
+            'max_rang_post_cosecha.min'         => 'El rango máximo en días para post cosecha debe ser al menos 0.',
         ];
     }
 
