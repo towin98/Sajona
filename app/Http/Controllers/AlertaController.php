@@ -28,17 +28,16 @@ class AlertaController extends Controller
         if (!$alerta) {
             try {
                 Alerta::create([
-                    // "min_rang_propagacion"  => $request->min_rang_propagacion,
-                    "max_rang_propagacion"  => $request->max_rang_propagacion,
-                    // "min_rang_bolsa"        => $request->min_rang_bolsa,
-                    "max_rang_bolsa"        => $request->max_rang_bolsa,
-                    // "min_rang_campo"        => $request->min_rang_campo,
-                    "max_rang_campo"        => $request->max_rang_campo,
+                    "max_rang_propagacion"      => $request->max_rang_propagacion,
+                    "max_rang_bolsa"            => $request->max_rang_bolsa,
+                    "max_rang_campo"            => $request->max_rang_campo,
+                    "max_rang_cosecha"          => $request->max_rang_cosecha,
+                    "max_rang_post_cosecha"     => $request->max_rang_post_cosecha
                 ]);
             } catch (Exception $e) {
                 return response()->json([
                     'message' => "Error Inesperado.",
-                    'errors'  => "Error al guardar alerta.",
+                    'errors'  => "Error al guardar alerta.".$e,
                 ], 500);
             }
 
@@ -82,12 +81,11 @@ class AlertaController extends Controller
         $alerta = Alerta::findOrfail($id);
         try {
             $alerta->update([
-                // "min_rang_propagacion"  => $request->min_rang_propagacion,
-                "max_rang_propagacion"  => $request->max_rang_propagacion,
-                // "min_rang_bolsa"        => $request->min_rang_bolsa,
-                "max_rang_bolsa"        => $request->max_rang_bolsa,
-                // "min_rang_campo"        => $request->min_rang_campo,
-                "max_rang_campo"        => $request->max_rang_campo,
+                "max_rang_propagacion"          => $request->max_rang_propagacion,
+                "max_rang_bolsa"                => $request->max_rang_bolsa,
+                "max_rang_campo"                => $request->max_rang_campo,
+                "max_rang_cosecha"              => $request->max_rang_cosecha,
+                "max_rang_post_cosecha"         => $request->max_rang_post_cosecha
             ]);
         } catch (Exception $e) {
             return response()->json([

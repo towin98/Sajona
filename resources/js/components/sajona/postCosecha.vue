@@ -259,13 +259,25 @@
                             >
                         </v-textarea>
                     </v-col>
-                    <v-col cols="12" class="d-flex justify-end" v-if="form.id_lote != ''">
+                    <v-col cols="12" class="d-flex justify-end">
+                        <v-btn
+                            type="button"
+                            small
+                            color="grey"
+                            class="mr-3 text-none"
+                            icon
+                            v-on:click="buscarPostCosechas()"
+                            title="Recargar Registros"
+                        >
+                            <v-icon> refresh </v-icon>
+                        </v-btn>
                         <v-btn
                             type="submit"
                             small
                             color="success"
                             class="white--text text-none"
                             tile
+                            v-if="form.id_lote != ''"
                             v-on:click="guardarPostCosecha"
                             :disabled="!$can(['CREAR', 'EDITAR'])"
                         >
@@ -305,6 +317,22 @@
                             no-data-text="Sin registros"
                             :disable-sort="!$can(['LISTAR'])"
                         >
+                        <template v-slot:item.post_fecha_ini_secado="{ item }">
+                                <v-chip
+                                    :color="item.post_fecha_ini_secado != 'Sin Fecha' ? item.color : '#FFF'"
+                                    :dark="item.post_fecha_ini_secado != 'Sin Fecha' ? true : false"
+                                >
+                                    {{ item.post_fecha_ini_secado }}
+                                </v-chip>
+                        </template>
+                        <template v-slot:item.dias_transcurridos="{ item }">
+                                <v-chip
+                                    :color="item.color"
+                                    dark
+                                >
+                                    {{ item.dias_transcurridos }}
+                                </v-chip>
+                        </template>
                         <template v-slot:item.actions="{ item }">
                             <v-icon
                                 small
@@ -379,7 +407,9 @@ export default {
                 { text: "Id Lote", align: "start", value: "id_lote" },
                 { text: "fecha Inicio Secado", value: "post_fecha_ini_secado" },
                 { text: "Fecha Fin Secado", value: "post_fecha_fin_secado" },
-                { text: "Estado", value: "estado" },
+                { text: "Estado", value: "estado_lote", sortable: false },
+                { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
+                { text: "Estado post cosecha", value: "estado" },
                 { text: "Acciones", value: "actions" }
             ],
             dataSet: [],

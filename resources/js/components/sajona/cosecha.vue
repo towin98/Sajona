@@ -65,7 +65,7 @@
                             :error-messages="errors.cos_numero_plantas"
                             readonly
                             :disabled="titleAccion == 'Nuevo'"
-                            title="Cantidad Planta Madre Sembradas"
+                            title="Cantidad planta madre sembradas"
                         ></v-text-field>
                     </v-col>
 
@@ -79,7 +79,7 @@
                             :items="itemsEstadoCosecha"
                             item-value="id"
                             item-text="nombre"
-                            no-data-text="'Sin Datos'"
+                            no-data-text="'Sin datos'"
                             dense
                             :error-messages="errors.cos_estado_cosecha"
                             :disabled="titleAccion == 'Nuevo'"
@@ -88,12 +88,12 @@
 
                     <!-- Automatico, dias desde que se trasplanto a campo hasta hoy.  -->
                     <v-col cols="6" sm="2" class="py-0 pl-0">
-                        <v-subheader>Días de Floración</v-subheader>
+                        <v-subheader>Días de floración</v-subheader>
                     </v-col>
                     <v-col cols="6" sm="4" class="py-0 pl-0">
                         <v-text-field
                             v-model="form.cos_dias_floracion"
-                            label="(Fecha Tras. Terreno - Fecha Cosecha)"
+                            label="(Fecha tras. terreno - Fecha cosecha)"
                             ref="cos_dias_floracion"
                             dense
                             :error-messages="errors.cos_dias_floracion"
@@ -112,7 +112,7 @@
                             :items="itemsUbicacion"
                             item-value="id"
                             item-text="nombre"
-                            no-data-text="'Sin Datos'"
+                            no-data-text="'Sin datos'"
                             readonly
                             dense
                             :error-messages="errors.tp_ubicacion"
@@ -151,12 +151,23 @@
                     </v-col>
                     <v-col cols="12" class="d-flex justify-end">
                         <v-btn
+                            type="button"
+                            small
+                            color="grey"
+                            class="mr-3 text-none"
+                            icon
+                            v-on:click="buscarCosechas()"
+                            title="Recargar Registros"
+                        >
+                            <v-icon> refresh </v-icon>
+                        </v-btn>
+                        <v-btn
                             type="submit"
                             small
                             color="success"
                             class="white--text text-none"
                             tile
-                            title="Guardar Datos actuales de la cosecha."
+                            title="Guardar datos actuales de la cosecha."
                             v-if="form.id_lote != ''"
                             v-on:click="guardarCosecha"
                             :disabled="!$can(['CREAR', 'EDITAR'])"
@@ -165,7 +176,7 @@
                         </v-btn>
                     </v-col>
 
-                    <v-col cols="12">
+                    <v-col cols="12" class="pt-0">
                         <v-card-title>
                             <v-text-field
                                 type="text"
@@ -189,32 +200,49 @@
                             :items-per-page="5"
                             item-key="id_lote"
                             :footer-props="{
-                                'items-per-page-options': [3, 5, 10, 15],
+                                'items-per-page-options': [5, 10, 15,30],
                             }"
                             sort-by="id_lote"
                             :sort-desc="true"
                             no-data-text="Sin registros"
                             :disable-sort="!$can(['LISTAR'])"
                         >
-                        <template v-slot:item.actions="{ item }">
-                            <v-icon
-                                small
-                                class="mr-2"
-                                title="Agregar o Edita Datos de cosecha."
-                                @click="editCosecha(item)"
-                                v-if="$can(['VER', 'EDITAR'])"
-                            >
-                                mdi-pencil
-                            </v-icon>
-                            <v-icon
-                                small
-                                title="Eliminar Datos de la cosecha"
-                                @click="deleteCosecha(item)"
-                                v-if="$can(['ELIMINAR'])"
-                            >
-                                mdi-delete
-                            </v-icon>
-                        </template>
+                            <template v-slot:item.cos_fecha_cosecha="{ item }">
+                                <v-chip
+                                    :color="item.color"
+                                    dark
+                                    v-if="item.cos_fecha_cosecha != ''"
+                                >
+                                    {{ item.cos_fecha_cosecha }}
+                                </v-chip>
+                            </template>
+                            <template v-slot:item.dias_transcurridos="{ item }">
+                                    <v-chip
+                                        :color="item.color"
+                                        dark
+                                    >
+                                        {{ item.dias_transcurridos }}
+                                    </v-chip>
+                            </template>
+                            <template v-slot:item.actions="{ item }">
+                                <v-icon
+                                    small
+                                    class="mr-2"
+                                    title="Agregar o edita datos de cosecha."
+                                    @click="editCosecha(item)"
+                                    v-if="$can(['VER', 'EDITAR'])"
+                                >
+                                    mdi-pencil
+                                </v-icon>
+                                <v-icon
+                                    small
+                                    title="Eliminar datos de la cosecha"
+                                    @click="deleteCosecha(item)"
+                                    v-if="$can(['ELIMINAR'])"
+                                >
+                                    mdi-delete
+                                </v-icon>
+                            </template>
                         </v-data-table>
                     </v-col>
                 </v-row>
@@ -259,11 +287,13 @@ export default {
             loading             : true,
             options             : {},
             headers             : [
-                { text: "Id Lote", align: "start", value: "id_lote" },
-                { text: "Cantidad Planta Madre", value: "pro_cantidad_plantas_madres" },
+                { text: "Id lote", align: "start", value: "id_lote" },
+                { text: "Cantidad planta madre", value: "pro_cantidad_plantas_madres" },
                 { text: "Fecha trasplante Bolsa", value: "tp_fecha" },
                 { text: "Fecha de cosecha", value: "cos_fecha_cosecha" },
-                { text: "Estado", value: "estado" },
+                { text: "Estado", value: "estado_lote", sortable: false },
+                { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
+                { text: "Estado cosecha", value: "estado" },
                 { text: "Acciones", value: "actions" }
             ],
             dataSet: [],

@@ -10,91 +10,65 @@
             <v-card-text>
 
                 <v-row>
-                    <v-col cols="12" sm="4">
-                        <div class="text-center">Rango alerta en días para el módulo propagación</div>
-
-                        <v-row class="mt-4">
-                            <!-- <v-col cols="6">
-                                <v-text-field
-                                    type="number"
-                                    v-model="form.min_rang_propagacion"
-                                    ref="min_rang_propagacion"
-                                    dense
-                                    label="Rag. Min"
-                                    :error-messages="errors.min_rang_propagacion"
-                                    :disabled="!$can(['CREAR', 'EDITAR'])"
-                                ></v-text-field>
-                            </v-col> -->
-                            <v-col cols="6">
-                                <v-text-field
-                                    type="number"
-                                    v-model="form.max_rang_propagacion"
-                                    ref="max_rang_propagacion"
-                                    dense
-                                    label="Rag. max"
-                                    :error-messages="errors.max_rang_propagacion"
-                                    :disabled="!$can(['CREAR', 'EDITAR'])"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
+                    <v-col cols="12" sm="3">
+                        <div class="altura_label">Rango alerta en días para el módulo propagación</div>
+                            <v-text-field
+                                type="number"
+                                v-model="form.max_rang_propagacion"
+                                ref="max_rang_propagacion"
+                                dense
+                                label="Rag. max"
+                                :error-messages="errors.max_rang_propagacion"
+                                :disabled="!$can(['CREAR', 'EDITAR'])"
+                            ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="4">
-                        <div class="text-center">Rango alerta en días para el módulo Tras. Bolsa</div>
-
-                        <v-row class="mt-4">
-                            <!-- <v-col cols="6">
-                                <v-text-field
-                                    type="number"
-                                    v-model="form.min_rang_bolsa"
-                                    ref="min_rang_bolsa"
-                                    dense
-                                    label="Rag. Min"
-                                    :error-messages="errors.min_rang_bolsa"
-                                    :disabled="!$can(['CREAR', 'EDITAR'])"
-                                ></v-text-field>
-                            </v-col> -->
-                            <v-col cols="6">
-                                <v-text-field
-                                    type="number"
-                                    v-model="form.max_rang_bolsa"
-                                    ref="max_rang_bolsa"
-                                    dense
-                                    label="Rag. Max"
-                                    :error-messages="errors.max_rang_bolsa"
-                                    :disabled="!$can(['CREAR', 'EDITAR'])"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-
+                    <v-col cols="12" sm="2">
+                        <div class="altura_label">Rango alerta en días para el módulo Tras. Bolsa</div>
+                        <v-text-field
+                            type="number"
+                            v-model="form.max_rang_bolsa"
+                            ref="max_rang_bolsa"
+                            dense
+                            label="Rag. Max"
+                            :error-messages="errors.max_rang_bolsa"
+                            :disabled="!$can(['CREAR', 'EDITAR'])"
+                        ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="4">
-                        <div class="text-center">Rango alerta en días para el módulo Tras. Campo</div>
-
-                        <v-row class="mt-4">
-                            <!-- <v-col cols="6">
-                                <v-text-field
-                                    type="number"
-                                    v-model="form.min_rang_campo"
-                                    ref="min_rang_campo"
-                                    dense
-                                    label="Rag. Min"
-                                    :error-messages="errors.min_rang_campo"
-                                    :disabled="!$can(['CREAR', 'EDITAR'])"
-                                ></v-text-field>
-                            </v-col> -->
-                            <v-col cols="6">
-                                <v-text-field
-                                    type="number"
-                                    v-model="form.max_rang_campo"
-                                    ref="max_rang_campo"
-                                    dense
-                                    label="Rag. max"
-                                    :error-messages="errors.max_rang_campo"
-                                    :disabled="!$can(['CREAR', 'EDITAR'])"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-
+                    <v-col cols="12" sm="2">
+                        <div class="altura_label">Rango alerta en días para el módulo Tras. Campo</div>
+                        <v-text-field
+                            type="number"
+                            v-model="form.max_rang_campo"
+                            ref="max_rang_campo"
+                            dense
+                            label="Rag. max"
+                            :error-messages="errors.max_rang_campo"
+                            :disabled="!$can(['CREAR', 'EDITAR'])"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="2">
+                        <div class="altura_label">Rango alerta en días para el módulo cosecha</div>
+                            <v-text-field
+                                type="number"
+                                v-model="form.max_rang_cosecha"
+                                ref="max_rang_cosecha"
+                                dense
+                                label="Rag. max"
+                                :error-messages="errors.max_rang_cosecha"
+                                :disabled="!$can(['CREAR', 'EDITAR'])"
+                            ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="3">
+                        <div class="altura_label">Rango alerta en días para el módulo post cosecha</div>
+                            <v-text-field
+                                type="number"
+                                v-model="form.max_rang_post_cosecha"
+                                ref="max_rang_post_cosecha"
+                                dense
+                                label="Rag. max"
+                                :error-messages="errors.max_rang_post_cosecha"
+                                :disabled="!$can(['CREAR', 'EDITAR'])"
+                            ></v-text-field>
                     </v-col>
                 </v-row>
 
@@ -116,15 +90,12 @@ export default {
     data() {
         return {
             form : {
-                id                   : '',
-                // min_rang_propagacion : 0,
-                max_rang_propagacion : 0,
-
-                // min_rang_bolsa : 0,
-                max_rang_bolsa : 0,
-
-                // min_rang_campo : 0,
-                max_rang_campo : 0
+                id                      : '',
+                max_rang_propagacion    : '',
+                max_rang_bolsa          : '',
+                max_rang_campo          : '',
+                max_rang_cosecha        : '',
+                max_rang_post_cosecha   : ''
             },
             errors: {
             },
@@ -143,13 +114,12 @@ export default {
                     const data = response.data.data;
                     if (data.length == 0) {
                     }else{
-                        this.form.id                   = data.id;
-                        // this.form.min_rang_propagacion = data.min_rang_propagacion;
-                        this.form.max_rang_propagacion = data.max_rang_propagacion;
-                        // this.form.min_rang_bolsa       = data.min_rang_bolsa;
-                        this.form.max_rang_bolsa       = data.max_rang_bolsa;
-                        // this.form.min_rang_campo       = data.min_rang_campo;
-                        this.form.max_rang_campo       = data.max_rang_campo;
+                        this.form.id                    = data.id;
+                        this.form.max_rang_propagacion  = data.max_rang_propagacion;
+                        this.form.max_rang_bolsa        = data.max_rang_bolsa;
+                        this.form.max_rang_campo        = data.max_rang_campo;
+                        this.form.max_rang_cosecha      = data.max_rang_cosecha;
+                        this.form.max_rang_post_cosecha = data.max_rang_post_cosecha;
                     }
                     this.overlayLoading = false;
                 })
@@ -177,6 +147,7 @@ export default {
                     );
                     this.errors = {};
                     this.overlayLoading = false;
+                    this.$router.go(0);
                 })
                 .catch((errores) => {
                     this.errors = this.fnResponseError(errores);
@@ -207,3 +178,16 @@ export default {
     }
 }
 </script>
+<style>
+    .altura_label{
+        height: 90px;
+    }
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (max-width: 600px) {
+        .altura_label{
+            height: 0px;
+            padding-bottom: 15px;
+
+        }
+    }
+</style>

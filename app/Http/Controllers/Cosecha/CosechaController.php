@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Cosecha;
 use App\Models\Trasplante;
 use App\Traits\bajasTrait;
+use App\Models\PostCosecha;
 use Illuminate\Http\Request;
 use App\Traits\commonsTrait;
 use App\Traits\paginationTrait;
@@ -13,8 +14,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\cosechaRequest;
 use App\Http\Requests\cosechaDeleteRequest;
 use App\Http\Resources\listarCosechaCollection;
-use App\Models\PostCosecha;
-use App\Models\Propagacion;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class CosechaController extends Controller
@@ -136,13 +135,16 @@ class CosechaController extends Controller
                 'getPlantaMadre' => function ($query){
                     $query->select([
                         'pm_id',
-                        'pm_pro_id_lote'
+                        'pm_pro_id_lote',
+                        'pm_cantidad_semillas',
+                        'pm_cantidad_esquejes'
                     ])
                     ->with([
                         'getPropagacion' => function ($query){
                             $query->select([
                                 'pro_id_lote',
-                                'pro_cantidad_plantas_madres'
+                                'pro_cantidad_plantas_madres',
+                                'pro_fecha'
                             ]);
                         }
                     ]);
