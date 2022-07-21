@@ -21,7 +21,7 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         $response = $this->post('/sajona/propagacion', [
                 "pro_fecha"                     => date("Y-m-d"),
@@ -54,7 +54,7 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         $response = $this->post('/sajona/propagacion', [
                 "pro_fecha"                     => date("Y-m-d H:i:s"),
@@ -82,7 +82,7 @@ class PropagacionControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         Propagacion::factory(20)->create();
 
@@ -131,7 +131,7 @@ class PropagacionControllerTest extends TestCase
     public function test_actualiza_un_registro_de_una_propagacion_correctamente(){
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Creamos un registro de Tipo de propagacion
         $tipoPropagacion = Propagacion::factory(1)->create()->first();

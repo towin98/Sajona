@@ -24,7 +24,7 @@ class TrasplanteControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Crando registros para pruebas.
         for ($i=0; $i < 5; $i++) {
@@ -76,7 +76,7 @@ class TrasplanteControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Creando registros temporales en memoria para realizar consulta.
         $response = $this->get('/sajona/trasplante-bolsa/buscar?fecha_inicial=2021--12-01&fecha_final=2022--03-01',
@@ -98,7 +98,7 @@ class TrasplanteControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Crando registros para pruebas.
         $propagacion = Propagacion::create([
@@ -161,7 +161,7 @@ class TrasplanteControllerTest extends TestCase
      */
     public function test_de_validaciones_al_visualizar_un_trasplante()
     {
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Creando registros temporales en memoria para realizar consulta.
         $response = $this->get('sajona/trasplante-bolsa/100u2338273', [
@@ -181,7 +181,7 @@ class TrasplanteControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         $response = $this->post('sajona/trasplante-bolsa',[],
             [
@@ -201,7 +201,7 @@ class TrasplanteControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Crando registros para pruebas.
         $propagacion = Propagacion::create([

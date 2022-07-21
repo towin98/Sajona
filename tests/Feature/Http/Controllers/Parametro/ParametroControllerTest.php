@@ -16,7 +16,7 @@ class ParametroControllerTest extends TestCase
     public function test_guarda_un_registro_de_una_tabla_parametro() {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Hacemos la solicitud a la url
         $response = $this->post('sajona/parametro/', [
@@ -38,7 +38,7 @@ class ParametroControllerTest extends TestCase
         // Creamos un registro de Tipo de propagacion
         $tipoPropagacion = TipoPropagacion::factory(1)->create()->first();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
         // Hacemos la solicitud a la url
         $response = $this->get("sajona/parametro/pr_tipo_propagacion/$tipoPropagacion->id", [
                 "Authorization" => "Bearer $token"
@@ -62,7 +62,7 @@ class ParametroControllerTest extends TestCase
         // Creamos un registro de Tipo de propagacion
         $tipoPropagacion = TipoPropagacion::factory(1)->create()->first();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Hacemos la solicitud a la url
         $response = $this->put('sajona/parametro/'.$tipoPropagacion->id, [
@@ -84,7 +84,7 @@ class ParametroControllerTest extends TestCase
         // Creamos un registro de Tipo de propagacion
         $tipoPropagacion = TipoPropagacion::factory(1)->create()->first();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Hacemos la solicitud a la url
         $response = $this->put('sajona/parametro/'.$tipoPropagacion->id, [
@@ -104,7 +104,7 @@ class ParametroControllerTest extends TestCase
     public function test_validar_datos_al_guardar_un_registro_de_una_tabla_parametro() {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Hacemos la solicitud a la url
         $response = $this->post('sajona/parametro/', [
