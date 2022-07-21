@@ -15,12 +15,11 @@ class AlertaSeeder extends Seeder
     public function run()
     {
         Alerta::create([
-            // "min_rang_propagacion"  => 0,
-            "max_rang_propagacion"  => 18,
-            // "min_rang_bolsa"        => 0,
-            "max_rang_bolsa"        => 70,
-            // "min_rang_campo"        => 0,
-            "max_rang_campo"        => 100,
+            "max_rang_propagacion"      => 10,
+            "max_rang_bolsa"            => 13,
+            "max_rang_campo"            => 15,
+            "max_rang_cosecha"          => 30,
+            "max_rang_post_cosecha"     => 12
         ]);
     }
 }

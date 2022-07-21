@@ -22,7 +22,7 @@ class PlantaMadreControllerTest extends TestCase
     public function test_validacion_de_buscar_lotes_de_plantas_madres_por_rangos_de_fechas()
     {
         $this->withoutExceptionHandling();
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
         $response = $this->get('/sajona/planta-madre/buscar-lotes?fecha_inicio=&fecha_fin=2021-10-04',
             [
                 "Authorization" => "Bearer $token"
@@ -46,7 +46,7 @@ class PlantaMadreControllerTest extends TestCase
         // Crando registros para pruebas.
         Propagacion::factory(5)->create();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Creando registros temporales en memoria para realizar consulta.
         $response = $this->get('/sajona/planta-madre/buscar-lotes?fecha_inicio=2021-12-01&fecha_fin=2022-03-01',
@@ -68,7 +68,7 @@ class PlantaMadreControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Creamos un registro de propagación
         $propagacion = Propagacion::factory()->create();
@@ -102,7 +102,7 @@ class PlantaMadreControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Registro temporal.
         Propagacion::create([
@@ -140,7 +140,7 @@ class PlantaMadreControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $token = $this->Autenticacion('cristian@gmail.com','admin123');
+        $token = $this->Autenticacion('segura9801@gmail.com','admin123');
 
         // Registro temporal.
         Propagacion::create([

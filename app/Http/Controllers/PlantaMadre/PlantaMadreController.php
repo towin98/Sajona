@@ -43,9 +43,9 @@ class PlantaMadreController extends Controller
             $length = $request->length;
         }
 
-        $registros = Propagacion::select('*')
-            ->with('getPlantaMadre')
-            ->BuscarPLantaMadre($request->buscar);
+        $registros = Propagacion::with('getPlantaMadre')
+            ->BuscarPLantaMadre($request->buscar)
+            ->where('pro_estado',1);
 
         // Consultas
         if ($request->filled('orderColumn') && $request->filled('order')) {
@@ -185,7 +185,9 @@ class PlantaMadreController extends Controller
      */
     public function show(Propagacion $Propagacion)
     {
-        $plantaMadre = PlantaMadre::where('pm_pro_id_lote', $Propagacion->pro_id_lote)->get();
+        $plantaMadre = PlantaMadre::where('pm_pro_id_lote', $Propagacion->pro_id_lote)
+            ->where('pm_estado',1)
+            ->get();
 
         $sumaCantidadBajas = $this->cantidadBajas($Propagacion->pro_id_lote, ['ESQUEJES']);
 
