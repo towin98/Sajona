@@ -15,6 +15,7 @@ class ListarTrasplanteCampoCollection extends ResourceCollection
 
     private $fechaTrasplanteBolsa = "";
     private $fechaTrasplanteCampo = "";
+    private $idTrasplanteCampo    = "";
 
     /**
      * Transform the resource collection into an array.
@@ -48,16 +49,17 @@ class ListarTrasplanteCampoCollection extends ResourceCollection
         $cantidadTrasplarCampo = (($this['get_planta_madre']['pm_cantidad_semillas'] + $this['get_planta_madre']['pm_cantidad_esquejes']) - $sumaCantidadBajas);
 
         return [
+            // Id de trasplante a campo, si el lote solo tiene tras bolsa se envía vacío.
+            'tp_id'                      => $this->idTrasplanteCampo,
             'pm_id'                      => $this['get_planta_madre']['pm_id'],
             'id_lote'                    => $this['pro_id_lote'],
             'fecha_propagacion'          => $this['pro_fecha'],
-            'fecha_trasplante_bolsa'    => $this->fechaTrasplanteBolsa,
-            'fecha_trasplante_Campo'    => $this->fechaTrasplanteCampo,
-            'cantidad_trasplante_campo' => $cantidadTrasplarCampo,
+            'fecha_trasplante_bolsa'     => $this->fechaTrasplanteBolsa,
+            'fecha_trasplante_Campo'     => $this->fechaTrasplanteCampo,
+            'cantidad_trasplante_campo'  => $cantidadTrasplarCampo,
             'estado_lote'                => $evento,
             'dias_transcurridos'         => $diasTranscurridos,
             'color'                      => $color
-            ,
         ];
     }
 
@@ -67,25 +69,26 @@ class ListarTrasplanteCampoCollection extends ResourceCollection
      * @param array $trasplante
      * @return void
      */
-    private function registrosTrasplante($trasplante){
+    private function registrosTrasplante($trasplantes){
 
         $this->fechaTrasplanteBolsa = "";
         $this->fechaTrasplanteCampo = "";
 
-        if ($trasplante != null) {
+        if ($trasplantes != null) {
             // Tiene dos trasplantes, bolsa y campo
-            if (count($trasplante) == 2) {
-                foreach ($trasplante as $trasplante) {
+            if (count($trasplantes) == 2) {
+                foreach ($trasplantes as $trasplante) {
                     if ($trasplante['tp_tipo'] == 'bolsa') {
                         $this->fechaTrasplanteBolsa = $trasplante['tp_fecha'];
                     }else{
+                        $this->idTrasplanteCampo    = $trasplante['tp_id'];
                         $this->fechaTrasplanteCampo = $trasplante['tp_fecha'];
                     }
                 }
-            }else if(count($trasplante) == 1){
+            }else if(count($trasplantes) == 1){
                 // Tiene solo trasplante bolsa
-                if ($trasplante[0]['tp_tipo'] == 'bolsa') {
-                    $this->fechaTrasplanteBolsa = $trasplante[0]['tp_fecha'];
+                if ($trasplantes[0]['tp_tipo'] == 'bolsa') {
+                    $this->fechaTrasplanteBolsa = $trasplantes[0]['tp_fecha'];
                 }
             }
         }

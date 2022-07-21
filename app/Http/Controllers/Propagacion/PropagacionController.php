@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Propagacion;
 
 use Exception;
+use App\Traits\alertaTrait;
 use App\Models\Propagacion;
 use App\Models\PlantaMadre;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ use App\Http\Requests\PropationRequestUpdate;
 
 class PropagacionController extends Controller
 {
+    use alertaTrait;
+
     public function __construct()
     {
         $this->middleware(['permission:LISTAR'])->only('listar');
@@ -52,6 +55,28 @@ class PropagacionController extends Controller
         }
 
         $totalRegistros->getCollection()->transform(function($data, $key) {
+
+            $plantaMadre = PlantaMadre::select(['pm_id'])
+                ->where('pm_pro_id_lote', $data->pro_id_lote)
+                ->where('pm_estado', 1)
+                ->first();
+
+            // Se armana data como se requiere, tipo object.
+            $dataAlert = new Request([
+                'pro_fecha'   => $data->pro_fecha,
+                'getPlantaMadre' => new Request([
+                    'pm_id' => optional($plantaMadre)->pm_id
+                ])
+            ]);
+
+            $this->fnconsultarRangosAlerta();
+
+            $arrAlerta = $this->alerta($dataAlert);
+
+            $evento            = $arrAlerta[0];
+            $color             = $arrAlerta[1];
+            $diasTranscurridos = $arrAlerta[2];
+
             return [
                 "pro_id_lote"                   => $data->pro_id_lote,
                 "pro_fecha"                     => $data->pro_fecha,
@@ -60,6 +85,9 @@ class PropagacionController extends Controller
                 "pro_tipo_incorporacion"        => $data->getTipoIncorporacion->nombre,
                 "pro_cantidad_material"         => $data->pro_cantidad_material,
                 "pro_cantidad_plantas_madres"   => $data->pro_cantidad_plantas_madres,
+                "estado_lote"                   => $evento,
+                "dias_transcurridos"            => $diasTranscurridos,
+                "color"                         => $color,
                 "pro_estado"                    => $data->pro_estado,
             ];
         });

@@ -42,6 +42,7 @@ class CosechaController extends Controller
         $trasplanteCampo = Trasplante::select(['tp_id', 'tp_fecha'])
             ->where('tp_id', $request->tp_id)
             ->where('tp_tipo', 'campo')
+            ->where('tp_estado',1)
             ->first();
 
         if ($trasplanteCampo) {
@@ -131,6 +132,7 @@ class CosechaController extends Controller
         // Se buscan todos los trasplantes a bolsa.
         $registros = Trasplante::select(['tp_id', 'tp_pm_id', 'tp_fecha'])
             ->where('tp_tipo', 'campo')
+            ->where('tp_estado',1)
             ->with([
                 'getPlantaMadre' => function ($query){
                     $query->select([
@@ -206,6 +208,7 @@ class CosechaController extends Controller
         $cosecha = Trasplante::select(['tp_id','tp_pm_id','tp_fecha', 'tp_ubicacion'])
             ->where('tp_id', $id_trasplante)
             ->where('tp_tipo', 'campo')
+            ->where('tp_estado',1)
             ->with([
                 'getPlantaMadre' => function ($query){
                     $query->select([
@@ -284,6 +287,7 @@ class CosechaController extends Controller
             $trasplante = Trasplante::select(['tp_id','tp_pm_id'])
             ->where('tp_id', $request->tp_id)
             ->where('tp_tipo', 'campo')
+            ->where('tp_estado',1)
             ->with([
                 'getPlantaMadre' => function ($query){
                     $query->select([

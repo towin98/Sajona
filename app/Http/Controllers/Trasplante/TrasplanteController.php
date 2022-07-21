@@ -17,6 +17,7 @@ use App\Http\Requests\TrasplanteStoreRequest;
 use App\Http\Requests\TrasplanteBuscarRequest;
 use App\Http\Requests\TrasplanteCampoStoreRequest;
 use App\Http\Resources\ListarTrasplanteCampoCollection;
+use App\Models\Cosecha;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class TrasplanteController extends Controller
@@ -31,6 +32,7 @@ class TrasplanteController extends Controller
         $this->middleware(['permission:LISTAR'])->only(['buscarTrasplanteBolsa', 'buscarTrasplanteCampo']);
         $this->middleware(['permission:CREAR|EDITAR'])->only(['storeTrasplanteBolsa', 'storeTrasplanteCampo']);
         $this->middleware(['permission:VER'])->only(['showTrasplanteBolsa', 'showTrasplanteCampo']);
+        $this->middleware(['permission:ELIMINAR'])->only(['deleteTrasplanteCampo']);
     }
 
     /**
@@ -62,7 +64,8 @@ class TrasplanteController extends Controller
             ->join('planta_madre', 'planta_madre.pm_pro_id_lote', '=', 'propagacion.pro_id_lote')
             ->leftJoin('trasplante', function ($join) {
                 $join->on('trasplante.tp_pm_id', '=', 'planta_madre.pm_id')
-                    ->where('trasplante.tp_tipo', '=', 'bolsa');
+                    ->where('trasplante.tp_tipo', '=', 'bolsa')
+                    ->where('trasplante.tp_estado',1);
             });
 
         // Buscando por rango de fechas si digitan.
@@ -163,45 +166,66 @@ class TrasplanteController extends Controller
         }
 
         $trasplanteBolsa = Trasplante::where([
-                'tp_pm_id' => $plantaMadre->pm_id,
-                'tp_tipo'  => 'bolsa'
-        ]);
+                                                'tp_pm_id'  => $plantaMadre->pm_id,
+                                                'tp_tipo'   => 'bolsa',
+                                                'tp_estado' => 1
+                                            ]);
 
         if ($trasplanteBolsa->first()) {
             if (!$this->fnVerificaPermisoUsuario('EDITAR')) {
                 throw new AuthorizationException;
             }
+
+            // CONSULTANDO SI EL LOTE TIENE TRASPLANTE A CAMPO, NO SE PERMITA EDITAR.
+            $trasplanteCampo = Trasplante::select('tp_id')
+                ->where([
+                    'tp_pm_id'  => $plantaMadre->pm_id,
+                    'tp_tipo'   => 'campo',
+                    'tp_estado' => 1
+                ])
+                ->first();
+            if ($trasplanteCampo) {
+                return response()->json([
+                    'message' => 'Error de Validación de Datos.',
+                    'errors'  => "No se puede editar trasplante a bolsa, porque el lote $plantaMadre->pm_pro_id_lote ya tiene trasplante a bolsa."
+                ], 409);
+            }
+
+            try {
+                $trasplanteBolsa->update([
+                    'tp_tipo_lote'      => $request->tp_tipo_lote,
+                    'tp_fecha'          => $request->tp_fecha." ".date('H:i:s'),
+                    'tp_ubicacion'      => $request->tp_ubicacion,
+                    'tp_cantidad_area'  => $request->tp_cantidad_area,
+                ]);
+
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => 'Acción no permitida',
+                    'errors'  => "Error al actualizar trasplante a bolsa."
+                ], 500);
+            }
         }else{
             if (!$this->fnVerificaPermisoUsuario('CREAR')) {
                 throw new AuthorizationException;
             }
-        }
-        try {
-            // Se Eliminan registro en caso de que exista en planta madre, para simular un update.
-            $trasplanteBolsa->delete();
 
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Acción no permitida',
-                'errors'  => "El registro no puede modificarse porque ya tiene registrado procesos."
-            ], 500);
-        }
-
-        try {
-            Trasplante::create([
-                'tp_pm_id'          => $plantaMadre->pm_id,
-                'tp_tipo'           => 'bolsa',
-                'tp_tipo_lote'      => $request->tp_tipo_lote,
-                'tp_fecha'          => $request->tp_fecha." ".date('H:i:s'),
-                'tp_ubicacion'      => $request->tp_ubicacion,
-                'tp_cantidad_area'  => $request->tp_cantidad_area,
-                'tp_estado'         => true,
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => 'Error inesperado.',
-                'errors'  => "Error al guardar trasplante a bolsa."
-            ], 500);
+            try {
+                Trasplante::create([
+                    'tp_pm_id'          => $plantaMadre->pm_id,
+                    'tp_tipo'           => 'bolsa',
+                    'tp_tipo_lote'      => $request->tp_tipo_lote,
+                    'tp_fecha'          => $request->tp_fecha." ".date('H:i:s'),
+                    'tp_ubicacion'      => $request->tp_ubicacion,
+                    'tp_cantidad_area'  => $request->tp_cantidad_area,
+                    'tp_estado'         => true,
+                ]);
+            } catch (Exception $e) {
+                return response()->json([
+                    'message' => 'Error inesperado.',
+                    'errors'  => "Error al guardar trasplante a bolsa."
+                ], 500);
+            }
         }
 
         return response()->json([
@@ -225,7 +249,10 @@ class TrasplanteController extends Controller
                                         'trasplante.tp_ubicacion',
                                         'trasplante.tp_cantidad_area',
                                         'propagacion.pro_cantidad_plantas_madres')
-            ->leftjoin('trasplante', 'planta_madre.pm_id', '=', 'trasplante.tp_pm_id')
+            ->leftJoin('trasplante', function ($join) {
+                $join->on('planta_madre.pm_id', '=', 'trasplante.tp_pm_id')
+                    ->where('trasplante.tp_estado',1);
+            })
             ->join('propagacion', 'planta_madre.pm_pro_id_lote', '=', 'propagacion.pro_id_lote')
             ->where('planta_madre.pm_id', $id)
             ->get();
@@ -288,10 +315,13 @@ class TrasplanteController extends Controller
                     ->with([
                         'getTrasplantes' => function ($query) use ($request){
                             $query->select([
+                                'tp_id',
                                 'tp_pm_id',
                                 'tp_fecha',
-                                'tp_tipo'
-                            ]);
+                                'tp_tipo',
+                                'tp_estado'
+                            ])
+                            ->where('tp_estado',1);
                         }
                     ]);
                 }
@@ -306,13 +336,16 @@ class TrasplanteController extends Controller
             });
         }
 
-        $registros = $registros->whereHas('getPlantaMadre', function ($query) use ($request) {
-                $query->whereHas('getTrasplantes', function ($query) use ($request) {
-                    $query->where('tp_tipo', 'bolsa')
-                        ->orWhere('tp_tipo', 'campo');
-                });
-            })
-            ->BuscarTrasplanteCampo($request->buscar);
+        $registros = $registros->BuscarTrasplanteCampo($request->buscar);
+        if ($request->filled('orderColumn') && $request->filled('order')) {
+            switch ($request->orderColumn) {
+                case 'id_lote':
+                    $registros = $registros->orderBy('pro_id_lote', strtoupper($request->order));
+                case 'fecha_propagacion':
+                    $registros = $registros->orderBy('pro_fecha', strtoupper($request->order));
+                break;
+            }
+        }
 
         // consulta para saber cuantos registros hay.
         $totalRegistros = $registros->count();
@@ -322,7 +355,6 @@ class TrasplanteController extends Controller
             ->take($length)
             ->get()
             ->toArray();
-
         $registros = ListarTrasplanteCampoCollection::collection($registros);
 
         // Ordenamiento
@@ -374,7 +406,8 @@ class TrasplanteController extends Controller
 
             $trasplanteBolsa = Trasplante::select('tp_fecha')
                 ->where('tp_pm_id', $tp_pm_id)
-                ->where('tp_tipo', 'campo')
+                ->where('tp_tipo','campo')
+                ->where('tp_estado',1)
                 ->first();
 
             // Tiene trasplante a bolsa
@@ -402,13 +435,15 @@ class TrasplanteController extends Controller
                 'pm_id',
             ])
             ->where('pm_pro_id_lote', $request->id_lote)
+            ->where('pm_estado', 1)
             ->first();
 
         if ($plantaMadre) {
 
             $trasplanteCampo = Trasplante::select(['tp_id'])
                 ->where('tp_pm_id', $plantaMadre->pm_id)
-                ->where('tp_tipo', 'campo');
+                ->where('tp_tipo', 'campo')
+                ->where('tp_estado', 1);
 
             // Consultando Trasplante a bolsa para crear registro de trasplante a campo con los mismos registros
             // de 'tp_tipo_lote','tp_ubicacion', 'tp_cantidad_area'
@@ -419,6 +454,7 @@ class TrasplanteController extends Controller
                 ])
                 ->where('tp_pm_id', $plantaMadre->pm_id)
                 ->where('tp_tipo', 'bolsa')
+                ->where('tp_estado', 1)
                 ->first();
 
             // Si no existe trasplante a campo se crea
@@ -458,5 +494,54 @@ class TrasplanteController extends Controller
         return response()->json([
             'message' => 'Datos Guardados.',
         ], 201);
+    }
+
+    public function deleteTrasplanteCampo(Request $request){
+        if(!$request->filled('tp_id')){
+            return response()->json([
+                'message' => 'Error de Validación de Datos.',
+                'errors'  => "El Id del trasplante campo del lote es requerido."
+            ], 409);
+        }
+
+        $trasplanteCampo = Trasplante::where('tp_id',$request->tp_id)
+            ->where('tp_tipo', 'campo')
+            ->where('tp_estado', 1)
+            ->first();
+
+        if (!$trasplanteCampo) {
+            return response()->json([
+                'message' => "Error de validación de datos.",
+                'errors' => "No se encontro la trasplante a campo con Id $request->tp_id",
+            ], 404);
+        }
+
+        // CONSULTANDO SI EL LOTE TIENE COSECHA
+        $cosechaLote = Cosecha::select('cos_id')
+            ->where('cos_tp_id', $trasplanteCampo->tp_id)
+            ->where('cos_estado', 1)
+            ->first();
+        if ($cosechaLote) {
+            return response()->json([
+                'message' => 'Error de Validación de Datos.',
+                'errors'  => "No se puede eliminar trasplante a campo porque ya tiene cosecha."
+            ], 409);
+        }
+
+        try {
+            $trasplanteCampo->update([
+                "tp_estado" => 0
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Acción inesperada',
+                'errors'  => "Error al eliminar trasplante a campo.".$e
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => "Se elimino el trasplante a campo con éxito.",
+        ], 200);
+
     }
 }

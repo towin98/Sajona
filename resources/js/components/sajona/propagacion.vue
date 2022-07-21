@@ -189,6 +189,22 @@
                             no-data-text="Sin registros"
                             :disable-sort="!$can(['LISTAR'])"
                         >
+                            <template v-slot:item.pro_fecha="{ item }">
+                                <v-chip
+                                    :color="item.color"
+                                    dark
+                                >
+                                    {{ item.pro_fecha }}
+                                </v-chip>
+                            </template>
+                            <template v-slot:item.dias_transcurridos="{ item }">
+                                <v-chip
+                                    :color="item.color"
+                                    dark
+                                >
+                                    {{ item.dias_transcurridos }}
+                                </v-chip>
+                            </template>
                             <template v-slot:item.acciones="{ item }">
                                 <v-icon
                                     color="primary"
@@ -196,6 +212,7 @@
                                     @click="consultarPropagacion(item.pro_id_lote)"
                                     title="Editar Propagación"
                                     v-if="$can(['VER', 'EDITAR'])"
+                                    small
                                 >
                                     mdi-pencil
                                 </v-icon>
@@ -205,6 +222,7 @@
                                     @click="fnDelete(item.pro_id_lote)"
                                     title="Eliminar Propagación"
                                     v-if="$can(['ELIMINAR'])"
+                                    small
                                 >
                                     delete
                                 </v-icon>
@@ -290,6 +308,8 @@ export default {
                 { text: "Tipo de Propagación", value: "pro_tipo_propagacion" },
                 { text: "Tipo Incorporación", value: "pro_tipo_incorporacion" },
                 { text: "Cantidad Propagada", value: "pro_cantidad_material" },
+                { text: "Estado", value: "estado_lote", sortable: false },
+                { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
                 { text: "Acciones", value: "acciones", sortable: false }
             ],
             dataSet: [],
