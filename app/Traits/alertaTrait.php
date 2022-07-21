@@ -4,6 +4,7 @@ namespace App\Traits;
 use App\Models\Alerta;
 use App\Models\Cosecha;
 use App\Models\PostCosecha;
+use App\Models\Propagacion;
 use App\Models\Trasplante;
 
 trait alertaTrait {
@@ -31,8 +32,9 @@ trait alertaTrait {
         $trasplanteBolsa = Trasplante::select(['tp_fecha'])
             ->where('tp_pm_id', optional($data->getPlantaMadre)->pm_id )
             ->where('tp_tipo', 'bolsa')
+            ->where('tp_estado',1)
             ->get();
-        if (count($trasplanteBolsa) == 0) { // Propagación
+        if (count($trasplanteBolsa) == 0) { // planta madre
             $diasTranscurridos = date_diff(date_create($data->pro_fecha),$today)->format('%a');
 
             if ($diasTranscurridos <= ($this->max_rang_propagacion-2) ) {// rang max propagacion -2
@@ -53,6 +55,7 @@ trait alertaTrait {
             $trasplanteCampo = trasplante::select(['tp_id','tp_fecha'])
                 ->where('tp_pm_id', optional($data->getPlantaMadre)->pm_id)
                 ->where('tp_tipo', 'campo')
+                ->where('tp_estado',1)
                 ->first();
 
             if (!$trasplanteCampo) { // Trasplante bolsa

@@ -6020,6 +6020,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6093,6 +6111,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }, {
         text: "Cantidad Propagada",
         value: "pro_cantidad_material"
+      }, {
+        text: "Estado",
+        value: "estado_lote",
+        sortable: false
+      }, {
+        text: "Días transcurridos",
+        value: "dias_transcurridos",
+        sortable: false
       }, {
         text: "Acciones",
         value: "acciones",
@@ -7143,6 +7169,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -7200,6 +7238,10 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Trasplante Campo",
         value: "trasplante_campo_accion",
+        sortable: false
+      }, {
+        text: "Acciones",
+        value: "acciones",
         sortable: false
       }],
       dataSet: [],
@@ -7328,6 +7370,38 @@ __webpack_require__.r(__webpack_exports__);
     fnLimpiarFechaIniFin: function fnLimpiarFechaIniFin() {
       this.form.fecha_inicial = "";
       this.form.fecha_final = "";
+    },
+    fnDelete: function fnDelete(item) {
+      var _this5 = this;
+
+      this.accion = 'Guardar';
+      this.fnLimpiarFechaIniFin();
+      this.$swal({
+        title: '¿Quiere eliminar el trasplante a campo?',
+        text: "Se eliminara el trasplante a campo del lote ".concat(item.id_lote, ", \xBFest\xE1 seguro?."),
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Eliminarlo!'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          _this5.overlayLoading = true;
+          axios.post("/sajona/trasplante-campo/delete/", {
+            tp_id: item.tp_id
+          }).then(function (response) {
+            _this5.overlayLoading = false;
+
+            _this5.$swal(response.data.message + " " + item.id_lote, '', 'success');
+
+            _this5.buscarTrasplantes();
+          })["catch"](function (errores) {
+            _this5.overlayLoading = false;
+
+            _this5.fnResponseError(errores);
+          });
+        }
+      });
     }
   }
 });
@@ -33612,6 +33686,44 @@ var render = function () {
                         },
                         scopedSlots: _vm._u([
                           {
+                            key: "item.pro_fecha",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  { attrs: { color: item.color, dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.pro_fecha) +
+                                        "\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                          {
+                            key: "item.dias_transcurridos",
+                            fn: function (ref) {
+                              var item = ref.item
+                              return [
+                                _c(
+                                  "v-chip",
+                                  { attrs: { color: item.color, dark: "" } },
+                                  [
+                                    _vm._v(
+                                      "\n                                " +
+                                        _vm._s(item.dias_transcurridos) +
+                                        "\n                            "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            },
+                          },
+                          {
                             key: "item.acciones",
                             fn: function (ref) {
                               var item = ref.item
@@ -33624,6 +33736,7 @@ var render = function () {
                                         attrs: {
                                           color: "primary",
                                           title: "Editar Propagación",
+                                          small: "",
                                         },
                                         on: {
                                           click: function ($event) {
@@ -33649,6 +33762,7 @@ var render = function () {
                                         attrs: {
                                           color: "red",
                                           title: "Eliminar Propagación",
+                                          small: "",
                                         },
                                         on: {
                                           click: function ($event) {
@@ -34940,6 +35054,37 @@ var render = function () {
                                   },
                                 }
                               : null,
+                            {
+                              key: "item.acciones",
+                              fn: function (ref) {
+                                var item = ref.item
+                                return [
+                                  _vm.$can(["ELIMINAR"]) && item.tp_id != ""
+                                    ? _c(
+                                        "v-icon",
+                                        {
+                                          staticClass: "mr-2",
+                                          attrs: {
+                                            color: "red",
+                                            title: "Eliminar trasplante campo",
+                                            small: "",
+                                          },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.fnDelete(item)
+                                            },
+                                          },
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                delete\n                            "
+                                          ),
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                ]
+                              },
+                            },
                           ],
                           null,
                           true

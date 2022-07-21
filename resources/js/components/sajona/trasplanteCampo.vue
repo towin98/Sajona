@@ -160,6 +160,18 @@
                             <template v-slot:item.trasplante_campo_accion="{ item }" v-if="$can(['VER'])">
                                 <a @click="consultarTrasplante(item)">Clic</a>
                             </template>
+                            <template v-slot:item.acciones="{ item }">
+                                <v-icon
+                                    color="red"
+                                    class="mr-2"
+                                    @click="fnDelete(item)"
+                                    title="Eliminar trasplante campo"
+                                    v-if="$can(['ELIMINAR']) && item.tp_id != ''"
+                                    small
+                                >
+                                    delete
+                                </v-icon>
+                            </template>
                         </v-data-table>
                     </v-col>
                 </v-row>
@@ -291,6 +303,7 @@ export default {
                 { text: "Estado", value: "estado_lote", sortable: false },
                 { text: "Días transcurridos", value: "dias_transcurridos", sortable: false },
                 { text: "Trasplante Campo", value: "trasplante_campo_accion", sortable: false },
+                { text: "Acciones", value: "acciones", sortable: false }
             ],
             dataSet: [],
             start     : 0,
@@ -418,7 +431,40 @@ export default {
         fnLimpiarFechaIniFin() {
             this.form.fecha_inicial = "";
             this.form.fecha_final = "";
-        }
+        },
+        fnDelete(item){
+            this.accion = 'Guardar';
+            this.fnLimpiarFechaIniFin();
+            this.$swal({
+                title: '¿Quiere eliminar el trasplante a campo?',
+                text: `Se eliminara el trasplante a campo del lote ${item.id_lote}, ¿está seguro?.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Eliminarlo!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        this.overlayLoading = true;
+                        axios
+                            .post(`/sajona/trasplante-campo/delete/`,{tp_id : item.tp_id})
+                            .then((response) => {
+                                this.overlayLoading = false;
+                                this.$swal(
+                                    response.data.message+" "+item.id_lote,
+                                    '',
+                                    'success'
+                                );
+                                this.buscarTrasplantes();
+                            })
+                            .catch((errores) => {
+                                this.overlayLoading = false;
+                                this.fnResponseError(errores);
+                            });
+                    }
+                });
+        },
     },
 };
 </script>

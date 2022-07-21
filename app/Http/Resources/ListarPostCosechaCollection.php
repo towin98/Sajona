@@ -19,7 +19,7 @@ class ListarPostCosechaCollection extends ResourceCollection
     {
         // Se armana data como la requiere, tipo object.
         $data = new Request([
-            'pro_fecha' => $this['get_trasplante_campo']['get_planta_madre']['pm_pro_id_lote'],
+            // 'pro_fecha' => , // No es necesario enviar, porque se estan mostrando solo los lote de post cosecha.
             'getPlantaMadre' => new Request([
                 'pm_id' => $this['get_trasplante_campo']['get_planta_madre']['pm_id']
             ])

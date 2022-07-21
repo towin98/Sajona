@@ -54,6 +54,7 @@ Route::group(['prefix' => 'trasplante-campo', 'middleware' => 'auth:sanctum'] , 
     Route::post('/',  [TrasplanteController::class, 'storeTrasplanteCampo']);
     Route::get('/buscar', [TrasplanteController::class, 'buscarTrasplanteCampo']);
     Route::get('/{id}', [TrasplanteController::class, 'showTrasplanteCampo']);
+    Route::post('/delete', [TrasplanteController::class, 'deleteTrasplanteCampo']);
 });
 
 Route::group(['prefix' => 'cosecha', 'middleware' => 'auth:sanctum'] , function(){
